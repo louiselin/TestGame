@@ -118,22 +118,5 @@ public class ProfileUpdateActivity extends AppCompatActivity {
         });
 
     }
-//    public boolean onKeyDown(int key, KeyEvent event) {
-//        switch (key) {
-//            case KeyEvent.KEYCODE_SEARCH:
-//                break;
-//            case KeyEvent.KEYCODE_BACK:
-//                Intent intent = new Intent();
-//                setResult(RESULT_OK, intent);
-//                finish();
-//                android.os.Process.killProcess(android.os.Process.myPid());
-//                break;
-//            case KeyEvent.KEYCODE_DPAD_CENTER:
-//                break;
-//            default:
-//                return false;
-//        }
-//        return false;
-//    }
 
 }

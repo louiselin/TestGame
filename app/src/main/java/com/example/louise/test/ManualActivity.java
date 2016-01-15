@@ -294,22 +294,7 @@ public class ManualActivity extends AppCompatActivity {
             return l.toString();
         }
     }
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//
-//        if (keyCode == KeyEvent.KEYCODE_BACK)
-//        {
-//            // Show home screen when pressing "back" button,
-//            //  so that this app won't be closed accidentally
-//            Intent intentHome = new Intent(Intent.ACTION_MAIN);
-//            intentHome.addCategory(Intent.CATEGORY_HOME);
-//            intentHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intentHome);
-//
-//            return true;
-//        }
-//
-//        return super.onKeyDown(keyCode, event);
-//    }
+
 }
 
 

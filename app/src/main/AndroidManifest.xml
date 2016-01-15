@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.louise.test" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    package="com.example.louise.test">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -22,31 +23,42 @@
         android:allowBackup="true"
         android:icon="@drawable/game"
         android:label="@string/title_activity_main"
+        android:gravity="center_horizontal"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
 
-        <!--
-            Index -> login view and it is also a first view
-            ( forehead: haven't already login )
+        <!--<activity-->
+            <!--android:name=".IndexActivity"-->
+            <!--android:label="@string/title_activity_index">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
 
-            but i change the main view cuz this url is broken....
-            IndexActivity -> MainActivity
-        -->
         <activity
-            android:name=".IndexActivity"
-            android:label="@string/title_activity_index" >
+            android:name=".FirstpageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- android:launchMode="singleTop" -->
-        <!-- <activity android:name=".IndexActivity" /> -->
+        <activity
+            android:name=".IndexActivity"
+            android:label="@string/title_activity_main"
+            android:parentActivityName=".FirstpageActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".FirstpageActivity">
+            </meta-data>
+
+        </activity>
+
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main"
+            android:parentActivityName=".IndexActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".IndexActivity" />
@@ -67,49 +79,46 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
 
-        <!-- <activity -->
-        <!-- android:name=".MainActivity" -->
-        <!-- android:label="@string/title_activity_main" -->
-        <!-- android:parentActivityName=".IndexActivity" > -->
-        <!-- <meta-data -->
-        <!-- android:name="android.support.PARENT_ACTIVITY" -->
-        <!-- android:value=".IndexActivity" /> -->
-        <!-- </activity> -->
-
         <activity
             android:name=".PlacelistActivity"
-            android:label="@string/title_activity_placelist" >
+            android:label="@string/title_activity_placelist">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MapsActivity" />
         </activity>
         <activity
             android:name=".PlaceActivity"
-            android:label="@string/title_activity_place" >
+            android:label="@string/title_activity_place">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MapsActivity" />
         </activity>
         <activity
             android:name=".ProfileUpdateActivity"
-            android:label="@string/title_activity_profile" >
-             <meta-data
-             android:name="android.support.PARENT_ACTIVITY"
-             android:value=".MainActivity" />
+            android:label="@string/title_activity_profile">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".ManualActivity"
-            android:label="@string/title_activity_manual"
-            android:parentActivityName=".MainActivity">
-             <meta-data
-             android:name="android.support.PARENT_ACTIVITY"
-             android:value=".MainActivity" />
+            android:label="@string/title_activity_manual">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".KeeperinfoActivity"
+            android:label="@string/title_activity_keeperinfor">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
         </activity>
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -121,22 +130,15 @@
 
         <activity
             android:name=".AwardActivity"
-            android:label="@string/title_activity_award" >
-             <meta-data
-             android:name="android.support.PARENT_ACTIVITY"
-             android:value=".MainActivity" />
+            android:label="@string/title_activity_award">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity android:name=".Tab1" />
         <activity android:name=".Tab2" />
         <activity android:name=".Tab3" />
         <activity android:name=".Tab4" />
-        <activity
-            android:name=".KeeperinfoActivity"
-            android:label="@string/title_activity_keeperinfor">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MapsActivity" />
-        </activity>
     </application>
 
 </manifest>

@@ -143,6 +143,6 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onDestroy() {
             super.onDestroy();
-            System.exit(0);
+            //System.exit(0);
         }
 }
