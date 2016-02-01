@@ -1,31 +1,38 @@
 package com.example.louise.test;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.ContentProviderOperation;
+import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.OperationApplicationException;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.os.RemoteException;
+import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
-import android.view.KeyEvent;
-import android.widget.ListView;
+import android.support.v4.content.PermissionChecker;
+import android.util.Log;
 import android.widget.Toast;
-import android.support.v4.widget.DrawerLayout;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.net.ProtocolException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -42,24 +49,122 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private int check = 0;
     private Location currentLocation;
     private Marker currentMarker, itemMarker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used
+
+//        if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
+//            // Marshmallow+
+//            Toast toast = Toast.makeText(MapsActivity.this, "API 23", Toast.LENGTH_SHORT);
+//            toast.show();
+//            runStreamWrapper();
+//
+//        } else {
+//            // Pre-Marshmallow
+//            int version = Build.VERSION.SDK_INT;
+//            Toast toast = Toast.makeText(MapsActivity.this, "API " + version, Toast.LENGTH_SHORT);
+//            toast.show();
+//            runStream();
+//        }
+
         setContentView(R.layout.activity_maps);
-
-
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
-//        Toast toast = Toast.makeText(MapsActivity.this, IndexActivity.userid, Toast.LENGTH_SHORT);
-//        toast.show();
-
-
     }
 
+//private static final String TAG = MainActivity.class.getSimpleName();
+//
+//    final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 0;
+//
+//    @TargetApi(Build.VERSION_CODES.M)
+//    private void runStreamWrapper () {
+//
+//        List<String> permissionsNeeded = new ArrayList<String>();
+//
+//        final List<String> permissionsList = new ArrayList<String>();
+//        if (!addPermission(permissionsList, Manifest.permission.ACCESS_FINE_LOCATION))
+//            permissionsNeeded.add("GPS");
+//        if (!addPermission(permissionsList, Manifest.permission.RECORD_AUDIO))
+//            permissionsNeeded.add("microphone");
+//        if (!addPermission(permissionsList, Manifest.permission.CAMERA))
+//            permissionsNeeded.add("camera");
+//
+//        if (permissionsList.size() > 0) {
+//            if (permissionsNeeded.size() > 0) {
+//                String message = "You need to grant access to the " + permissionsNeeded.get(0);
+//                Toast toast1 = Toast.makeText(MapsActivity.this, "test1: " , Toast.LENGTH_SHORT);
+//                toast1.show();
+////                for (int i = 1; i < permissionsNeeded.size(); i++)
+////                    message = message + ", " + permissionsNeeded.get(i);
+////                showMessageOKCancel(message, new DialogInterface.OnClickListener() {
+////                    @TargetApi(Build.VERSION_CODES.M)
+////                    @Override
+////                    public void onClick(DialogInterface dialog, int which) {
+////                        requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
+////                                REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+////                    }
+////                });
+////                return;
+//            }
+//            Toast toast2 = Toast.makeText(MapsActivity.this, "test2: ", Toast.LENGTH_SHORT);
+//            toast2.show();
+//            requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
+//                    REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+//        }
+//
+//        runStream();
+//    }
+//
+//    @TargetApi(Build.VERSION_CODES.M)
+//    private boolean addPermission (List<String> permissionsList, String permission) {
+//        if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+//            permissionsList.add(permission);
+//            if(!shouldShowRequestPermissionRationale(permission))
+//                return false;
+//        }
+//        return true;
+//    }
+//
+//    private void showMessageOKCancel (String message, DialogInterface.OnClickListener okListener) {
+//        new AlertDialog.Builder(this)
+//                .setMessage(message)
+//                .setPositiveButton("OK",okListener)
+//                .setNegativeButton("Cancel", null)
+//                .create()
+//                .show();
+//    }
+//
+//    private void runStream() {
+//        Toast.makeText(this, "Stream is running", Toast.LENGTH_LONG).show();
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+//        switch (requestCode) {
+//            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS:
+//            {
+//                Map<String, Integer> perms = new HashMap<String, Integer>();
+//                perms.put(Manifest.permission.RECORD_AUDIO, PackageManager.PERMISSION_GRANTED);
+//                perms.put(Manifest.permission.CAMERA,PackageManager.PERMISSION_GRANTED);
+//
+//                for(int i = 0; i < permissions.length; i ++)
+//                    perms.put(permissions[i], grantResults[i]);
+//
+//                if(perms.get(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+//                        && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+//                    runStream();
+//                } else {
+//                    Toast.makeText(this, "Some required permissions have been denied", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//            break;
+//            default:
+//                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        }
+//    }
 
     /**
      * Manipulates the map once available.
