@@ -42,7 +42,10 @@ public class PlacelistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_placelist); //把activity_placelist.xml 顯示出來
-
+        switch (StoryActivity.party) {
+            case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
+            default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
+        }
 
 //        listView01 = new ListView(PlacelistActivity.this);
         listView01 = (ListView)findViewById(R.id.placelistview);
@@ -60,7 +63,7 @@ public class PlacelistActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
                 Intent intent = new Intent();
-                intent.setClass(PlacelistActivity.this, PlaceActivity.class);
+                intent.setClass(PlacelistActivity.this, PlaceSecActivity.class);
 
                 //傳送點選到的index
                 Bundle bundle = new Bundle();
@@ -74,7 +77,7 @@ public class PlacelistActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         "點選的是" + MapsActivity.plistname.get(position) ,
                                 //+ position, //postition是指點選到的index
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_LONG).show();
 
             }
         });
@@ -118,7 +121,7 @@ public class PlacelistActivity extends AppCompatActivity {
             final TextView placelistsign = (TextView) convertView.findViewById(R.id.placelistsign);
 
             placelistname.setText(pname.get(position));
-            placelistsign.setText("簽契約");
+            placelistsign.setText("巡邏");
             placelistsign.setOnClickListener(new View.OnClickListener() {
 
                 @Override

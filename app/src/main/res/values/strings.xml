@@ -10,4 +10,5 @@
     <string name="title_activity_award">測試</string>
     <string name="title_activity_keeperinfor">敵人戰績</string>
     <string name="title_activity_firstpage">遊戲登入頁</string>
+    <string name="title_activity_story">故事大綱</string>
 </resources>

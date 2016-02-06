@@ -34,12 +34,18 @@ public class MainActivity extends AppCompatActivity
     private Button manual;
     private Button award;
     private TextView textView;
-    private String story = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        switch (StoryActivity.party) {
+            case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
+            default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
+        }
 //
 //        Toast toast = Toast.makeText(MainActivity.this, "Hello! " + IndexActivity.userid, Toast.LENGTH_SHORT);
 //        toast.show();
@@ -64,12 +70,9 @@ public class MainActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
 
-                story = "玩家需要在魔法學園各處，向神獸煉信任度。信任度最高的玩家，神獸會向他簽契約，成為神獸的守護者。玩家便要努力培養與各個神獸的信任度，爭取向神獸簽契約。當每次與神獸煉信任度的時候，玩家會得到神獸贈與的種子，種子可以用來減損/強化其他玩家的信任度，增加玩家間的競爭。而玩家成為守護者之後，隨著契約維持的時間夠長，神獸會再贈與守護者金幣（或是別的東西），以供獎勵。";
-                TextView textstory = (TextView) findViewById(R.id.story);
-                textstory.setText(story);
 
                 textView = (TextView) findViewById(R.id.keeper);
-                textView.setText("攻佔吧！" + keepername);
+                textView.setText("攻佔吧！" + keepername + " 爲 " + StoryActivity.party + " 戰鬥吧！");
                 textView.setTextSize(15);
                 textView.setTextColor(Color.BLACK);
 
@@ -113,15 +116,15 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
-                award = (Button) findViewById(R.id.award);
-                award.setOnClickListener(new Button.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent();
-                        intent.setClass(MainActivity.this, AwardActivity.class);
-                        startActivity(intent);
-                    }
-                });
+//                award = (Button) findViewById(R.id.award);
+//                award.setOnClickListener(new Button.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Intent intent = new Intent();
+//                        intent.setClass(MainActivity.this, AwardActivity.class);
+//                        startActivity(intent);
+//                    }
+//                });
 
                 manual = (Button) findViewById(R.id.manual);
                 manual.setOnClickListener(new Button.OnClickListener() {
@@ -132,6 +135,7 @@ public class MainActivity extends AppCompatActivity
                         startActivity(intent);
                     }
                 });
+
 //            }
 //        } else {
 //            Intent intent = new Intent();
@@ -261,35 +265,4 @@ public class MainActivity extends AppCompatActivity
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-        @Override
-        public boolean onKeyDown(int keyCode, KeyEvent event) {//捕捉返回鍵
-            if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-                ConfirmExit();
-                return true;
-            }
-            return super.onKeyDown(keyCode, event);
-        }
-
-        public void ConfirmExit(){
-            AlertDialog.Builder ad=new AlertDialog.Builder(MainActivity.this);
-            ad.setTitle("要退出");
-            ad.setMessage("確定要退出了嗎？");
-            ad.setPositiveButton("是", new DialogInterface.OnClickListener() {//退出按鈕
-                public void onClick(DialogInterface dialog, int i) {
-                    // TODO Auto-generated method stub
-                    MainActivity.this.finish();//關閉activity
-                }
-            });
-            ad.setNegativeButton("否",new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int i) {
-                    return;
-                }
-            });
-            ad.show();
-        }
-        @Override
-        protected void onDestroy() {
-            super.onDestroy();
-            //System.exit(0);
-        }
 }

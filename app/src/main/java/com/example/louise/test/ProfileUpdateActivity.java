@@ -21,7 +21,10 @@ public class ProfileUpdateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_update);
-
+        switch (StoryActivity.party) {
+            case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
+            default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
+        }
         String userjson="";
 
 

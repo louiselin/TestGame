@@ -42,29 +42,8 @@
         android:layout_height="wrap_content"
         android:text="徽章"
         android:id="@+id/manual"
-        android:layout_below="@+id/playgame"
-        android:layout_toRightOf="@+id/profile"
-        android:layout_toEndOf="@+id/profile" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="測試"
-        android:id="@+id/award"
-        android:layout_above="@+id/manual"
+        android:layout_alignTop="@+id/playgame"
         android:layout_toRightOf="@+id/playgame"
         android:layout_toEndOf="@+id/playgame" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Story"
-        android:id="@+id/story"
-        android:layout_marginTop="33dp"
-        android:layout_below="@+id/manual"
-        android:layout_alignLeft="@+id/profile"
-        android:layout_alignStart="@+id/profile"
-        android:layout_alignRight="@+id/award"
-        android:layout_alignEnd="@+id/award" />
 
 </RelativeLayout>

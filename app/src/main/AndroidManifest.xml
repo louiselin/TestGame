@@ -21,40 +21,36 @@
 
     <application
         android:allowBackup="true"
+        android:gravity="center_horizontal"
         android:icon="@drawable/game"
         android:label="@string/title_activity_main"
-        android:gravity="center_horizontal"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--<activity-->
-            <!--android:name=".IndexActivity"-->
-            <!--android:label="@string/title_activity_index">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+        <!-- <activity -->
+        <!-- android:name=".IndexActivity" -->
+        <!-- android:label="@string/title_activity_index"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
 
-        <activity
-            android:name=".FirstpageActivity">
+        <activity android:name=".FirstpageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".IndexActivity"
             android:label="@string/title_activity_main"
             android:parentActivityName=".FirstpageActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".FirstpageActivity">
-            </meta-data>
-
+                android:value=".FirstpageActivity" />
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
@@ -84,7 +80,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
         <activity
             android:name=".PlacelistActivity"
             android:label="@string/title_activity_placelist">
@@ -94,6 +89,13 @@
         </activity>
         <activity
             android:name=".PlaceActivity"
+            android:label="@string/title_activity_place">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+        </activity>
+        <activity
+            android:name=".PlaceSecActivity"
             android:label="@string/title_activity_place">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -139,6 +141,20 @@
         <activity android:name=".Tab2" />
         <activity android:name=".Tab3" />
         <activity android:name=".Tab4" />
+        <activity
+            android:name=".StoryActivity"
+            android:label="@string/title_activity_story">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".IndexActivity" />
+        </activity>
+        <activity
+            android:name=".BartestActivity"
+            android:label="測試">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".FirstpageActivity"/>
+        </activity>
     </application>
 
 </manifest>

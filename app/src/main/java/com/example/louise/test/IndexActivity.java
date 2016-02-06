@@ -79,7 +79,7 @@ public class IndexActivity extends AppCompatActivity {
                         } else {
                             Intent intent = new Intent();
                             url = url2;
-                            intent.setClass(IndexActivity.this, MainActivity.class);
+                            intent.setClass(IndexActivity.this, StoryActivity.class);
                             IndexActivity.this.finish();
                             startActivity(intent);
                         }

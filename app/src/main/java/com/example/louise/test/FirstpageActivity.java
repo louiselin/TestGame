@@ -23,5 +23,14 @@ public class FirstpageActivity extends AppCompatActivity {
             }
         });
 
+        Button bartest = (Button) findViewById(R.id.bartest);
+        bartest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(FirstpageActivity.this, BartestActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

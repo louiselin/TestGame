@@ -33,7 +33,10 @@ public class ManualActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_manual);
-
+            switch (StoryActivity.party) {
+                case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
+                default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
+            }
 
             String re = refresh();
             String classjson = classjson(re);
