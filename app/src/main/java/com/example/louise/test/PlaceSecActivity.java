@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -19,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +43,7 @@ public class PlaceSecActivity extends AppCompatActivity {
     private float hp_init = 20;
     private String hp = "";
     private String name = "";
+    private ProgressBar myProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,16 +108,33 @@ public class PlaceSecActivity extends AppCompatActivity {
             myTextView1.setText("HP:" + hp);
             myTextView1.setTextColor(Color.BLACK);
 
-            ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-            ratingBar.setRating((Float.parseFloat(hp))/5);
+//            ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+//            ratingBar.setRating((Float.parseFloat(hp))/5);
+//        Resources res = getResources();
+//        switch (name) {
+//            case "Ruyen": ratingBar.setProgressDrawable(res.getDrawable(R.drawable.ratingbar_color));break;
+//            default: {
+//                if(StoryActivity.party == "Sinae") ratingBar.setProgressDrawable(res.getDrawable(R.drawable.ratingbar_color_s));
+//                else ratingBar.setProgressDrawable(res.getDrawable(R.drawable.ratingbar_color_a)); break;
+//            }
+//        }
+//            Toast.makeText(PlaceSecActivity.this, String.valueOf((Float.parseFloat(hp))/5) + " " + name, Toast.LENGTH_SHORT).show();
+
+        myProgressBar = (ProgressBar) findViewById(R.id.progressbar);
+        myProgressBar.setProgress(Integer.parseInt(hp) * 5);
+        Resources res = getResources();
         switch (name) {
-            case "Ruyen": ratingBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratingbar_color));break;
+            case "Ruyen": myProgressBar.setProgressDrawable(res.getDrawable( R.drawable.black_progressbar)); break;
             default: {
-                if(StoryActivity.party == "Sinae") ratingBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratingbar_color_s));
-                else ratingBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratingbar_color_a)); break;
+                if(StoryActivity.party == "Sinae") {
+                    myProgressBar.setProgressDrawable(res.getDrawable( R.drawable.green_progressbar));
+                    break;
+                } else {
+                    myProgressBar.setProgressDrawable(res.getDrawable( R.drawable.red_progressbar));
+                    break;
+                }
             }
         }
-            Toast.makeText(PlaceSecActivity.this, String.valueOf((Float.parseFloat(hp))/5) + " " + name, Toast.LENGTH_SHORT).show();
             //import image
             findViews();
             thirdImage.setImageDrawable(loadImageFromURL(image));
@@ -146,7 +166,6 @@ public class PlaceSecActivity extends AppCompatActivity {
             myTextView6.setText("攻擊");
             myTextView6.setTextSize(20);
             myTextView6.setTextColor(Color.BLUE);
-
             myTextView6.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -157,6 +176,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                     try {
                         api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + IndexActivity.userid;
                         att = Httpconnect.httpget(api);
+
                     } catch (ProtocolException e) {
                         e.printStackTrace();
                     }
@@ -265,17 +285,34 @@ public class PlaceSecActivity extends AppCompatActivity {
         myTextView1.setText("HP:" + hp);
         myTextView1.setTextColor(Color.BLACK);
 
-        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-        ratingBar.setRating((Float.parseFloat(hp)) / 5);
+
+
+        myProgressBar = (ProgressBar) findViewById(R.id.progressbar);
+        myProgressBar.setProgress(Integer.parseInt(hp) * 5);
+        Resources res = getResources();
         switch (name) {
-            case "Ruyen": ratingBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratingbar_color));break;
+            case "Ruyen": myProgressBar.setProgressDrawable(res.getDrawable( R.drawable.black_progressbar)); break;
             default: {
-                if(StoryActivity.party == "Sinae") ratingBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratingbar_color_s));
-                else ratingBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratingbar_color_a)); break;
+                if(StoryActivity.party == "Sinae") {
+                    myProgressBar.setProgressDrawable(res.getDrawable( R.drawable.green_progressbar));
+                    break;
+                } else {
+                    myProgressBar.setProgressDrawable(res.getDrawable( R.drawable.red_progressbar));
+                    break;
+                }
             }
         }
-        Toast.makeText(PlaceSecActivity.this,
-                String.valueOf((Float.parseFloat(hp))/5), Toast.LENGTH_SHORT).show();
+//        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+//        ratingBar.setRating((Float.parseFloat(hp)) / 5);
+//        switch (name) {
+//            case "Ruyen": ratingBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratingbar_color));break;
+//            default: {
+//                if(StoryActivity.party == "Sinae") ratingBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratingbar_color_s));
+//                else ratingBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratingbar_color_a)); break;
+//            }
+//        }
+//        Toast.makeText(PlaceSecActivity.this,
+//                String.valueOf((Float.parseFloat(hp))/5), Toast.LENGTH_SHORT).show();
     }
 
 
