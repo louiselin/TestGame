@@ -40,7 +40,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="徽章"
+        android:text="徽章成就"
         android:id="@+id/manual"
         android:layout_alignTop="@+id/playgame"
         android:layout_toRightOf="@+id/playgame"

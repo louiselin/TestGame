@@ -16,6 +16,7 @@ import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.PermissionChecker;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -35,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private MarkerOptions options = new MarkerOptions();

@@ -43,6 +43,7 @@ public class PlaceSecActivity extends AppCompatActivity {
     private float hp_init = 20;
     private String hp = "";
     private String name = "";
+    private String username = "";
     private ProgressBar myProgressBar;
 
     @Override
@@ -76,6 +77,7 @@ public class PlaceSecActivity extends AppCompatActivity {
 //            String hp = "";
             String camp = "";
 //            String name = "";
+
             try {
                 JSONArray placelist = new JSONArray(placejson);
                 JSONArray imagelist = new JSONArray(imagejson);
@@ -97,15 +99,24 @@ public class PlaceSecActivity extends AppCompatActivity {
             myTextView5.setTextColor(Color.BLACK);
 
             TextView tv = (TextView) findViewById(R.id.belong);
-            tv.setText("屬於:" + camp);
+        switch (name) {
+            case "Ruyen": tv.setText("屬於:" + camp); break;
+            default: tv.setText("屬於:" + StoryActivity.party + camp); break;
+        }
+            tv.setTextSize(15);
             tv.setTextColor(Color.BLACK);
 
             TextView myTextView0 = (TextView) findViewById(R.id.lordname);
             myTextView0.setText("石碑守護者:" + name);
+            myTextView0.setTextSize(15);
             myTextView0.setTextColor(Color.BLACK);
 
             TextView myTextView1 = (TextView) findViewById(R.id.blood);
-            myTextView1.setText("HP:" + hp);
+        switch (name) {
+            case "Ruyen": myTextView1.setText("敵方的生命值:" + hp); break;
+            default: myTextView1.setText("您的生命值:" + hp); break;
+        }
+            myTextView1.setTextSize(15);
             myTextView1.setTextColor(Color.BLACK);
 
 //            ratingBar = (RatingBar) findViewById(R.id.ratingBar);
@@ -154,16 +165,17 @@ public class PlaceSecActivity extends AppCompatActivity {
             try {
                 JSONArray userlist = new JSONArray(userjson);
                 votes = userlist.getJSONObject(0).getInt("votes");
+                username = userlist.getJSONObject(0).getString("name");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             final TextView textview = (TextView) findViewById(R.id.patrolvalue);
-            textview.setText("馬納值：" + votes);
+            textview.setText("馬納值:" + votes);
 
 
             final TextView myTextView6 = (TextView) findViewById(R.id.fight);
-            myTextView6.setText("攻擊");
+            myTextView6.setText("淨化");
             myTextView6.setTextSize(20);
             myTextView6.setTextColor(Color.BLUE);
             myTextView6.setOnClickListener(new View.OnClickListener() {
@@ -171,18 +183,40 @@ public class PlaceSecActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
                     myTextView6.setTextColor(Color.RED);
-                    String att = "";
-                    String api = "";
-                    try {
-                        api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + IndexActivity.userid;
-                        att = Httpconnect.httpget(api);
 
-                    } catch (ProtocolException e) {
+                    String stelejson="";
+                    String stelename = "";
+                    String userjson = "";
+                    String username = "";
+                    try {
+                        stelejson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/stele/" + placeid);
+                        userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid);
+                        JSONArray stelelist = new JSONArray(stelejson);
+                        JSONArray userlist = new JSONArray(userjson);
+                        username = userlist.getJSONObject(0).getString("name");
+                        stelename = stelelist.getJSONObject(0).getString("name");
+
+                        if(stelename.equals(username)) {
+                            Toast toast = Toast.makeText(PlaceSecActivity.this, "幹嘛打自己@@", Toast.LENGTH_SHORT);
+                            toast.show();
+                        } else {
+                            String att = "";
+                            String api = "";
+                            try {
+                                api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + IndexActivity.userid;
+                                att = Httpconnect.httpget(api);
+
+                            } catch (ProtocolException e) {
+                                e.printStackTrace();
+                            }
+
+                            Toast toast = Toast.makeText(PlaceSecActivity.this, att, Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    Toast toast = Toast.makeText(PlaceSecActivity.this, att, Toast.LENGTH_LONG);
-                    toast.show();
                 }
             });
 
@@ -250,6 +284,7 @@ public class PlaceSecActivity extends AppCompatActivity {
         String hp = "";
         String camp = "";
         String name = "";
+
         try {
             JSONArray placelist = new JSONArray(placejson);
             JSONArray userlist = new JSONArray(userjson);
@@ -266,7 +301,7 @@ public class PlaceSecActivity extends AppCompatActivity {
         }
 
         TextView textview = (TextView) findViewById(R.id.patrolvalue);
-        textview.setText("馬納值：" + vote);
+        textview.setText("馬納值:" + vote);
 
         TextView myTextView5 = (TextView)findViewById(R.id.locationname);
         myTextView5.setText(placename);
@@ -274,16 +309,26 @@ public class PlaceSecActivity extends AppCompatActivity {
         myTextView5.setTextColor(Color.BLACK);
 
         TextView tv = (TextView) findViewById(R.id.belong);
-        tv.setText("屬於:" + camp);
+        switch (name) {
+            case "Ruyen": tv.setText("屬於:" + camp); break;
+            default: tv.setText("屬於:" + StoryActivity.party + camp); break;
+        }
+        tv.setTextSize(15);
         tv.setTextColor(Color.BLACK);
 
-        TextView myTextView0 = (TextView)findViewById(R.id.lordname);
+        TextView myTextView0 = (TextView) findViewById(R.id.lordname);
         myTextView0.setText("石碑守護者:" + name);
+        myTextView0.setTextSize(15);
         myTextView0.setTextColor(Color.BLACK);
 
-        TextView myTextView1 = (TextView)findViewById(R.id.blood);
-        myTextView1.setText("HP:" + hp);
+        TextView myTextView1 = (TextView) findViewById(R.id.blood);
+        switch (name) {
+            case "Ruyen": myTextView1.setText("敵方的生命值:" + hp); break;
+            default: myTextView1.setText("您的生命值:" + hp); break;
+        }
+        myTextView1.setTextSize(15);
         myTextView1.setTextColor(Color.BLACK);
+
 
 
 

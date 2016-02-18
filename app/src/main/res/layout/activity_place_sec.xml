@@ -91,7 +91,7 @@
         android:maxWidth="100dp"
         android:progress="100"
         android:progressDrawable="@drawable/black_progressbar"
-        android:layout_below="@+id/lordname"
-        android:layout_toRightOf="@+id/blood"
-        android:layout_toEndOf="@+id/blood"/>
+        android:layout_below="@+id/blood"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
