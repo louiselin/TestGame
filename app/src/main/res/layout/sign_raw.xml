@@ -12,19 +12,14 @@
 
         <TextView
             android:id="@+id/placelistname"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="地點"
-            android:textSize="20dp" />
+            android:gravity="center_horizontal"
+            android:layout_marginTop="17dp"
+            android:textColor="#0000A0"
+            android:textSize="25dp" />
 
-        <TextView
-            android:id="@+id/placelistsign"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="簽契約"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimary"
-            android:layout_gravity="right" />
     </LinearLayout>
 
 </LinearLayout>

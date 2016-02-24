@@ -3,12 +3,16 @@ package com.example.louise.test;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,10 +46,11 @@ public class PlacelistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_placelist); //把activity_placelist.xml 顯示出來
-        switch (StoryActivity.party) {
-            case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
-            default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
-        }
+        getWindow().setBackgroundDrawableResource(R.drawable.bg);
+//        switch (StoryActivity.party) {
+//            case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
+//            default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
+//        }
 
 //        listView01 = new ListView(PlacelistActivity.this);
         listView01 = (ListView)findViewById(R.id.placelistview);
@@ -54,7 +59,6 @@ public class PlacelistActivity extends AppCompatActivity {
         adapter = new MyAdapter(this, MapsActivity.plistname);
         listView01.setAdapter(adapter);
 
-
 //        listAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_activated_1, MapsActivity.plistname);
 //        listView01.setAdapter(listAdapter);
 
@@ -62,23 +66,24 @@ public class PlacelistActivity extends AppCompatActivity {
         listView01.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
+
                 Intent intent = new Intent();
                 intent.setClass(PlacelistActivity.this, PlaceSecActivity.class);
 
                 //傳送點選到的index
                 Bundle bundle = new Bundle();
                 bundle.putInt("placeid", MapsActivity.plistid.get(position));
+                bundle.putString("placename", MapsActivity.plistname.get(position));
                 //將Bundle物件assign給intent
                 intent.putExtras(bundle);
 
                 startActivity(intent);
 
 
-                Toast.makeText(getApplicationContext(),
-                        "點選的是" + MapsActivity.plistname.get(position) ,
-                                //+ position, //postition是指點選到的index
-                        Toast.LENGTH_LONG).show();
-
+//                Toast.makeText(getApplicationContext(),
+//                        "點選的是" + MapsActivity.plistname.get(position) ,
+//                                //+ position, //postition是指點選到的index
+//                        Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -118,31 +123,37 @@ public class PlacelistActivity extends AppCompatActivity {
             convertView = myInflater.inflate(R.layout.sign_raw, null);
 
             final TextView placelistname = (TextView) convertView.findViewById(R.id.placelistname);
-            final TextView placelistsign = (TextView) convertView.findViewById(R.id.placelistsign);
-
-            placelistname.setText(pname.get(position));
-            placelistsign.setText("巡邏");
-            placelistsign.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-                    placelistsign.setTextColor(Color.RED);
-                    String re = "";
-                    try {
-                        re = Httpconnect.httpost2("http://140.119.163.40:8080/Spring08/app/checkinList/" + IndexActivity.userid, "id=0&placeid=" + MapsActivity.plistid.get(position) + "&longitude=121.2&latitude=223.5");
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    //  refresh();
-                    Toast toast2 = Toast.makeText(PlacelistActivity.this, re, Toast.LENGTH_SHORT);
-                    toast2.show();
+//            final TextView placelistsign = (TextView) convertView.findViewById(R.id.placelistsign);
 
 
-                    //DO you work here
-                }
-            });
+
+            SpannableString content = new SpannableString(pname.get(position));
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            placelistname.setText(content);
+//            placelistname.setText(pname.get(position));
+//            placelistsign.setText(" ");
+//            placelistsign.setTextColor(Color.BLUE);
+//            placelistsign.setOnClickListener(new View.OnClickListener() {
+//
+//                @Override
+//                public void onClick(View v) {
+//                    // TODO Auto-generated method stub
+//                    placelistsign.setTextColor(Color.RED);
+//                    String re = "";
+//                    try {
+//                        re = Httpconnect.httpost2("http://140.119.163.40:8080/Spring08/app/checkinList/" + IndexActivity.userid, "id=0&placeid=" + MapsActivity.plistid.get(position) + "&longitude=121.2&latitude=223.5");
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    //  refresh();
+//                    Toast toast2 = Toast.makeText(PlacelistActivity.this, re, Toast.LENGTH_SHORT);
+//                    toast2.show();
+//
+//
+//                    //DO you work here
+//                }
+//            });
 
 
             return convertView;

@@ -45,7 +45,7 @@ public class PlaceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
-
+        getWindow().setBackgroundDrawableResource(R.drawable.bg);
 
         Bundle bundle =this.getIntent().getExtras();
         placeid = bundle.getInt("placeid");

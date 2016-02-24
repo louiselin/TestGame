@@ -40,12 +40,12 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().setBackgroundDrawableResource(R.drawable.bg);
 
-
-        switch (StoryActivity.party) {
-            case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
-            default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
-        }
+//        switch (StoryActivity.party) {
+//            case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
+//            default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
+//        }
 //
 //        Toast toast = Toast.makeText(MainActivity.this, "Hello! " + IndexActivity.userid, Toast.LENGTH_SHORT);
 //        toast.show();
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity
                 textView.setTextColor(Color.BLACK);
 
                 play = (Button) findViewById(R.id.playgame);
+                play.setTextColor(0xffffffff);
                 play.setOnClickListener(new Button.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -84,15 +85,15 @@ public class MainActivity extends AppCompatActivity
                         if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
                             // Marshmallow+
                             test = runStreamWrapper();
-                            Toast toast = Toast.makeText(MainActivity.this, "API 23", Toast.LENGTH_SHORT);
-                            toast.show();
+//                            Toast toast = Toast.makeText(MainActivity.this, "API 23", Toast.LENGTH_SHORT);
+//                            toast.show();
 
                         } else {
                             // Pre-Marshmallow
                             int version = Build.VERSION.SDK_INT;
                             test = 1;
-                            Toast toast = Toast.makeText(MainActivity.this, "API " + version, Toast.LENGTH_SHORT);
-                            toast.show();
+//                            Toast toast = Toast.makeText(MainActivity.this, "API " + version, Toast.LENGTH_SHORT);
+//                            toast.show();
                             runStream();
                             Intent intent = new Intent();
                             intent.setClass(MainActivity.this, MapsActivity.class);
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity
                 });
 
                 profile = (Button) findViewById(R.id.profile);
+                profile.setTextColor(0xffffffff);
                 profile.setOnClickListener(new Button.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -127,6 +129,7 @@ public class MainActivity extends AppCompatActivity
 //                });
 
                 manual = (Button) findViewById(R.id.manual);
+                manual.setTextColor(0xffffffff);
                 manual.setOnClickListener(new Button.OnClickListener() {
                     @Override
                     public void onClick(View v) {

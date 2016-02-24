@@ -32,7 +32,7 @@ public class IndexActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
-
+        getWindow().setBackgroundDrawableResource(R.drawable.bg);
 
         myBrowser = (WebView) findViewById(R.id.loginview);
 

@@ -37,10 +37,11 @@ public class ManualActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_manual);
-            switch (StoryActivity.party) {
-                case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
-                default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
-            }
+            getWindow().setBackgroundDrawableResource(R.drawable.bg);
+//            switch (StoryActivity.party) {
+//                case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
+//                default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
+//            }
 
             String re = refresh();
             String classjson = classjson(re);
@@ -59,7 +60,7 @@ public class ManualActivity extends AppCompatActivity {
             try {
                 JSONArray jsonlists = new JSONArray(classjson);
                 int size = jsonlists.length();
-                for (int ii = 0; ii < size; ii++) {
+                for (int ii = 0; ii < size-1; ii++) {
                     classification = jsonlists.get(ii).toString();
                     switch (classification) {
                         case "專家":newname = "專家\n條件";break;
@@ -101,13 +102,6 @@ public class ManualActivity extends AppCompatActivity {
                         public View createTabContent(String tag) {
                             ListView listView01 = new ListView(ManualActivity.this);
                             listView01.setAdapter(adapter);
-//                            listView01.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                                @Override
-//                                public void onItemClick(AdapterView parent, View view, int position, long id) {
-//                                    Toast.makeText(getApplicationContext(), position, Toast.LENGTH_SHORT).show();
-//                                }
-//
-//                            });
 
                             return listView01;
                         }
@@ -327,37 +321,36 @@ public class ManualActivity extends AppCompatActivity {
 
         private ImageView logo;
         private TextView name;
-        private TextView list;
+        private String list;
         private String reqes;
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
             p = position;
             convertView = myInflater.inflate(R.layout.tab2xml, null);
-
+            convertView.setOnClickListener(new OnClick(p));
             logo = (ImageView) convertView.findViewById(R.id.imglogo);
             name = (TextView) convertView.findViewById(R.id.name);
-            list = (TextView) convertView.findViewById(R.id.description);
-
-
-//            View.setOnClickListener(new OnClick(position));
+//            list = (TextView) convertView.findViewById(R.id.description);
 
             String ans = "";
             if(k.get(position) != "") {
                 ans = k.get(position);
                 switch (ans) {
-                    case "0" : logo.setImageResource(R.drawable.newbie); break;
-                    default: logo.setImageResource(R.drawable.nccu);
+                    case "0" : logo.setImageResource(R.drawable.a1); break;
+                    default: logo.setImageResource(R.drawable.award);
                 }
             }
 
             name.setText(na.get(position));
-            list.setText(des.get(position));
+//            list.setText(des.get(position));
+            list = des.get(position);
             reqes = req.get(position);
 
-            logo.setOnClickListener(new OnClick(p));
-            name.setOnClickListener(new OnClick(p));
-            list.setOnClickListener(new OnClick(p));
+//            logo.setOnClickListener(new OnClick(p));
+//            name.setOnClickListener(new OnClick(p));
+//            list.setOnClickListener(new OnClick(p));
+
 //            logo.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -372,6 +365,7 @@ public class ManualActivity extends AppCompatActivity {
 //                    ad.show();
 //                }
 //            });
+            convertView.setOnClickListener(new OnClick(p));
             return convertView;
         }
 
@@ -385,7 +379,7 @@ public class ManualActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder ad = new AlertDialog.Builder(ManualActivity.this);
                 ad.setTitle("徽章成就-" + na.get(mPosition));
-                ad.setMessage("徽章描述：" + des.get(mPosition) + "\n\n所需條件：" + req.get(mPosition));
+                ad.setMessage("\n徽章描述：" + des.get(mPosition) + "\n所需條件：" + req.get(mPosition));
                 ad.setNegativeButton("觀看結束", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int i) {
                         return;

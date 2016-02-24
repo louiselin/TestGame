@@ -11,22 +11,27 @@
     tools:context="com.example.louise.test.MainActivity">
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/button_custom_main"
         android:text="開始遊戲"
+        android:textSize="20dp"
         android:id="@+id/playgame"
-        android:layout_marginTop="49dp"
-        android:layout_below="@+id/keeper"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/profile"
+        android:layout_alignLeft="@+id/profile"
+        android:layout_alignStart="@+id/profile"
+        android:layout_marginTop="28dp" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/button_custom_main"
         android:text="個人資料"
+        android:textSize="20dp"
         android:id="@+id/profile"
-        android:layout_alignTop="@+id/playgame"
-        android:layout_toLeftOf="@+id/playgame"
-        android:layout_toStartOf="@+id/playgame" />
+        android:layout_below="@+id/keeper"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,12 +43,15 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/button_custom_main"
         android:text="徽章成就"
+        android:textSize="20dp"
         android:id="@+id/manual"
-        android:layout_alignTop="@+id/playgame"
-        android:layout_toRightOf="@+id/playgame"
-        android:layout_toEndOf="@+id/playgame" />
+        android:layout_below="@+id/playgame"
+        android:layout_alignLeft="@+id/playgame"
+        android:layout_alignStart="@+id/playgame"
+        android:layout_marginTop="32dp" />
 
 </RelativeLayout>

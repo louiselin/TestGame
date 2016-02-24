@@ -12,19 +12,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/button_custom"
         android:id="@+id/first"
+        android:layout_marginTop="69dp"
+        android:text="遊戲登入"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="165dp"
-        android:text="遊戲登入" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="測試"
-        android:id="@+id/bartest"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -9,21 +9,35 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.louise.test.StoryActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Story"
-        android:id="@+id/story"
-        android:layout_marginTop="45dp"
-        android:layout_below="@+id/party"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="party"
+        android:background="@drawable/button_custom"
+        android:text="選擇陣營"
         android:id="@+id/party"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView2"
+        android:layout_below="@+id/party"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="32dp"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Story"
+            android:id="@+id/story"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="99dp" />
+    </ScrollView>
+
 </RelativeLayout>

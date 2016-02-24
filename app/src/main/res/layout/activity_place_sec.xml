@@ -23,18 +23,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="patrol"
+        android:background="@drawable/button_custom"
         android:id="@+id/patrol"
-        android:layout_alignTop="@+id/fight"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/patrolvalue"
+        android:layout_toStartOf="@+id/patrolvalue" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="belong"
         android:id="@+id/belong"
-        android:layout_marginTop="21dp"
-        android:layout_below="@+id/locationname"
+        android:layout_marginTop="29dp"
+        android:layout_below="@+id/placeimg"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -61,25 +62,29 @@
         android:layout_height="wrap_content"
         android:text="patrolvalue"
         android:id="@+id/patrolvalue"
-        android:layout_below="@+id/blood"
-        android:layout_marginTop="35dp" />
+        android:layout_above="@+id/patrol"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="fight"
+        android:background="@drawable/button_custom"
         android:id="@+id/fight"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignTop="@+id/patrol"
+        android:layout_toRightOf="@+id/patrolvalue"
+        android:layout_toEndOf="@+id/patrolvalue" />
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:adjustViewBounds="true"
+        android:maxHeight="200dp"
+        android:maxWidth="200dp"
         android:id="@+id/placeimg"
-        android:layout_alignTop="@+id/belong"
-        android:layout_alignRight="@+id/fight"
-        android:layout_alignEnd="@+id/fight" />
+        android:background="@drawable/image_border"
+        android:layout_below="@+id/locationname"
+        android:layout_marginTop="25dp" />
 
     <ProgressBar
         android:id="@+id/progressbar"
@@ -88,10 +93,12 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:indeterminate="false"
         android:layout_gravity="center_vertical"
-        android:maxWidth="100dp"
+        android:maxWidth="300dp"
         android:progress="100"
         android:progressDrawable="@drawable/black_progressbar"
-        android:layout_below="@+id/blood"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/blood"
+        android:layout_toLeftOf="@+id/locationname"
+        android:layout_toStartOf="@+id/locationname" />
 </RelativeLayout>
