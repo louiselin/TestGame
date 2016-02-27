@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">GamePlay</string>
-    <string name="title_activity_main">GamePlay</string>
+    <string name="title_activity_main">GeniusLoci</string>
     <string name="title_activity_index">Game</string>
     <string name="title_activity_maps">政大地圖</string>
     <string name="title_activity_placelist">地點清單</string>

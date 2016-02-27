@@ -2,8 +2,12 @@ package com.example.louise.test;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,17 +19,21 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -40,6 +48,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,12 +67,15 @@ public class PlaceSecActivity extends AppCompatActivity {
     private String name = "";
     private String username = "";
     private ProgressBar myProgressBar;
+    private MediaPlayer soundjump;
+    private MediaPlayer soundpunch;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-
+    private CheckBox donotshowagain;
+    public static final String PREFS_NAME = "place";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,15 +89,33 @@ public class PlaceSecActivity extends AppCompatActivity {
         Bundle bundle = this.getIntent().getExtras();
         placeid = bundle.getInt("placeid");
         placename = bundle.getString("placename");
+        LayoutInflater adbInflater = LayoutInflater.from(this);
+        View eulaLayout = adbInflater.inflate(R.layout.checkbox, null);
+        donotshowagain = (CheckBox) eulaLayout.findViewById(R.id.skip);
+
         AlertDialog.Builder ad = new AlertDialog.Builder(PlaceSecActivity.this);
+        ad.setView(eulaLayout);
         ad.setTitle("遊戲規則");
-        ad.setMessage("您點選的是" + placename + "\n\n選擇「巡邏」增加馬納值來守護石碑;但是當不幸石碑守護者是敵方的時候，以「淨化」掠取。\n\n開始吧！勇士！\n");
+        ad.setMessage("您點選的是" + placename + "\n\n選擇「巡邏」增加馬納值來守護石碑; 但是當不幸石碑守護者是敵方的時候，以「淨化」掠取。要注意哦！有秒數限制哦><\n\n開始吧！勇士！\n");
         ad.setNegativeButton("開始遊戲", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
+                String checkBoxResult = "NOT checked";
+                if (donotshowagain.isChecked())
+                    checkBoxResult = "checked";
+                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("skipMessage", checkBoxResult);
+                // Commit the edits!
+                editor.commit();
+
                 return;
             }
         });
-        ad.show();
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        String skipMessage = settings.getString("skipMessage", "NOT checked");
+        if (!skipMessage.equals("checked"))
+            ad.show();
+//        ad.show();
 
 
         String placejson = "";
@@ -212,14 +243,22 @@ public class PlaceSecActivity extends AppCompatActivity {
 
 
         final TextView myTextView6 = (TextView) findViewById(R.id.fight);
+        final MediaPlayer mp = new MediaPlayer();
         myTextView6.setText("淨化");
         myTextView6.setTextSize(20);
         myTextView6.setTextColor(Color.WHITE);
+        myTextView6.setSoundEffectsEnabled(true);
         myTextView6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 myTextView6.setTextColor(Color.RED);
+                Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+                vibrator.hasVibrator();
+                vibrator.vibrate(100);
+                soundpunch = MediaPlayer.create(PlaceSecActivity.this, R.raw.punch);
+                soundpunch.start();
+                soundpunch.seekTo(100);
 
                 String stelejson = "";
                 String stelename = "";
@@ -247,8 +286,9 @@ public class PlaceSecActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        Toast toast = Toast.makeText(PlaceSecActivity.this, att, Toast.LENGTH_SHORT);
-                        toast.show();
+//                        Toast toast = Toast.makeText(PlaceSecActivity.this, att, Toast.LENGTH_SHORT);
+//                        toast.show();
+                        if(!att.equals("")) myTextView6.setTextColor(Color.WHITE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -256,6 +296,7 @@ public class PlaceSecActivity extends AppCompatActivity {
 
             }
         });
+
 
         final TextView myTextView8 = (TextView) findViewById(R.id.patrol);
         myTextView8.setText("巡邏");
@@ -267,14 +308,30 @@ public class PlaceSecActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 myTextView8.setTextColor(Color.RED);
+
                 String re = "";
                 try {
                     re = Httpconnect.httpost2("http://140.119.163.40:8080/Spring08/app/checkinList/" + IndexActivity.userid, "id=0&placeid=" + placeid + "&longitude=121.2&latitude=223.5");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Toast toast2 = Toast.makeText(PlaceSecActivity.this, re, Toast.LENGTH_SHORT);
-                toast2.show();
+                Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+                vibrator.hasVibrator();
+                vibrator.vibrate(100);
+                if(re.equals("success")) {
+                    soundjump = MediaPlayer.create(PlaceSecActivity.this, R.raw.jump);
+                    soundjump.start();
+                    soundjump.seekTo(300);
+                } else {
+                    soundjump = MediaPlayer.create(PlaceSecActivity.this, R.raw.hax);
+                    soundjump.start();
+                    soundjump.seekTo(700);
+                }
+                if(!re.equals("success")) {
+                    Toast toast2 = Toast.makeText(PlaceSecActivity.this, re, Toast.LENGTH_SHORT);
+                    toast2.show();
+                }
+                if(re != "") myTextView8.setTextColor(Color.WHITE);
             }
         });
 

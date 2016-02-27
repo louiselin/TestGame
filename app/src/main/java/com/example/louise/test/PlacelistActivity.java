@@ -127,9 +127,9 @@ public class PlacelistActivity extends AppCompatActivity {
 
 
 
-            SpannableString content = new SpannableString(pname.get(position));
-            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-            placelistname.setText(content);
+//            SpannableString content = new SpannableString(pname.get(position));
+//            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            placelistname.setText("請選擇：" + pname.get(position));
 //            placelistname.setText(pname.get(position));
 //            placelistsign.setText(" ");
 //            placelistsign.setTextColor(Color.BLUE);

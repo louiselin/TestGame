@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.OperationApplicationException;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -18,6 +19,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -51,6 +55,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Location currentLocation;
     private Marker currentMarker, itemMarker;
 
+    private CheckBox donotshowagain;
+    public static final String PREFS_NAME = "map";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +81,33 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        LayoutInflater adbInflater = LayoutInflater.from(this);
+        View eulaLayout = adbInflater.inflate(R.layout.checkbox, null);
+        donotshowagain = (CheckBox) eulaLayout.findViewById(R.id.skip);
+
+        AlertDialog.Builder ad = new AlertDialog.Builder(MapsActivity.this);
+        ad.setView(eulaLayout);
+        ad.setTitle("攻塔攻略");
+        ad.setMessage("點選您要攻下的石碑地名字！進入石碑所在準備攻擊嘍！\n");
+        ad.setNegativeButton("開始探索", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int i) {
+                String checkBoxResult = "NOT checked";
+                if (donotshowagain.isChecked())
+                    checkBoxResult = "checked";
+                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("skipMessage", checkBoxResult);
+                // Commit the edits!
+                editor.commit();
+
+                return;
+            }
+        });
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        String skipMessage = settings.getString("skipMessage", "NOT checked");
+        if (!skipMessage.equals("checked"))
+            ad.show();
+
     }
 
 //private static final String TAG = MainActivity.class.getSimpleName();

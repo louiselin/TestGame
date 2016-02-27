@@ -6,6 +6,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -33,6 +35,8 @@ import java.util.List;
 
 public class ManualActivity extends AppCompatActivity {
 
+    private CheckBox donotshowagain;
+    public static final String PREFS_NAME = "manualgot";
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -112,6 +116,35 @@ public class ManualActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+
+            LayoutInflater adbInflater = LayoutInflater.from(this);
+            View eulaLayout = adbInflater.inflate(R.layout.checkbox, null);
+            donotshowagain = (CheckBox) eulaLayout.findViewById(R.id.skip);
+
+            AlertDialog.Builder ad = new AlertDialog.Builder(ManualActivity.this);
+            ad.setView(eulaLayout);
+            ad.setTitle("看看您的徽章");
+            ad.setMessage("請點選徽章分頁和您感興趣的徽章成就。\n\n快想想要如何獲得這些徽章條件吧！\n\n");
+            ad.setNegativeButton("看看我的徽章", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int i) {
+                    String checkBoxResult = "NOT checked";
+                    if (donotshowagain.isChecked())
+                        checkBoxResult = "checked";
+                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("skipMessage", checkBoxResult);
+                    // Commit the edits!
+                    editor.commit();
+
+                    return;
+                }
+            });
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            String skipMessage = settings.getString("skipMessage", "NOT checked");
+            if (!skipMessage.equals("checked"))
+                ad.show();
+//            ad.show();
         }
 
 
@@ -379,7 +412,10 @@ public class ManualActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder ad = new AlertDialog.Builder(ManualActivity.this);
                 ad.setTitle("徽章成就-" + na.get(mPosition));
-                ad.setMessage("\n徽章描述：" + des.get(mPosition) + "\n所需條件：" + req.get(mPosition));
+                ad.setMessage("\n徽章描述：" + des.get(mPosition)
+//                        + "\n所需條件：" + req.get(mPosition)
+                          + "\n\n"
+                );
                 ad.setNegativeButton("觀看結束", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int i) {
                         return;

@@ -37,6 +37,7 @@ public class StoryActivity extends AppCompatActivity {
         storybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 AlertDialog.Builder ad = new AlertDialog.Builder(StoryActivity.this);
                 ad.setTitle("決定好陣營了嗎？");
                 ad.setPositiveButton("席奈人", new DialogInterface.OnClickListener() {//退出按鈕

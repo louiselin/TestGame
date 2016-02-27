@@ -1,6 +1,8 @@
 package com.example.louise.test;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,5 +38,8 @@ public class FirstpageActivity extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
+
+
     }
+
 }

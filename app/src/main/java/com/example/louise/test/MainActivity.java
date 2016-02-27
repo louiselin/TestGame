@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void runStream() {
-        Toast.makeText(this, "Stream is running", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "Stream is running", Toast.LENGTH_LONG).show();
     }
 
     @Override
