@@ -256,9 +256,9 @@ public class PlaceSecActivity extends AppCompatActivity {
                 Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
                 vibrator.hasVibrator();
                 vibrator.vibrate(100);
-                soundpunch = MediaPlayer.create(PlaceSecActivity.this, R.raw.punch);
-                soundpunch.start();
-                soundpunch.seekTo(100);
+//                soundpunch = MediaPlayer.create(PlaceSecActivity.this, R.raw.punch);
+//                soundpunch.start();
+//                soundpunch.seekTo(100);
 
                 String stelejson = "";
                 String stelename = "";
@@ -285,9 +285,19 @@ public class PlaceSecActivity extends AppCompatActivity {
                         } catch (ProtocolException e) {
                             e.printStackTrace();
                         }
-
-//                        Toast toast = Toast.makeText(PlaceSecActivity.this, att, Toast.LENGTH_SHORT);
-//                        toast.show();
+                        final Toast toast = Toast.makeText(getApplicationContext(), "敵方生命值 -1", Toast.LENGTH_SHORT);
+                        toast.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toast.cancel();
+                            }
+                        }, 500);
+//                        if(att.equals("success")) {
+//                            Toast toast = Toast.makeText(PlaceSecActivity.this, "敵方生命值 -1", Toast.LENGTH_SHORT);
+//                            toast.show();
+//                        }
                         if(!att.equals("")) myTextView6.setTextColor(Color.WHITE);
                     }
                 } catch (Exception e) {
@@ -318,18 +328,35 @@ public class PlaceSecActivity extends AppCompatActivity {
                 Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
                 vibrator.hasVibrator();
                 vibrator.vibrate(100);
-                if(re.equals("success")) {
-                    soundjump = MediaPlayer.create(PlaceSecActivity.this, R.raw.jump);
-                    soundjump.start();
-                    soundjump.seekTo(300);
-                } else {
-                    soundjump = MediaPlayer.create(PlaceSecActivity.this, R.raw.hax);
-                    soundjump.start();
-                    soundjump.seekTo(700);
-                }
+//                if(re.equals("success")) {
+//                    soundjump = MediaPlayer.create(PlaceSecActivity.this, R.raw.jump);
+//                    soundjump.start();
+//                    soundjump.seekTo(300);
+//                } else {
+//                    soundjump = MediaPlayer.create(PlaceSecActivity.this, R.raw.hax);
+//                    soundjump.start();
+//                    soundjump.seekTo(700);
+//                }
                 if(!re.equals("success")) {
-                    Toast toast2 = Toast.makeText(PlaceSecActivity.this, re, Toast.LENGTH_SHORT);
+                    final Toast toast2 = Toast.makeText(PlaceSecActivity.this, re, Toast.LENGTH_SHORT);
                     toast2.show();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            toast2.cancel();
+                        }
+                    }, 500);
+                } else {
+                    final Toast t = Toast.makeText(PlaceSecActivity.this, "馬納值 +5", Toast.LENGTH_SHORT);
+                    t.show();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            t.cancel();
+                        }
+                    }, 500);
                 }
                 if(re != "") myTextView8.setTextColor(Color.WHITE);
             }
