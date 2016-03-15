@@ -2,6 +2,7 @@ package com.example.louise.test;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -96,7 +98,7 @@ public class PlaceSecActivity extends AppCompatActivity {
         AlertDialog.Builder ad = new AlertDialog.Builder(PlaceSecActivity.this);
         ad.setView(eulaLayout);
         ad.setTitle("遊戲規則");
-        ad.setMessage("您點選的是" + placename + "\n\n選擇「巡邏」增加馬納值來守護石碑; 但是當不幸石碑守護者是敵方的時候，以「淨化」掠取。要注意哦！有秒數限制哦><\n\n開始吧！勇士！\n");
+        ad.setMessage("您點選的是" + placename + "\n\n選擇「巡邏」增加馬納值來守護石碑; 當不幸石碑守護者是敵方的時候以「淨化」掠取，但是會減少馬納值。要注意有秒數限制哦！><\n\n開始吧！勇士！\n");
         ad.setNegativeButton("開始遊戲", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 String checkBoxResult = "NOT checked";
@@ -217,6 +219,7 @@ public class PlaceSecActivity extends AppCompatActivity {
         findViews();
 
         thirdImage.setImageDrawable(loadImageFromURL(image));
+        image = null;   // important!!
 
         String url = "http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid;
         String userjson = "";
@@ -264,6 +267,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                 String stelename = "";
                 String userjson = "";
                 String username = "";
+                String votes = "";
                 try {
                     stelejson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/stele/" + placeid);
                     userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid);
@@ -271,10 +275,18 @@ public class PlaceSecActivity extends AppCompatActivity {
                     JSONArray userlist = new JSONArray(userjson);
                     username = userlist.getJSONObject(0).getString("name");
                     stelename = stelelist.getJSONObject(0).getString("name");
+                    votes = userlist.getJSONObject(0).getString("votes");
 
-                    if (stelename.equals(username)) {
-                        Toast toast = Toast.makeText(PlaceSecActivity.this, "幹嘛打自己啦@@", Toast.LENGTH_SHORT);
+                    if (stelename.equals(username) || votes.equals("0")) {
+                        final Toast toast = Toast.makeText(PlaceSecActivity.this, "攻擊對象是自己或\n 已無馬納值哦QQ", Toast.LENGTH_SHORT);
                         toast.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toast.cancel();
+                            }
+                        }, 800);
                     } else {
                         String att = "";
                         String api = "";
@@ -285,7 +297,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                         } catch (ProtocolException e) {
                             e.printStackTrace();
                         }
-                        final Toast toast = Toast.makeText(getApplicationContext(), "敵方生命值 -1", Toast.LENGTH_SHORT);
+                        final Toast toast = Toast.makeText(PlaceSecActivity.this, "敵方生命值 -1", Toast.LENGTH_SHORT);
                         toast.show();
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
@@ -293,13 +305,10 @@ public class PlaceSecActivity extends AppCompatActivity {
                             public void run() {
                                 toast.cancel();
                             }
-                        }, 500);
-//                        if(att.equals("success")) {
-//                            Toast toast = Toast.makeText(PlaceSecActivity.this, "敵方生命值 -1", Toast.LENGTH_SHORT);
-//                            toast.show();
-//                        }
+                        }, 300);
                         if(!att.equals("")) myTextView6.setTextColor(Color.WHITE);
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -356,7 +365,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                         public void run() {
                             t.cancel();
                         }
-                    }, 500);
+                    }, 300);
                 }
                 if(re != "") myTextView8.setTextColor(Color.WHITE);
             }
@@ -472,9 +481,11 @@ public class PlaceSecActivity extends AppCompatActivity {
             default: {
                 if (StoryActivity.party == "Sinae") {
                     myProgressBar.setProgressDrawable(res.getDrawable(R.drawable.green_progressbar));
+//                    occupied();
                     break;
                 } else {
                     myProgressBar.setProgressDrawable(res.getDrawable(R.drawable.red_progressbar));
+//                    occupied();
                     break;
                 }
             }
@@ -542,5 +553,41 @@ public class PlaceSecActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void occupied() {
+        final Dialog dialog = new Dialog(PlaceSecActivity.this);
+
+        //setting custom layout to dialog
+        dialog.setContentView(R.layout.custom_dialog_layout);
+        dialog.setTitle("Custom Dialog");
+
+        //adding text dynamically
+        TextView txt = (TextView) dialog.findViewById(R.id.textView);
+        txt.setText("Put your dialog text here.");
+
+        ImageView image = (ImageView)dialog.findViewById(R.id.image);
+        image.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_dialog_info));
+
+        //adding button click event
+        Button dismissButton = (Button) dialog.findViewById(R.id.button);
+        dismissButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
     }
 }

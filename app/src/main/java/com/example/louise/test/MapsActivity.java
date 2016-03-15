@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
@@ -28,6 +29,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -242,14 +245,41 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (placelist.getJSONObject(i).getInt("mainid") == 0) {
                     Double latitudea = placelist.getJSONObject(i).getDouble("latitude");
                     Double longitude = placelist.getJSONObject(i).getDouble("longitude");
-                    LatLng po = new LatLng(latitudea, longitude);
+                    final LatLng po = new LatLng(latitudea, longitude);
                     options.position(po);
                     options.title(placelist.getJSONObject(i).getString("name"));
 //                    修改水滴的圖示
-//                    BitmapDescriptor icon =
-//                            BitmapDescriptorFactory.fromResource(R.drawable.newbie);
-//                    options.icon(icon);
-
+                    String stelejson = "";
+                    try {
+                        int id = placelist.getJSONObject(i).getInt("id");
+                        stelejson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/stele/" + id);
+                    } catch (ProtocolException e) {
+                        e.printStackTrace();
+                    }
+                    String camp = "";
+                    try {
+                        JSONArray stelelist = new JSONArray(stelejson);
+                        camp = stelelist.getJSONObject(0).getString("camp");
+                        if(camp.equals("玩家")) {
+                            switch (StoryActivity.party) {
+                                case "Sinae": {
+                                    BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.blueflag);
+                                    options.icon(icon);
+                                    break;
+                                }
+                                default: {
+                                    BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.redflag);
+                                    options.icon(icon);
+                                    break;
+                                }
+                            }
+                        } else {
+                            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.blackflag);
+                            options.icon(icon);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     mMap.addMarker(options);
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(po, 17));
                 }

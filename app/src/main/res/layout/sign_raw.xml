@@ -15,8 +15,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="地點"
-            android:gravity="center_horizontal"
             android:layout_marginTop="17dp"
+            android:layout_marginRight="30dp"
             android:textColor="#0000A0"
             android:textSize="20dp" />
 

@@ -42,81 +42,73 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
 
-//        switch (StoryActivity.party) {
-//            case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
-//            default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
-//        }
-//
-//        Toast toast = Toast.makeText(MainActivity.this, "Hello! " + IndexActivity.userid, Toast.LENGTH_SHORT);
-//        toast.show();
-//
-//        if(IndexActivity.userid != "" ) {
-//
+
+
 //            if(IndexActivity.userid != "35") {
-                String keepername = "";
-                String userjson = "";
-                try {
-                    userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid);
+            String keepername = "";
+            String userjson = "";
+            try {
+                userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid);
 
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
-                }
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            }
 
-                try {
-                    JSONArray userlist = new JSONArray(userjson);
-                    keepername = userlist.getJSONObject(0).getString("name");
+            try {
+                JSONArray userlist = new JSONArray(userjson);
+                keepername = userlist.getJSONObject(0).getString("name");
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
 
-                textView = (TextView) findViewById(R.id.keeper);
-                textView.setText("攻佔吧！" + keepername + " 爲 " + StoryActivity.party + " 戰鬥吧！");
-                textView.setTextSize(15);
-                textView.setTextColor(Color.BLACK);
+            textView = (TextView) findViewById(R.id.keeper);
+            textView.setText("攻佔吧！" + keepername + " 爲 " + StoryActivity.party + " 戰鬥吧！");
+            textView.setTextSize(15);
+            textView.setTextColor(Color.BLACK);
 
-                play = (Button) findViewById(R.id.playgame);
-                play.setTextColor(0xffffffff);
-                play.setOnClickListener(new Button.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int test = 0;
-                        if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
-                            // Marshmallow+
-                            test = runStreamWrapper();
+            play = (Button) findViewById(R.id.playgame);
+            play.setTextColor(0xffffffff);
+            play.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int test = 0;
+                    if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
+                        // Marshmallow+
+                        test = runStreamWrapper();
 //                            Toast toast = Toast.makeText(MainActivity.this, "API 23", Toast.LENGTH_SHORT);
 //                            toast.show();
 
-                        } else {
-                            // Pre-Marshmallow
-                            int version = Build.VERSION.SDK_INT;
-                            test = 1;
+                    } else {
+                        // Pre-Marshmallow
+                        int version = Build.VERSION.SDK_INT;
+                        test = 1;
 //                            Toast toast = Toast.makeText(MainActivity.this, "API " + version, Toast.LENGTH_SHORT);
 //                            toast.show();
-                            runStream();
-                            Intent intent = new Intent();
-                            intent.setClass(MainActivity.this, MapsActivity.class);
-                            startActivity(intent);
-                        }
+                        runStream();
+                        Intent intent = new Intent();
+                        intent.setClass(MainActivity.this, MapsActivity.class);
+                        startActivity(intent);
+                    }
 //                        if(test==10) {
 //                            Intent intent = new Intent();
 //                            intent.setClass(MainActivity.this, MapsActivity.class);
 //                            startActivity(intent);
 //                        }
-                    }
-                });
+                }
+            });
 
-                profile = (Button) findViewById(R.id.profile);
-                profile.setTextColor(0xffffffff);
-                profile.setOnClickListener(new Button.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent();
-                        intent.setClass(MainActivity.this, ProfileUpdateActivity.class);
-                        startActivity(intent);
-                    }
-                });
+            profile = (Button) findViewById(R.id.profile);
+            profile.setTextColor(0xffffffff);
+            profile.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, ProfileUpdateActivity.class);
+                    startActivity(intent);
+                }
+            });
 
 //                award = (Button) findViewById(R.id.award);
 //                award.setOnClickListener(new Button.OnClickListener() {
@@ -128,16 +120,16 @@ public class MainActivity extends AppCompatActivity
 //                    }
 //                });
 
-                manual = (Button) findViewById(R.id.manual);
-                manual.setTextColor(0xffffffff);
-                manual.setOnClickListener(new Button.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent();
-                        intent.setClass(MainActivity.this, ManualActivity.class);
-                        startActivity(intent);
-                    }
-                });
+            manual = (Button) findViewById(R.id.manual);
+            manual.setTextColor(0xffffffff);
+            manual.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, ManualActivity.class);
+                    startActivity(intent);
+                }
+            });
 
 //            }
 //        } else {
@@ -146,6 +138,7 @@ public class MainActivity extends AppCompatActivity
 //            finish();
 //            startActivity(intent);
 //        }
+
     }
 
     private static final String TAG = MainActivity.class.getSimpleName();

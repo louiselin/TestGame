@@ -71,9 +71,6 @@ public class IndexActivity extends AppCompatActivity {
                             intent.setClass(IndexActivity.this, IndexActivity.class);
                             IndexActivity.this.finish();
                             startActivity(intent);
-//                            AlertDialog.Builder dialog = new AlertDialog.Builder(IndexActivity.this);
-//                            dialog.setMessage("登入失敗，再試一次！");
-//                            dialog.show();
                             Toast toast = Toast.makeText(IndexActivity.this, "網路連線失敗，再試一次！", Toast.LENGTH_SHORT);
                             toast.show();
                         } else {
@@ -87,6 +84,10 @@ public class IndexActivity extends AppCompatActivity {
 
                     }
                 }
+                url2 = null;
+                favicon = null;
+                view.clearCache(true);
+
             }
 
 
@@ -94,7 +95,8 @@ public class IndexActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 // 通過內部類定義的方法獲取html頁面加載的內容，這個需要添加在webview加載完成後的回調中
                 // view.loadUrl("javascript:window.handler.show(document.body.innerHTML);");
-
+                url = null;
+                view.clearCache(true);
 
                 //view.loadUrl("javascript:window.handler.show('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
                 // super.onPageFinished(view, url);
