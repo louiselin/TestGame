@@ -3,21 +3,12 @@ package com.example.louise.test;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -32,8 +23,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -48,19 +37,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.ProtocolException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class PlaceSecActivity extends AppCompatActivity {
-
-    private ArrayAdapter listAdapter;
-    private List<String> listname = new ArrayList<String>();
-    private List<String> listcheck = new ArrayList<String>();
+public class Id10PrisionActivity extends AppCompatActivity {
     private Integer placeid;
     private String placename;
     private RatingBar ratingBar;
@@ -81,33 +61,29 @@ public class PlaceSecActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_place_sec);
-        Bundle bundle = this.getIntent().getExtras();
-        placeid = bundle.getInt("placeid");
-        placename = bundle.getString("placename");
-
-
+        setContentView(R.layout.activity_id10_prision);
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
-//        switch (StoryActivity.party) {
-//            case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
-//            default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
-//        }
+        Button waterprison = (Button) findViewById(R.id.waterprison);
+        waterprison.setTextSize(20);
+        waterprison.setTextColor(Color.WHITE);
+        waterprison.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(Id10PrisionActivity.this, PrisonActivity.class);
+                startActivity(intent);
+            }
+        });
 
-
-        if(placeid == 10) {
-            Intent intent = new Intent();
-            intent.setClass(PlaceSecActivity.this, Id10PrisionActivity.class);
-            finish();
-            startActivity(intent);
-        }
         LayoutInflater adbInflater = LayoutInflater.from(this);
         View eulaLayout = adbInflater.inflate(R.layout.checkbox, null);
         donotshowagain = (CheckBox) eulaLayout.findViewById(R.id.skip);
 
-        AlertDialog.Builder ad = new AlertDialog.Builder(PlaceSecActivity.this);
+
+        AlertDialog.Builder ad = new AlertDialog.Builder(Id10PrisionActivity.this);
         ad.setView(eulaLayout);
         ad.setTitle("遊戲規則");
-        ad.setMessage("您點選的是" + placename + "\n\n選擇「巡邏」增加馬納值來守護石碑; 當不幸石碑守護者是敵方的時候以「淨化」掠取，但是會減少馬納值。要注意有秒數限制哦！><\n\n開始吧！勇士！\n");
+        ad.setMessage("您點選的是" + "水岸電梯(水牢監獄)" + "\n\n選擇「巡邏」增加馬納值來守護石碑; 當不幸石碑守護者是敵方的時候以「淨化」掠取，但是會減少馬納值。要注意有秒數限制哦！><\n\n開始吧！勇士！\n");
         ad.setNegativeButton("開始遊戲", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 String checkBoxResult = "NOT checked";
@@ -128,7 +104,7 @@ public class PlaceSecActivity extends AppCompatActivity {
             ad.show();
 //        ad.show();
 
-
+        placeid = 10;
         String placejson = "";
         String imagejson = "";
         String stelejson = "";
@@ -160,13 +136,13 @@ public class PlaceSecActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-        TextView myTextView5 = (TextView) findViewById(R.id.locationname);
-        myTextView5.setText(placename);
+        String changename = "水岸電梯(水牢監獄)";
+        TextView myTextView5 = (TextView) findViewById(R.id.locationname10);
+        myTextView5.setText(changename);
         myTextView5.setTextSize(30);
         myTextView5.setTextColor(Color.BLACK);
 
-        TextView tv = (TextView) findViewById(R.id.belong);
+        TextView tv = (TextView) findViewById(R.id.belong10);
         switch (name) {
             case "Ruyen":
                 tv.setText("屬於:" + camp);
@@ -178,12 +154,12 @@ public class PlaceSecActivity extends AppCompatActivity {
         tv.setTextSize(15);
         tv.setTextColor(Color.BLACK);
 
-        TextView myTextView0 = (TextView) findViewById(R.id.lordname);
+        TextView myTextView0 = (TextView) findViewById(R.id.lordname10);
         myTextView0.setText("石碑守護者:" + name);
         myTextView0.setTextSize(15);
         myTextView0.setTextColor(Color.BLACK);
 
-        TextView myTextView1 = (TextView) findViewById(R.id.blood);
+        TextView myTextView1 = (TextView) findViewById(R.id.blood10);
         switch (name) {
             case "Ruyen":
                 myTextView1.setText("敵方的生命值:" + hp);
@@ -207,7 +183,7 @@ public class PlaceSecActivity extends AppCompatActivity {
 //        }
 //            Toast.makeText(PlaceSecActivity.this, String.valueOf((Float.parseFloat(hp))/5) + " " + name, Toast.LENGTH_SHORT).show();
 
-        myProgressBar = (ProgressBar) findViewById(R.id.progressbar);
+        myProgressBar = (ProgressBar) findViewById(R.id.progressbar10);
         myProgressBar.setProgress(Integer.parseInt(hp) * 5);
         Resources res = getResources();
         switch (name) {
@@ -250,11 +226,11 @@ public class PlaceSecActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        final TextView textview = (TextView) findViewById(R.id.patrolvalue);
+        final TextView textview = (TextView) findViewById(R.id.patrolvalue10);
         textview.setText("馬納值:" + votes);
 
 
-        final TextView myTextView6 = (TextView) findViewById(R.id.fight);
+        final TextView myTextView6 = (TextView) findViewById(R.id.fight10);
         final MediaPlayer mp = new MediaPlayer();
         myTextView6.setText("淨化");
         myTextView6.setTextSize(20);
@@ -288,7 +264,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                     votes = userlist.getJSONObject(0).getString("votes");
 
                     if (stelename.equals(username) || votes.equals("0")) {
-                        final Toast toast = Toast.makeText(PlaceSecActivity.this, "攻擊對象是自己或\n 已無馬納值哦QQ", Toast.LENGTH_SHORT);
+                        final Toast toast = Toast.makeText(Id10PrisionActivity.this, "攻擊對象是自己或\n 已無馬納值哦QQ", Toast.LENGTH_SHORT);
                         toast.show();
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
@@ -307,7 +283,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                         } catch (ProtocolException e) {
                             e.printStackTrace();
                         }
-                        final Toast toast = Toast.makeText(PlaceSecActivity.this, "敵方生命值 -1", Toast.LENGTH_SHORT);
+                        final Toast toast = Toast.makeText(Id10PrisionActivity.this, "敵方生命值 -1", Toast.LENGTH_SHORT);
                         toast.show();
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
@@ -327,7 +303,7 @@ public class PlaceSecActivity extends AppCompatActivity {
         });
 
 
-        final TextView myTextView8 = (TextView) findViewById(R.id.patrol);
+        final TextView myTextView8 = (TextView) findViewById(R.id.patrol10);
         myTextView8.setText("巡邏");
         myTextView8.setTextSize(20);
         myTextView8.setTextColor(Color.WHITE);
@@ -357,7 +333,7 @@ public class PlaceSecActivity extends AppCompatActivity {
 //                    soundjump.seekTo(700);
 //                }
                 if (!re.equals("success")) {
-                    final Toast toast2 = Toast.makeText(PlaceSecActivity.this, re, Toast.LENGTH_SHORT);
+                    final Toast toast2 = Toast.makeText(Id10PrisionActivity.this, re, Toast.LENGTH_SHORT);
                     toast2.show();
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -367,7 +343,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                         }
                     }, 500);
                 } else {
-                    final Toast t = Toast.makeText(PlaceSecActivity.this, "馬納值 +5", Toast.LENGTH_SHORT);
+                    final Toast t = Toast.makeText(Id10PrisionActivity.this, "馬納值 +5", Toast.LENGTH_SHORT);
                     t.show();
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -389,11 +365,11 @@ public class PlaceSecActivity extends AppCompatActivity {
     }
 
     private ImageView thirdImage;
-
     private void findViews() {
-        thirdImage = (ImageView) findViewById(R.id.placeimg);
+        thirdImage = (ImageView) findViewById(R.id.placeimg10);
 
     }
+
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private Drawable loadImageFromURL(String image) {
@@ -407,7 +383,6 @@ public class PlaceSecActivity extends AppCompatActivity {
             return null;
         }
     }
-
 
     private void refresh() {
         String placejson = "";
@@ -442,15 +417,15 @@ public class PlaceSecActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        TextView textview = (TextView) findViewById(R.id.patrolvalue);
+        TextView textview = (TextView) findViewById(R.id.patrolvalue10);
         textview.setText("馬納值:" + vote);
-
-        TextView myTextView5 = (TextView) findViewById(R.id.locationname);
-        myTextView5.setText(placename);
+        String changename = "水岸電梯(水牢監獄)";
+        TextView myTextView5 = (TextView) findViewById(R.id.locationname10);
+        myTextView5.setText(changename);
         myTextView5.setTextSize(30);
         myTextView5.setTextColor(Color.BLACK);
 
-        TextView tv = (TextView) findViewById(R.id.belong);
+        TextView tv = (TextView) findViewById(R.id.belong10);
         switch (name) {
             case "Ruyen":
                 tv.setText("屬於:" + camp);
@@ -462,12 +437,12 @@ public class PlaceSecActivity extends AppCompatActivity {
         tv.setTextSize(15);
         tv.setTextColor(Color.BLACK);
 
-        TextView myTextView0 = (TextView) findViewById(R.id.lordname);
+        TextView myTextView0 = (TextView) findViewById(R.id.lordname10);
         myTextView0.setText("石碑守護者:" + name);
         myTextView0.setTextSize(15);
         myTextView0.setTextColor(Color.BLACK);
 
-        TextView myTextView1 = (TextView) findViewById(R.id.blood);
+        TextView myTextView1 = (TextView) findViewById(R.id.blood10);
         switch (name) {
             case "Ruyen":
                 myTextView1.setText("敵方的生命值:" + hp);
@@ -480,7 +455,7 @@ public class PlaceSecActivity extends AppCompatActivity {
         myTextView1.setTextColor(Color.BLACK);
 
 
-        myProgressBar = (ProgressBar) findViewById(R.id.progressbar);
+        myProgressBar = (ProgressBar) findViewById(R.id.progressbar10);
         myProgressBar.setProgress(Integer.parseInt(hp) * 5);
         Resources res = getResources();
         switch (name) {
@@ -575,7 +550,7 @@ public class PlaceSecActivity extends AppCompatActivity {
     }
 
     public void occupied() {
-        final Dialog dialog = new Dialog(PlaceSecActivity.this);
+        final Dialog dialog = new Dialog(Id10PrisionActivity.this);
 
         //setting custom layout to dialog
         dialog.setContentView(R.layout.custom_dialog_layout);

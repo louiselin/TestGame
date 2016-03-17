@@ -154,7 +154,31 @@
             android:label="測試">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".FirstpageActivity"/>
+                android:value=".FirstpageActivity" />
+        </activity>
+        <activity
+            android:name=".CoinActivity"
+            android:label="獲得金幣"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".PrisonActivity"
+            android:label="水牢列表"
+            android:parentActivityName=".Id10PrisionActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Id10PrisionActivity" />
+        </activity>
+        <activity
+            android:name=".Id10PrisionActivity"
+            android:label="顯示地點"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
         </activity>
     </application>
 

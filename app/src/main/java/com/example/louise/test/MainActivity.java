@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity
     private Button play;
     private Button profile;
     private Button manual;
+    private Button getcoin;
+    private Button nccucontact;
+    private Button setting;
     private Button award;
     private TextView textView;
 
@@ -131,6 +134,22 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
+            getcoin = (Button) findViewById(R.id.getcoin);
+            getcoin.setTextColor(0xffffffff);
+            getcoin.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, CoinActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            nccucontact = (Button) findViewById(R.id.nccucontact);
+            nccucontact.setTextColor(0xffffffff);
+
+            setting = (Button) findViewById(R.id.setting);
+            setting.setTextColor(0xffffffff);
 //            }
 //        } else {
 //            Intent intent = new Intent();

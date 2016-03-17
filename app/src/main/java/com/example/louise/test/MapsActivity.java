@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,6 +32,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlay;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -282,6 +286,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                     mMap.addMarker(options);
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(po, 17));
+
+
+//                    if((int)mMap.getCameraPosition().zoom < 15) {
+//                        AlertDialog.Builder ad = new AlertDialog.Builder(MapsActivity.this);
+//                        ad.setTitle("誒誒誒誒！");
+//                        ad.setMessage("超過學校經緯度嘍～");
+//                        ad.setNegativeButton("確定", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int i) {
+//                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(po, 17));
+//                            }
+//                        });
+//                        ad.show();
+//                    }
+//                    Toast.makeText(getApplicationContext(), (int)mMap.getCameraPosition().zoom, Toast.LENGTH_SHORT).show();
+
+//                    LatLng whole = new LatLng(24.990738, 121.574921);
+//                    BitmapDescriptor image = BitmapDescriptorFactory.fromResource(R.drawable.bg);
+//                    GroundOverlay groundOverlay = mMap.addGroundOverlay(new GroundOverlayOptions().image(image).position(whole, 10000f, 10000f).transparency(0.9f));
+
+//                    RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.mapbg);
+//                    relativeLayout.getBackground().setAlpha(100);
                 }
 
             } catch (JSONException e) {
