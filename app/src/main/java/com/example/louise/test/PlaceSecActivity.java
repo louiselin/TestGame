@@ -87,6 +87,8 @@ public class PlaceSecActivity extends AppCompatActivity {
         placename = bundle.getString("placename");
 
 
+
+
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
 //        switch (StoryActivity.party) {
 //            case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
@@ -100,6 +102,8 @@ public class PlaceSecActivity extends AppCompatActivity {
             finish();
             startActivity(intent);
         }
+
+
         LayoutInflater adbInflater = LayoutInflater.from(this);
         View eulaLayout = adbInflater.inflate(R.layout.checkbox, null);
         donotshowagain = (CheckBox) eulaLayout.findViewById(R.id.skip);
@@ -107,6 +111,7 @@ public class PlaceSecActivity extends AppCompatActivity {
         AlertDialog.Builder ad = new AlertDialog.Builder(PlaceSecActivity.this);
         ad.setView(eulaLayout);
         ad.setTitle("遊戲規則");
+
         ad.setMessage("您點選的是" + placename + "\n\n選擇「巡邏」增加馬納值來守護石碑; 當不幸石碑守護者是敵方的時候以「淨化」掠取，但是會減少馬納值。要注意有秒數限制哦！><\n\n開始吧！勇士！\n");
         ad.setNegativeButton("開始遊戲", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
@@ -161,6 +166,9 @@ public class PlaceSecActivity extends AppCompatActivity {
         }
 
 
+        if(placename.equals("山上蔣公銅像")) {
+            placename = "黑馬蔣公";
+        }
         TextView myTextView5 = (TextView) findViewById(R.id.locationname);
         myTextView5.setText(placename);
         myTextView5.setTextSize(30);
@@ -432,6 +440,7 @@ public class PlaceSecActivity extends AppCompatActivity {
             JSONArray userlist = new JSONArray(userjson);
             JSONArray stelelist = new JSONArray(stelejson);
 
+
             placename = placelist.getJSONObject(0).getString("name");
             vote = userlist.getJSONObject(0).getInt("votes");
             hp = stelelist.getJSONObject(0).getString("hp");
@@ -444,7 +453,9 @@ public class PlaceSecActivity extends AppCompatActivity {
 
         TextView textview = (TextView) findViewById(R.id.patrolvalue);
         textview.setText("馬納值:" + vote);
-
+        if(placename.equals("山上蔣公銅像")) {
+            placename = "黑馬蔣公";
+        }
         TextView myTextView5 = (TextView) findViewById(R.id.locationname);
         myTextView5.setText(placename);
         myTextView5.setTextSize(30);

@@ -147,9 +147,25 @@ public class MainActivity extends AppCompatActivity
 
             nccucontact = (Button) findViewById(R.id.nccucontact);
             nccucontact.setTextColor(0xffffffff);
+            nccucontact.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, NCCUContactActivity.class);
+                    startActivity(intent);
+                }
+            });
 
             setting = (Button) findViewById(R.id.setting);
             setting.setTextColor(0xffffffff);
+            setting.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                }
+            });
 //            }
 //        } else {
 //            Intent intent = new Intent();
