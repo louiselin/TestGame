@@ -83,7 +83,7 @@ public class Id10PrisionActivity extends AppCompatActivity {
         AlertDialog.Builder ad = new AlertDialog.Builder(Id10PrisionActivity.this);
         ad.setView(eulaLayout);
         ad.setTitle("遊戲規則");
-        ad.setMessage("您點選的是" + "水岸電梯(水牢監獄)" + "\n\n選擇「巡邏」增加馬納值來守護石碑; 當不幸石碑守護者是敵方的時候以「淨化」掠取，但是會減少馬納值。要注意有秒數限制哦！><\n\n開始吧！勇士！\n");
+        ad.setMessage("您點選的是" + "水牢監獄(水岸電梯)" + "\n\n選擇「巡邏」增加馬納值來守護石碑; 當不幸石碑守護者是敵方的時候以「淨化」掠取，但是會減少馬納值。要注意有秒數限制哦！><\n\n開始吧！勇士！\n");
         ad.setNegativeButton("開始遊戲", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 String checkBoxResult = "NOT checked";
@@ -136,7 +136,7 @@ public class Id10PrisionActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String changename = "水岸電梯(水牢監獄)";
+        String changename = "水牢監獄(水岸電梯)";
         TextView myTextView5 = (TextView) findViewById(R.id.locationname10);
         myTextView5.setText(changename);
         myTextView5.setTextSize(30);
@@ -230,77 +230,77 @@ public class Id10PrisionActivity extends AppCompatActivity {
         textview.setText("馬納值:" + votes);
 
 
-        final TextView myTextView6 = (TextView) findViewById(R.id.fight10);
-        final MediaPlayer mp = new MediaPlayer();
-        myTextView6.setText("淨化");
-        myTextView6.setTextSize(20);
-        myTextView6.setTextColor(Color.WHITE);
-        myTextView6.setSoundEffectsEnabled(true);
-
-        myTextView6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                myTextView6.setTextColor(Color.RED);
-//                Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-//                vibrator.hasVibrator();
-//                vibrator.vibrate(100);
-//                soundpunch = MediaPlayer.create(PlaceSecActivity.this, R.raw.punch);
-//                soundpunch.start();
-//                soundpunch.seekTo(100);
-
-                String stelejson = "";
-                String stelename = "";
-                String userjson = "";
-                String username = "";
-                String votes = "";
-                try {
-                    stelejson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/stele/" + placeid);
-                    userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid);
-                    JSONArray stelelist = new JSONArray(stelejson);
-                    JSONArray userlist = new JSONArray(userjson);
-                    username = userlist.getJSONObject(0).getString("name");
-                    stelename = stelelist.getJSONObject(0).getString("name");
-                    votes = userlist.getJSONObject(0).getString("votes");
-
-                    if (stelename.equals(username) || votes.equals("0")) {
-                        final Toast toast = Toast.makeText(Id10PrisionActivity.this, "攻擊對象是自己或\n 已無馬納值哦QQ", Toast.LENGTH_SHORT);
-                        toast.show();
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                toast.cancel();
-                            }
-                        }, 800);
-                    } else {
-                        String att = "";
-                        String api = "";
-                        try {
-                            api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + IndexActivity.userid;
-                            att = Httpconnect.httpget(api);
-
-                        } catch (ProtocolException e) {
-                            e.printStackTrace();
-                        }
-                        final Toast toast = Toast.makeText(Id10PrisionActivity.this, "敵方生命值 -1", Toast.LENGTH_SHORT);
-                        toast.show();
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                toast.cancel();
-                            }
-                        }, 300);
-                        if (!att.equals("")) myTextView6.setTextColor(Color.WHITE);
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
+//        final TextView myTextView6 = (TextView) findViewById(R.id.fight10);
+//        final MediaPlayer mp = new MediaPlayer();
+//        myTextView6.setText("淨化");
+//        myTextView6.setTextSize(20);
+//        myTextView6.setTextColor(Color.WHITE);
+//        myTextView6.setSoundEffectsEnabled(true);
+//
+//        myTextView6.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // TODO Auto-generated method stub
+//                myTextView6.setTextColor(Color.RED);
+////                Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+////                vibrator.hasVibrator();
+////                vibrator.vibrate(100);
+////                soundpunch = MediaPlayer.create(PlaceSecActivity.this, R.raw.punch);
+////                soundpunch.start();
+////                soundpunch.seekTo(100);
+//
+//                String stelejson = "";
+//                String stelename = "";
+//                String userjson = "";
+//                String username = "";
+//                String votes = "";
+//                try {
+//                    stelejson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/stele/" + placeid);
+//                    userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid);
+//                    JSONArray stelelist = new JSONArray(stelejson);
+//                    JSONArray userlist = new JSONArray(userjson);
+//                    username = userlist.getJSONObject(0).getString("name");
+//                    stelename = stelelist.getJSONObject(0).getString("name");
+//                    votes = userlist.getJSONObject(0).getString("votes");
+//
+//                    if (stelename.equals(username) || votes.equals("0")) {
+//                        final Toast toast = Toast.makeText(Id10PrisionActivity.this, "攻擊對象是自己或\n 已無馬納值哦QQ", Toast.LENGTH_SHORT);
+//                        toast.show();
+//                        Handler handler = new Handler();
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                toast.cancel();
+//                            }
+//                        }, 800);
+//                    } else {
+//                        String att = "";
+//                        String api = "";
+//                        try {
+//                            api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + IndexActivity.userid;
+//                            att = Httpconnect.httpget(api);
+//
+//                        } catch (ProtocolException e) {
+//                            e.printStackTrace();
+//                        }
+//                        final Toast toast = Toast.makeText(Id10PrisionActivity.this, "敵方生命值 -1", Toast.LENGTH_SHORT);
+//                        toast.show();
+//                        Handler handler = new Handler();
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                toast.cancel();
+//                            }
+//                        }, 300);
+//                        if (!att.equals("")) myTextView6.setTextColor(Color.WHITE);
+//                    }
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        });
 
 
         final TextView myTextView8 = (TextView) findViewById(R.id.patrol10);
@@ -419,7 +419,7 @@ public class Id10PrisionActivity extends AppCompatActivity {
 
         TextView textview = (TextView) findViewById(R.id.patrolvalue10);
         textview.setText("馬納值:" + vote);
-        String changename = "水岸電梯(水牢監獄)";
+        String changename = "水牢監獄(水岸電梯)";
         TextView myTextView5 = (TextView) findViewById(R.id.locationname10);
         myTextView5.setText(changename);
         myTextView5.setTextSize(30);

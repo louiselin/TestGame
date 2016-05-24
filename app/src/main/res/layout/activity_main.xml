@@ -11,81 +11,84 @@
     tools:context="com.example.louise.test.MainActivity">
 
     <Button
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:background="@drawable/button_custom_main"
         android:text="開始遊戲"
         android:textSize="20dp"
-        android:id="@+id/playgame"
-        android:layout_below="@+id/profile"
-        android:layout_alignLeft="@+id/profile"
-        android:layout_alignStart="@+id/profile"/>
+        android:id="@+id/playgame" />
 
     <Button
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:background="@drawable/button_custom_main"
         android:text="個人資料"
         android:textSize="20dp"
         android:id="@+id/profile"
-        android:layout_marginTop="29dp"
-        android:layout_below="@+id/keeper"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/playgame"
+        android:layout_alignStart="@+id/playgame" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello!"
-        android:id="@+id/keeper"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Hello!"-->
+        <!--android:id="@+id/keeper"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true" />-->
 
     <Button
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:background="@drawable/button_custom_main"
         android:text="徽章成就"
         android:textSize="20dp"
         android:id="@+id/manual"
-        android:layout_below="@+id/playgame"
-        android:layout_alignLeft="@+id/playgame"
-        android:layout_alignStart="@+id/playgame"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/profile"
+        android:layout_alignStart="@+id/profile" />
 
     <Button
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:background="@drawable/button_custom_main"
-        android:text="政大通訊"
-        android:textSize="20dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/button_press_main"
+        android:text="政大通訊\n(尚未開通)"
+        android:textSize="16dp"
         android:id="@+id/nccucontact"
-        android:layout_above="@+id/getcoin"
-        android:layout_toRightOf="@+id/playgame"
-        android:layout_toEndOf="@+id/playgame"
-        android:layout_marginLeft="53dp"
-        android:layout_marginStart="53dp" />
+        android:layout_alignTop="@+id/manual"
+        android:layout_alignLeft="@+id/setting"
+        android:layout_alignStart="@+id/setting" />
 
     <Button
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:background="@drawable/button_custom_main"
         android:text="獲得金幣"
         android:textSize="20dp"
         android:id="@+id/getcoin"
         android:layout_alignTop="@+id/playgame"
-        android:layout_alignLeft="@+id/nccucontact"
-        android:layout_alignStart="@+id/nccucontact" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:background="@drawable/button_custom_main"
-        android:text="遊戲設定"
+        android:text="故事背景"
         android:textSize="20dp"
         android:id="@+id/setting"
-        android:layout_alignTop="@+id/manual"
+        android:layout_alignTop="@+id/profile"
         android:layout_alignLeft="@+id/getcoin"
         android:layout_alignStart="@+id/getcoin" />
+
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/setting_icon"
+        android:background="@drawable/setting_story"
+        android:layout_alignBottom="@+id/nccucontact"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

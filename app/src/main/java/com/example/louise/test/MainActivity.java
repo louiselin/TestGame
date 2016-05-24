@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,11 +67,21 @@ public class MainActivity extends AppCompatActivity
             }
 
 
-            textView = (TextView) findViewById(R.id.keeper);
-            textView.setText("攻佔吧！" + keepername + " 爲 " + StoryActivity.party + " 戰鬥吧！");
-            textView.setTextSize(15);
-            textView.setTextColor(Color.BLACK);
+//            textView = (TextView) findViewById(R.id.keeper);
+//            textView.setText("攻佔吧！" + keepername + " 爲 " + StoryActivity.party + " 戰鬥吧！");
+//            textView.setTextSize(15);
+//            textView.setTextColor(Color.BLACK);
 
+
+            ImageButton ib = (ImageButton) findViewById(R.id.setting_icon);
+            ib.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                }
+            });
             play = (Button) findViewById(R.id.playgame);
             play.setTextColor(0xffffffff);
             play.setOnClickListener(new Button.OnClickListener() {
@@ -140,29 +151,32 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent();
-                    intent.setClass(MainActivity.this, CoinActivity.class);
+                    intent.setClass(MainActivity.this, CoinListActivity.class);
                     startActivity(intent);
                 }
             });
 
             nccucontact = (Button) findViewById(R.id.nccucontact);
-            nccucontact.setTextColor(0xffffffff);
-            nccucontact.setOnClickListener(new Button.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.setClass(MainActivity.this, NCCUContactActivity.class);
-                    startActivity(intent);
-                }
-            });
+            nccucontact.setTextColor(0xffB6B6B4);
+            nccucontact.setEnabled(false);
 
+//            nccucontact.setOnClickListener(new Button.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent();
+//                    intent.setClass(MainActivity.this, NCCUContactActivity.class);
+//                    startActivity(intent);
+//                }
+//            });
+
+//        change to put story in this button now !!!!!
             setting = (Button) findViewById(R.id.setting);
             setting.setTextColor(0xffffffff);
             setting.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent();
-                    intent.setClass(MainActivity.this, SettingActivity.class);
+                    intent.setClass(MainActivity.this, StoryOnlyActivity.class);
                     startActivity(intent);
                 }
             });

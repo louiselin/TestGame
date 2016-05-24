@@ -10,15 +10,19 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class StoryActivity extends AppCompatActivity {
 
     private String story = "";
     public static String party = "";
+    private ImageView party_s;
+    private ImageView party_a;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,34 +38,80 @@ public class StoryActivity extends AppCompatActivity {
             textstory.setTextSize(18);
             System.gc();
 
-            Button storybtn = (Button) findViewById(R.id.party);
-            storybtn.setTextColor(0xffffffff);
-            storybtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    AlertDialog.Builder ad = new AlertDialog.Builder(StoryActivity.this);
-                    ad.setTitle("決定好陣營了嗎？");
-                    ad.setPositiveButton("席奈人", new DialogInterface.OnClickListener() {//退出按鈕
-                        public void onClick(DialogInterface dialog, int i) {
-                            // TODO Auto-generated method stub
-                            party = "Sinae";
-                            Intent intent = new Intent();
-                            intent.setClass(StoryActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-                    ad.setNegativeButton("安塔雅人", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int i) {
-                            party = "Antayen";
-                            Intent intent = new Intent();
-                            intent.setClass(StoryActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-                    ad.show();
-                }
-            });
+        party_a = (ImageView) findViewById(R.id.party_a);
+        party_a.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder ad = new AlertDialog.Builder(StoryActivity.this);
+                ad.setTitle("決定好陣營了嗎?");
+                ad.setPositiveButton("我要當安塔雅人^^", new DialogInterface.OnClickListener() {//退出按鈕
+                    public void onClick(DialogInterface dialog, int i) {
+                        // TODO Auto-generated method stub
+                        party = "Antayen";
+                        Intent intent = new Intent();
+                        intent.setClass(StoryActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                ad.setNegativeButton("不要啦我要換><", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int i) {
+                        return;
+                    }
+                });
+                ad.show();
+            }
+        });
+        party_s = (ImageView) findViewById(R.id.party_s);
+        party_s.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder ad = new AlertDialog.Builder(StoryActivity.this);
+                ad.setTitle("決定好陣營了嗎?");
+                ad.setPositiveButton("我要當席奈人^^", new DialogInterface.OnClickListener() {//退出按鈕
+                    public void onClick(DialogInterface dialog, int i) {
+                        // TODO Auto-generated method stub
+                        party = "Sinae";
+                        Intent intent = new Intent();
+                        intent.setClass(StoryActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                ad.setNegativeButton("不要啦我要換><", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int i) {
+                        return;
+                    }
+                });
+                ad.show();
+            }
+        });
+//            Button storybtn = (Button) findViewById(R.id.party);
+//            storybtn.setTextColor(0xffffffff);
+//            storybtn.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                    AlertDialog.Builder ad = new AlertDialog.Builder(StoryActivity.this);
+//                    ad.setTitle("決定好陣營了嗎？");
+//                    ad.setPositiveButton("席奈人", new DialogInterface.OnClickListener() {//退出按鈕
+//                        public void onClick(DialogInterface dialog, int i) {
+//                            // TODO Auto-generated method stub
+//                            party = "Sinae";
+//                            Intent intent = new Intent();
+//                            intent.setClass(StoryActivity.this, MainActivity.class);
+//                            startActivity(intent);
+//                        }
+//                    });
+//                    ad.setNegativeButton("安塔雅人", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int i) {
+//                            party = "Antayen";
+//                            Intent intent = new Intent();
+//                            intent.setClass(StoryActivity.this, MainActivity.class);
+//                            startActivity(intent);
+//                        }
+//                    });
+//                    ad.show();
+//                }
+//            });
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {//捕捉返回鍵

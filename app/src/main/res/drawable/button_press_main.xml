@@ -16,7 +16,9 @@
             <padding
                 android:left="15dp"
                 android:right="15dp" />
-            <stroke android:width="5px" android:color="#3B3131" />
+            <stroke
+                android:width="5px"
+                android:color="#837E7C" />
         </shape>
     </item>
 </layer-list>

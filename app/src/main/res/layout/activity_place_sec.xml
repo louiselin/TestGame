@@ -99,4 +99,24 @@
         android:layout_below="@+id/blood"
         android:layout_toLeftOf="@+id/locationname"
         android:layout_toStartOf="@+id/locationname" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/weapon"
+        android:maxHeight="80dp"
+        android:maxWidth="80dp"
+        android:layout_alignTop="@+id/belong"
+        android:layout_toRightOf="@+id/patrolvalue"
+        android:layout_toEndOf="@+id/patrolvalue" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=">本日隨機武器&lt;"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/placeimg"
+        android:layout_toRightOf="@+id/patrolvalue"
+        android:layout_toEndOf="@+id/patrolvalue" />
 </RelativeLayout>

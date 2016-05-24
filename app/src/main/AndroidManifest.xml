@@ -144,7 +144,7 @@
         <activity android:name=".Tab4" />
         <activity
             android:name=".StoryActivity"
-            android:label="@string/title_activity_story">
+            android:label="選擇陣營">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".IndexActivity" />
@@ -159,10 +159,10 @@
         <activity
             android:name=".CoinActivity"
             android:label="獲得金幣"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".CoinListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".CoinListActivity" />
         </activity>
         <activity
             android:name=".PrisonActivity"
@@ -181,9 +181,9 @@
                 android:value=".MapsActivity" />
         </activity>
         <activity
+            android:name=".NCCUContactActivity"
             android:label="政大通訊"
-            android:parentActivityName=".MainActivity"
-            android:name=".NCCUContactActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -195,6 +195,23 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".StoryOnlyActivity"
+            android:label="故事背景"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".CoinListActivity"
+            android:label="@string/title_activity_coin_list"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+
         </activity>
     </application>
 

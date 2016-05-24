@@ -54,7 +54,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 public class PlaceSecActivity extends AppCompatActivity {
 
@@ -71,6 +73,9 @@ public class PlaceSecActivity extends AppCompatActivity {
     private ProgressBar myProgressBar;
     private MediaPlayer soundjump;
     private MediaPlayer soundpunch;
+    private ImageView weapon;
+    private List<Integer> weaponlist = new ArrayList<>();
+    private int randomInt;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -112,7 +117,7 @@ public class PlaceSecActivity extends AppCompatActivity {
         ad.setView(eulaLayout);
         ad.setTitle("遊戲規則");
 
-        ad.setMessage("您點選的是" + placename + "\n\n選擇「巡邏」增加馬納值來守護石碑; 當不幸石碑守護者是敵方的時候以「淨化」掠取，但是會減少馬納值。要注意有秒數限制哦！><\n\n開始吧！勇士！\n");
+        ad.setMessage("您點選的是" + "黑馬蔣公" + "\n\n選擇「巡邏」增加馬納值來守護石碑; 當不幸石碑守護者是敵方的時候以「淨化」掠取，但是會減少馬納值。要注意有秒數限制哦！><\n\n開始吧！勇士！\n");
         ad.setNegativeButton("開始遊戲", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 String checkBoxResult = "NOT checked";
@@ -260,6 +265,16 @@ public class PlaceSecActivity extends AppCompatActivity {
 
         final TextView textview = (TextView) findViewById(R.id.patrolvalue);
         textview.setText("馬納值:" + votes);
+
+        // weapon here
+        weapon = (ImageView) findViewById(R.id.weapon);
+        weaponlist.add(R.drawable.weapon1);
+        weaponlist.add(R.drawable.weapon2);
+        weaponlist.add(R.drawable.weapon3);
+
+        Random random = new Random();
+        randomInt = random.nextInt(weaponlist.size());
+        weapon.setImageResource(weaponlist.get(randomInt));
 
 
         final TextView myTextView6 = (TextView) findViewById(R.id.fight);

@@ -63,6 +63,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private int check = 0;
     private Location currentLocation;
     private Marker currentMarker, itemMarker;
+    private LatLng nccu = new LatLng(24.987155, 121.573579);
 
     private CheckBox donotshowagain;
     public static final String PREFS_NAME = "map";
@@ -250,41 +251,42 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 if (placelist.getJSONObject(i).getInt("mainid") == 0) {
 
-//                    Double latitudea = placelist.getJSONObject(i).getDouble("latitude");
-//                    Double longitude = placelist.getJSONObject(i).getDouble("longitude");
+                    Double latitude = placelist.getJSONObject(i).getDouble("latitude");
+                    Double longitude = placelist.getJSONObject(i).getDouble("longitude");
 
-                    Double maxlat = 24.988155;
-                    Double minlat = 24.983055;
-                    Double maxlon = 121.577579;
-                    Double minlon = 121.573079;
-                    Double resultlat = 0.0;
-                    Double resultlon = 0.0;
-                    Random random = new Random();
-                    for(int ii =0; ii < 1; ii++) {
-                        resultlat = minlat + random.nextDouble() * (maxlat - minlat);
-                        resultlat = ((int) (resultlat * 1000000)) / 1000000.0;
-                    }
-                    for(int ii =0; ii < 1; ii++) {
-                        resultlon = minlon + random.nextDouble() * (maxlon - minlon);
-                        resultlon = ((int) (resultlon * 1000000)) / 1000000.0;
-                    }
-
-                    List<Double> latitude = new ArrayList<>();
-                    latitude.add(placelist.getJSONObject(i).getDouble("latitude"));
-                    latitude.add(resultlat);
-
-                    List<Double> longitude = new ArrayList<>();
-                    longitude.add(placelist.getJSONObject(i).getDouble("longitude"));
-                    longitude.add(resultlon);
-
+//                    Double maxlat = 24.988155;
+//                    Double minlat = 24.983055;
+//                    Double maxlon = 121.577579;
+//                    Double minlon = 121.573079;
+//                    Double resultlat = 0.0;
+//                    Double resultlon = 0.0;
+//                    Random random = new Random();
+//                    for(int ii =0; ii < 1; ii++) {
+//                        resultlat = minlat + random.nextDouble() * (maxlat - minlat);
+//                        resultlat = ((int) (resultlat * 1000000)) / 1000000.0;
+//                    }
+//                    for(int ii =0; ii < 1; ii++) {
+//                        resultlon = minlon + random.nextDouble() * (maxlon - minlon);
+//                        resultlon = ((int) (resultlon * 1000000)) / 1000000.0;
+//                    }
+//
+//                    List<Double> latitude = new ArrayList<>();
+//                    latitude.add(placelist.getJSONObject(i).getDouble("latitude"));
+//                    latitude.add(resultlat);
+//
+//                    List<Double> longitude = new ArrayList<>();
+//                    longitude.add(placelist.getJSONObject(i).getDouble("longitude"));
+//                    longitude.add(resultlon);
+//
 //                    Toast.makeText(getApplicationContext(), resultlat.toString() + ", " + resultlon.toString(), Toast.LENGTH_SHORT).show();
-                    int ss = latitude.size();
-                    for (int l = 0; l < ss; l++) {
+//                    int ss = latitude.size();
+//                    for (int l = 0; l < ss; l++) {
 
 
                         final LatLng po;
-                        if (latitude.get(l).equals(placelist.optJSONObject(i).getDouble("latitude")) && longitude.get(l).equals(placelist.getJSONObject(i).getDouble("longitude"))) {
-                            po = new LatLng(latitude.get(0), longitude.get(0));
+//                        if (latitude.get(l).equals(placelist.optJSONObject(i).getDouble("latitude")) && longitude.get(l).equals(placelist.getJSONObject(i).getDouble("longitude"))) {
+//                            po = new LatLng(latitude.get(0), longitude.get(0));
+                        po = new LatLng(latitude, longitude);
 //                        Toast.makeText(getApplicationContext(), po.toString(), Toast.LENGTH_SHORT).show();
                             options.position(po);
                             options.title(placelist.getJSONObject(i).getString("name"));
@@ -320,22 +322,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                        } else {
-                            po = new LatLng(latitude.get(1), longitude.get(1));
-//                            Toast.makeText(getApplicationContext(), po.toString(), Toast.LENGTH_SHORT).show();
-                            options.position(po);
-                            options.title("");
-                            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.coin);
-                            options.icon(icon);
-                        }
+
+//                        } else {
+//                            po = new LatLng(latitude.get(1), longitude.get(1));
+////                            Toast.makeText(getApplicationContext(), po.toString(), Toast.LENGTH_SHORT).show();
+//                            options.position(po);
+//                            options.title("");
+//                            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.coin);
+//                            options.icon(icon);
+//                        }
 //                    LatLng pocoin = new LatLng(24.9871552, 121.57357);
 //                    options.position(pocoin);
 //                    BitmapDescriptor coin_icon = BitmapDescriptorFactory.fromResource(R.drawable.coin);
 //                    options.icon(coin_icon);
 
                         mMap.addMarker(options);
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(po, 17));
-                    }
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(nccu, 17));
+//                    }
 
 //                    if((int)mMap.getCameraPosition().zoom < 15) {
 //                        AlertDialog.Builder ad = new AlertDialog.Builder(MapsActivity.this);
