@@ -175,10 +175,10 @@
         <activity
             android:name=".Id10PrisionActivity"
             android:label="顯示地點"
-            android:parentActivityName=".MapsActivity">
+            android:parentActivityName=".PlacelistActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MapsActivity" />
+                android:value=".PlacelistActivity" />
         </activity>
         <activity
             android:name=".NCCUContactActivity"

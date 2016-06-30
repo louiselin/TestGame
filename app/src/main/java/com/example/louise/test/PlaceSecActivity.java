@@ -31,6 +31,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -100,13 +101,14 @@ public class PlaceSecActivity extends AppCompatActivity {
 //            default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
 //        }
 
-
+        // id = 10
         if(placeid == 10) {
             Intent intent = new Intent();
             intent.setClass(PlaceSecActivity.this, Id10PrisionActivity.class);
             finish();
             startActivity(intent);
         }
+
 
 
         LayoutInflater adbInflater = LayoutInflater.from(this);
@@ -117,7 +119,7 @@ public class PlaceSecActivity extends AppCompatActivity {
         ad.setView(eulaLayout);
         ad.setTitle("遊戲規則");
 
-        ad.setMessage("您點選的是" + "黑馬蔣公" + "\n\n選擇「巡邏」增加馬納值來守護石碑; 當不幸石碑守護者是敵方的時候以「淨化」掠取，但是會減少馬納值。要注意有秒數限制哦！><\n\n開始吧！勇士！\n");
+        ad.setMessage("您點選的是" + placename + "\n\n選擇「巡邏」增加馬納值來守護石碑; 當不幸石碑守護者是敵方的時候以「淨化」掠取，但是會減少馬納值。要注意有秒數限制哦！><\n\n開始吧！勇士！\n");
         ad.setNegativeButton("開始遊戲", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 String checkBoxResult = "NOT checked";
@@ -275,6 +277,43 @@ public class PlaceSecActivity extends AppCompatActivity {
         Random random = new Random();
         randomInt = random.nextInt(weaponlist.size());
         weapon.setImageResource(weaponlist.get(randomInt));
+        weapon.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        switch (randomInt) {
+                            case 1:
+                                weapon.setImageResource(0);
+                                weapon.setImageResource(R.drawable.weapon2);
+                                weapon.setRotation(30);
+
+                                break;
+                            case 2:
+                                weapon.setImageResource(0);
+                                weapon.setImageResource(R.drawable.weapon3);
+                                weapon.setRotation(30);
+                                break;
+                            default:
+                                weapon.setImageResource(0);
+                                weapon.setImageResource(R.drawable.weapon1);
+                                weapon.setRotation(30);
+                                break;
+                        }
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:{
+                        weapon.setImageResource(0);
+                        weapon.setImageResource(weaponlist.get(randomInt));
+                        weapon.setRotation(0);
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
+
 
 
         final TextView myTextView6 = (TextView) findViewById(R.id.fight);
@@ -600,29 +639,29 @@ public class PlaceSecActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    public void occupied() {
-        final Dialog dialog = new Dialog(PlaceSecActivity.this);
-
-        //setting custom layout to dialog
-        dialog.setContentView(R.layout.custom_dialog_layout);
-        dialog.setTitle("Custom Dialog");
-
-        //adding text dynamically
-        TextView txt = (TextView) dialog.findViewById(R.id.textView);
-        txt.setText("Put your dialog text here.");
-
-        ImageView image = (ImageView)dialog.findViewById(R.id.image);
-        image.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_dialog_info));
-
-        //adding button click event
-        Button dismissButton = (Button) dialog.findViewById(R.id.button);
-        dismissButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-
-    }
+//    public void occupied() {
+//        final Dialog dialog = new Dialog(PlaceSecActivity.this);
+//
+//        //setting custom layout to dialog
+//        dialog.setContentView(R.layout.custom_dialog_layout);
+//        dialog.setTitle("Custom Dialog");
+//
+//        //adding text dynamically
+//        TextView txt = (TextView) dialog.findViewById(R.id.textView);
+//        txt.setText("Put your dialog text here.");
+//
+//        ImageView image = (ImageView)dialog.findViewById(R.id.image);
+//        image.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_dialog_info));
+//
+//        //adding button click event
+//        Button dismissButton = (Button) dialog.findViewById(R.id.button);
+//        dismissButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//        dialog.show();
+//
+//    }
 }

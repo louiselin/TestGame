@@ -136,7 +136,7 @@ public class Id10PrisionActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String changename = "水牢監獄(水岸電梯)";
+        String changename = "水牢監獄";
         TextView myTextView5 = (TextView) findViewById(R.id.locationname10);
         myTextView5.setText(changename);
         myTextView5.setTextSize(30);
@@ -419,7 +419,7 @@ public class Id10PrisionActivity extends AppCompatActivity {
 
         TextView textview = (TextView) findViewById(R.id.patrolvalue10);
         textview.setText("馬納值:" + vote);
-        String changename = "水牢監獄(水岸電梯)";
+        String changename = "水牢監獄";
         TextView myTextView5 = (TextView) findViewById(R.id.locationname10);
         myTextView5.setText(changename);
         myTextView5.setTextSize(30);
@@ -549,29 +549,29 @@ public class Id10PrisionActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    public void occupied() {
-        final Dialog dialog = new Dialog(Id10PrisionActivity.this);
-
-        //setting custom layout to dialog
-        dialog.setContentView(R.layout.custom_dialog_layout);
-        dialog.setTitle("Custom Dialog");
-
-        //adding text dynamically
-        TextView txt = (TextView) dialog.findViewById(R.id.textView);
-        txt.setText("Put your dialog text here.");
-
-        ImageView image = (ImageView)dialog.findViewById(R.id.image);
-        image.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_dialog_info));
-
-        //adding button click event
-        Button dismissButton = (Button) dialog.findViewById(R.id.button);
-        dismissButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-
-    }
+//    public void occupied() {
+//        final Dialog dialog = new Dialog(Id10PrisionActivity.this);
+//
+//        //setting custom layout to dialog
+//        dialog.setContentView(R.layout.custom_dialog_layout);
+//        dialog.setTitle("Custom Dialog");
+//
+//        //adding text dynamically
+//        TextView txt = (TextView) dialog.findViewById(R.id.textView);
+//        txt.setText("Put your dialog text here.");
+//
+//        ImageView image = (ImageView)dialog.findViewById(R.id.image);
+//        image.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_dialog_info));
+//
+//        //adding button click event
+//        Button dismissButton = (Button) dialog.findViewById(R.id.button);
+//        dismissButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//        dialog.show();
+//
+//    }
 }

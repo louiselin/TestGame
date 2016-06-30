@@ -47,6 +47,7 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     private Button searchcoin;
+    Double la, lo;
 
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
@@ -62,7 +63,6 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin);
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
-
 
 //        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.coinmap);
         searchcoin = (Button) findViewById(R.id.searchcoin);
@@ -97,9 +97,18 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap gMap) {
         mGoogleMap = gMap;
-        mGoogleMap.setMyLocationEnabled(false);
+        mGoogleMap.setMyLocationEnabled(true);
         buildGoogleApiClient();
         mGoogleApiClient.connect();
+        mGoogleMap.getUiSettings().setZoomGesturesEnabled(false); // 縮放手勢
+        mGoogleMap.getUiSettings().setScrollGesturesEnabled(false); // 捲動 (平移)手勢
+        mGoogleMap.getUiSettings().setRotateGesturesEnabled(false); // 兩指放在地圖上，然後開始旋轉劃圈
+        mGoogleMap.getUiSettings().setCompassEnabled(false); // 左上指南針
+        mGoogleMap.getUiSettings().setZoomControlsEnabled(false); // 縮放控制項
+        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false); // 右下角我的位置
+        mGoogleMap.getUiSettings().setMapToolbarEnabled(false); // 地圖工具列
+        mGoogleMap.getUiSettings().setTiltGesturesEnabled(false); // 停用傾斜手勢
+
         //maker infowindows click event
         mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -108,11 +117,16 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-
-        LatLng whole = new LatLng(24.990738, 121.574921);
-        BitmapDescriptor image = BitmapDescriptorFactory.fromResource(R.drawable.searchrange);
-        GroundOverlay groundOverlay = mGoogleMap.addGroundOverlay(new GroundOverlayOptions().image(image).anchor(0, 1).anchor(0,1).position(whole, 10000f, 10000f).transparency(0f));
-
+        la = 26.22588;
+        lo = 120.2834;
+        if (la>26.22588 || la <23.58 || lo > 124.349 || lo <120.2834) {
+            Toast.makeText(CoinActivity.this, "目前所在位置已超過領土範圍囉 ><", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            LatLng whole = new LatLng(la, lo);
+            BitmapDescriptor image = BitmapDescriptorFactory.fromResource(R.drawable.cbg);
+            GroundOverlay groundOverlay = mGoogleMap.addGroundOverlay(new GroundOverlayOptions().image(image).anchor(0, 0).position(whole, 350000f, 500000f).transparency(0f));
+        }
 
     }
 
@@ -127,7 +141,7 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnected(Bundle bundle) {
-        Toast.makeText(this,"連線中...",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,"連線中...",Toast.LENGTH_SHORT).show();
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
         if (mLastLocation != null) {
