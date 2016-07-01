@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:text="搜尋金幣"
         android:id="@+id/searchcoin"
-        android:background="@drawable/button_custom"
+        android:background="@drawable/button_custom_profile"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 

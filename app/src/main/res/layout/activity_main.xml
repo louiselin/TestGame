@@ -21,7 +21,7 @@
     <Button
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@drawable/button_custom_main"
+        android:background="@drawable/button_custom_personal"
         android:text="個人資料"
         android:textSize="20dp"
         android:id="@+id/profile"
@@ -41,7 +41,7 @@
     <Button
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@drawable/button_custom_main"
+        android:background="@drawable/button_custom_badge"
         android:text="徽章成就"
         android:textSize="20dp"
         android:id="@+id/manual"
@@ -52,7 +52,7 @@
     <Button
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@drawable/button_press_main"
+        android:background="@drawable/button_color_comm"
         android:text="政大通訊\n(尚未開通)"
         android:textSize="16dp"
         android:id="@+id/nccucontact"
@@ -63,7 +63,7 @@
     <Button
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@drawable/button_custom_main"
+        android:background="@drawable/button_custom_coin"
         android:text="獲得金幣"
         android:textSize="20dp"
         android:id="@+id/getcoin"
@@ -74,7 +74,7 @@
     <Button
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@drawable/button_custom_main"
+        android:background="@drawable/button_custom_story"
         android:text="故事背景"
         android:textSize="20dp"
         android:id="@+id/setting"

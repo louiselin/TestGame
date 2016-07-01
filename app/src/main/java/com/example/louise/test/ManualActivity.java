@@ -36,6 +36,8 @@ import java.util.List;
 public class ManualActivity extends AppCompatActivity {
 
     private CheckBox donotshowagain;
+    private String classification_go = "";
+    public String newname = "";
     public static final String PREFS_NAME = "manualgot";
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +56,9 @@ public class ManualActivity extends AppCompatActivity {
             String bjson2 = "";
             String bjsonreq = "";
             String bjson3 = "";
-            String classification = "";
+
             String userbadge = userbadge();
-            String newname = "";
+
 
             TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
             tabHost.setup();
@@ -65,35 +67,35 @@ public class ManualActivity extends AppCompatActivity {
                 JSONArray jsonlists = new JSONArray(classjson);
                 int size = jsonlists.length();
                 for (int ii = 0; ii < size-1; ii++) {
-                    classification = jsonlists.get(ii).toString();
-                    switch (classification) {
-                        case "專家":newname = "專家\n條件";break;
-                        case "校園尋奇":newname = "成就\n解鎖";break;
-                        case "探索":newname = "玩家\n級別";break;
-                        default:newname = "樓主\n資格";
+                    classification_go = jsonlists.get(ii).toString();
+                    switch (classification_go) {
+                        case "專家":newname = "專家";break;
+                        case "校園尋奇":newname = "成就";break;
+                        case "探索":newname = "玩家";break;
+                        default:newname = "樓主";
                     }
 
                     TabHost.TabSpec spec1 = tabHost.newTabSpec("Tab1");
 
-                    bjson = bjson(re, classification, userbadge);
+                    bjson = bjson(re, classification_go, userbadge);
                     final List<String> listname =new ArrayList<>();
                     for (String r: bjson.split("@")){
                         listname.add(r);
                     }
 
-                    bjson2 = bjson2(re, classification, userbadge);
+                    bjson2 = bjson2(re, classification_go, userbadge);
                     final List<String> listdes =new ArrayList<>();
                     for (String r: bjson2.split("@")){
                         listdes.add(r);
                     }
 
-                    bjsonreq = bjsonreq(re, classification, userbadge);
+                    bjsonreq = bjsonreq(re, classification_go, userbadge);
                     final List<String> listreq =new ArrayList<>();
                     for (String r: bjsonreq.split("@")){
                         listreq.add(r);
                     }
 
-                    bjson3 = bjson3(re, classification, userbadge);
+                    bjson3 = bjson3(re, classification_go, userbadge);
                     final List<String> listk =new ArrayList<>();
                     for (String r: bjson3.split("@")){
                         listk.add(r);
@@ -110,7 +112,7 @@ public class ManualActivity extends AppCompatActivity {
                             return listView01;
                         }
                     });
-                    spec1.setIndicator(classification);
+                    spec1.setIndicator(classification_go);
                     tabHost.addTab(spec1);
                 }
             } catch (JSONException e) {
@@ -369,9 +371,14 @@ public class ManualActivity extends AppCompatActivity {
             String ans = "";
             if(k.get(position) != "") {
                 ans = k.get(position);
+
                 switch (ans) {
                     case "0" : logo.setImageResource(R.drawable.a1); break;
-                    default: logo.setImageResource(R.drawable.award);
+                    default: {
+                        if (newname == "專家") logo.setImageResource(R.drawable.award);
+                        else if (newname == "成就") logo.setImageResource(R.drawable.award02);
+                        else logo.setImageResource(R.drawable.award03);
+                    } break;
                 }
             }
 

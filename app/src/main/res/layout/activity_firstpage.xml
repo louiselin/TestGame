@@ -10,13 +10,31 @@
     tools:context="com.example.louise.test.FirstpageActivity">
 
     <Button
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@drawable/firsticon"
+        android:id="@+id/first"
+        android:text=""
+        android:layout_centerHorizontal="true" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_custom"
-        android:id="@+id/first"
-        android:layout_marginTop="69dp"
-        android:text="遊戲登入"
-        android:layout_alignParentTop="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="暗黑帝國"
+        android:textSize="45dp"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/first"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The Dark Empire"
+        android:textSize="23dp"
+        android:textColor="@android:color/black"
+        android:id="@+id/textView5"
+        android:layout_below="@+id/textView4"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
