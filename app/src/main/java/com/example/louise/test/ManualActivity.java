@@ -56,6 +56,7 @@ public class ManualActivity extends AppCompatActivity {
             String bjson2 = "";
             String bjsonreq = "";
             String bjson3 = "";
+            String bjsoncla = "";
 
             String userbadge = userbadge();
 
@@ -101,8 +102,14 @@ public class ManualActivity extends AppCompatActivity {
                         listk.add(r);
                     }
 
+                    bjsoncla = bjsoncla(re, classification_go, userbadge);
+                    final List<String> listcla =new ArrayList<>();
+                    for (String r: bjsoncla.split("@")){
+                        listcla.add(r);
+                    }
+
                     final MyAdapter adapter;
-                    adapter = new MyAdapter(this, listname, listdes, listreq, listk);
+                    adapter = new MyAdapter(this, listname, listdes, listreq, listk, listcla);
 
                     spec1.setContent(new TabHost.TabContentFactory() {
                         public View createTabContent(String tag) {
@@ -321,6 +328,43 @@ public class ManualActivity extends AppCompatActivity {
         }
         return keeper2;
     }
+
+    private String bjsoncla(String badgejson, String classification, String userbadge) {
+        String keeper = "";
+        String keeper2 = "";
+        String k = "0";
+
+        try {
+
+
+            JSONObject keeperlist = new JSONObject(badgejson);
+            keeper = keeperlist.getString("badge");
+
+            JSONArray jsonlist = new JSONArray(keeper);
+            JSONArray userbadgelist = new JSONArray(userbadge);
+
+            for (int i = 0; i < jsonlist.length(); i++) {
+                if (jsonlist.getJSONObject(i).getString("classification").equals(classification)) {
+                    k = "0";
+
+                    for (int j = 0; j < userbadgelist.length(); j++) {
+                        int w = userbadgelist.getInt(j);
+                        int x = jsonlist.getJSONObject(i).getInt("id");
+                        if (w == x) {
+                            k = w + "取得";
+                            break;
+                        }
+                    }
+                    keeper2 = keeper2 + jsonlist.getJSONObject(i).getString("classification") + "@";
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return keeper2;
+    }
+
+
     private int p;
     public class MyAdapter extends BaseAdapter{
         private LayoutInflater myInflater;
@@ -328,11 +372,13 @@ public class ManualActivity extends AppCompatActivity {
         private List<String> des = new ArrayList<>();
         private List<String> req = new ArrayList<>();
         private List<String> k = new ArrayList<>();
-        public MyAdapter(Context c, List<String> na, List<String> des, List<String> req, List<String> k) {
+        private List<String> cla = new ArrayList<>();
+        public MyAdapter(Context c, List<String> na, List<String> des, List<String> req, List<String> k, List<String> cla) {
             this.na = na;
             this.des = des;
             this.req = req;
             this.k = k;
+            this.cla = cla;
             myInflater = LayoutInflater.from(c);
         }
 
@@ -358,6 +404,7 @@ public class ManualActivity extends AppCompatActivity {
         private TextView name;
         private String list;
         private String reqes;
+        private String clal;
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
@@ -369,16 +416,21 @@ public class ManualActivity extends AppCompatActivity {
 //            list = (TextView) convertView.findViewById(R.id.description);
 
             String ans = "";
-            if(k.get(position) != "") {
-                ans = k.get(position);
-
-                switch (ans) {
-                    case "0" : logo.setImageResource(R.drawable.a1); break;
-                    default: {
-                        if (newname == "專家") logo.setImageResource(R.drawable.award);
-                        else if (newname == "成就") logo.setImageResource(R.drawable.award02);
-                        else logo.setImageResource(R.drawable.award03);
-                    } break;
+            clal = cla.get(position);
+            if (clal != "") {
+                if (k.get(position) != "") {
+                    ans = k.get(position);
+                    switch (ans) {
+                        case "0":
+                            logo.setImageResource(R.drawable.a1);
+                            break;
+                        default: {
+                            if (clal.equals("專家")) logo.setImageResource(R.drawable.award);
+                            else if (clal.equals("校園尋奇")) logo.setImageResource(R.drawable.award02);
+                            else logo.setImageResource(R.drawable.award03);
+                        }
+                        break;
+                    }
                 }
             }
 
@@ -386,6 +438,7 @@ public class ManualActivity extends AppCompatActivity {
 //            list.setText(des.get(position));
             list = des.get(position);
             reqes = req.get(position);
+
 
 //            logo.setOnClickListener(new OnClick(p));
 //            name.setOnClickListener(new OnClick(p));
@@ -421,6 +474,7 @@ public class ManualActivity extends AppCompatActivity {
                 ad.setTitle("徽章成就-" + na.get(mPosition));
                 ad.setMessage("\n徽章描述：" + des.get(mPosition)
 //                        + "\n所需條件：" + req.get(mPosition)
+                          + "\nclassification：" + cla.get(mPosition)
                           + "\n\n"
                 );
                 ad.setNegativeButton("觀看結束", new DialogInterface.OnClickListener() {
