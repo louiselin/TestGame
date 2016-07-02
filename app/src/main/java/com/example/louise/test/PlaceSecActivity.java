@@ -84,6 +84,10 @@ public class PlaceSecActivity extends AppCompatActivity {
     private GoogleApiClient client;
     private CheckBox donotshowagain;
     public static final String PREFS_NAME = "place";
+
+    public static final String intent_me="ON";
+    public static final String intent_vi="ON";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -323,17 +327,27 @@ public class PlaceSecActivity extends AppCompatActivity {
         myTextView6.setTextColor(Color.WHITE);
         myTextView6.setSoundEffectsEnabled(true);
 
+
         myTextView6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 myTextView6.setTextColor(Color.RED);
-//                Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-//                vibrator.hasVibrator();
-//                vibrator.vibrate(100);
-//                soundpunch = MediaPlayer.create(PlaceSecActivity.this, R.raw.punch);
-//                soundpunch.start();
-//                soundpunch.seekTo(100);
+                // check setting switch button
+
+                if (intent_vi.equals("ON")) {
+                    Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                    vibrator.hasVibrator();
+                    vibrator.vibrate(100);
+                }
+
+                if (intent_me.equals("ON")) {
+                    soundpunch = MediaPlayer.create(PlaceSecActivity.this, R.raw.punch);
+                    soundpunch.start();
+                    soundpunch.seekTo(100);
+                }
+//                Toast.makeText(PlaceSecActivity.this, "me " + intent_me+ " ,vi "+intent_vi, Toast.LENGTH_SHORT).show();
+
 
                 String stelejson = "";
                 String stelename = "";
@@ -406,18 +420,28 @@ public class PlaceSecActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-//                Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-//                vibrator.hasVibrator();
-//                vibrator.vibrate(100);
-//                if(re.equals("success")) {
-//                    soundjump = MediaPlayer.create(PlaceSecActivity.this, R.raw.jump);
-//                    soundjump.start();
-//                    soundjump.seekTo(300);
-//                } else {
-//                    soundjump = MediaPlayer.create(PlaceSecActivity.this, R.raw.hax);
-//                    soundjump.start();
-//                    soundjump.seekTo(700);
-//                }
+
+                if (intent_vi.equals("ON")) {
+                    Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                    vibrator.hasVibrator();
+                    vibrator.vibrate(100);
+                }
+
+                if (intent_me.equals("ON")) {
+                    if (re.equals("success")) {
+                        soundjump = MediaPlayer.create(PlaceSecActivity.this, R.raw.jump);
+                        soundjump.start();
+                        soundjump.seekTo(300);
+                    } else {
+                        soundjump = MediaPlayer.create(PlaceSecActivity.this, R.raw.hax);
+                        soundjump.start();
+                        soundjump.seekTo(700);
+                    }
+                }
+//                Toast.makeText(PlaceSecActivity.this, "me " + intent_me+ " ,vi "+intent_vi, Toast.LENGTH_SHORT).show();
+
+
+
                 if (!re.equals("success")) {
                     final Toast toast2 = Toast.makeText(PlaceSecActivity.this, re, Toast.LENGTH_SHORT);
                     toast2.show();

@@ -4,10 +4,10 @@
     <item android:id="@android:id/background">
         <shape>
             <!-- radius background of progressbar -->
-            <corners android:radius="10dip" />
+            <corners android:radius="30dip" />
             <gradient
-                android:startColor="#C68E17"
-                android:centerColor="#E8A317"
+                android:startColor="#685746"
+                android:centerColor="#685746"
                 android:centerY="0.75"
                 android:endColor="#FFCBA4"
                 android:angle="270"
@@ -17,7 +17,7 @@
                 android:top="20dp"
                 android:right="20dp"
                 android:bottom="20dp" />
-            <stroke android:width="8px" android:color="#3B3131" />
+            <stroke android:width="8px" android:color="#685746" />
         </shape>
     </item>
 </layer-list>
