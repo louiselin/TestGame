@@ -12,7 +12,7 @@
     <Button
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:background="@drawable/firsticon"
+        android:background="@drawable/firstcoin"
         android:id="@+id/first"
         android:text=""
         android:layout_centerHorizontal="true" />

@@ -8,6 +8,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,7 +49,7 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Button searchcoin;
     Double la, lo;
-
+    Double currla=24.985658, currlo=121.5747848;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     SupportMapFragment mFragment;
@@ -109,13 +110,14 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
         mGoogleMap.getUiSettings().setMapToolbarEnabled(false); // 地圖工具列
         mGoogleMap.getUiSettings().setTiltGesturesEnabled(false); // 停用傾斜手勢
 
+
         //maker infowindows click event
-        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                Toast.makeText(CoinActivity.this, "Onclick ", Toast.LENGTH_SHORT);
-            }
-        });
+//        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+//            @Override
+//            public void onInfoWindowClick(Marker marker) {
+//                Toast.makeText(CoinActivity.this, "Onclick ", Toast.LENGTH_SHORT);
+//            }
+//        });
 
         la = 26.22588;
         lo = 120.2834;
@@ -123,9 +125,15 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
             Toast.makeText(CoinActivity.this, "目前所在位置已超過領土範圍囉 ><", Toast.LENGTH_SHORT).show();
             finish();
         } else {
-            LatLng whole = new LatLng(la, lo);
-            BitmapDescriptor image = BitmapDescriptorFactory.fromResource(R.drawable.cbg);
-            GroundOverlay groundOverlay = mGoogleMap.addGroundOverlay(new GroundOverlayOptions().image(image).anchor(0, 0).position(whole, 350000f, 500000f).transparency(0f));
+//            LatLng whole = new LatLng(currla, currlo);
+//
+//            GroundOverlayOptions newarkMap = new GroundOverlayOptions()
+//                    .image(BitmapDescriptorFactory.fromResource(R.drawable.cbg))
+//                    .position(whole, 400f, 300f);
+//            mGoogleMap.addGroundOverlay(newarkMap);
+
+//            BitmapDescriptor image = BitmapDescriptorFactory.fromResource(R.drawable.cbg);
+//            GroundOverlay groundOverlay = mGoogleMap.addGroundOverlay(new GroundOverlayOptions().image(image).anchor(0, 0).position(whole, 350000f, 500000f).transparency(0f));
         }
 
     }
@@ -144,6 +152,18 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
 //        Toast.makeText(this,"連線中...",Toast.LENGTH_SHORT).show();
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
+        currla = mLastLocation.getLatitude();
+        currlo = mLastLocation.getLongitude();
+        LatLng whole = new LatLng(currla, currlo);
+        GroundOverlayOptions n = new GroundOverlayOptions()
+                .image(BitmapDescriptorFactory.fromResource(R.drawable.cbg))
+                .position(whole, 12000f, 10800f);
+        GroundOverlayOptions newarkMap = new GroundOverlayOptions()
+                .image(BitmapDescriptorFactory.fromResource(R.drawable.cbg))
+                .position(whole, 100f, 90f);
+        mGoogleMap.addGroundOverlay(n);
+        mGoogleMap.addGroundOverlay(newarkMap);
+
         if (mLastLocation != null) {
             //place marker at current position
             //mGoogleMap.clear();
@@ -152,11 +172,11 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
 //            markerOptions.position(latLng);
 //            markerOptions.title("我在這裡");
 
-
-            Double maxlat = mLastLocation.getLatitude() + 0.005;
-            Double minlat = mLastLocation.getLatitude() - 0.005;
-            Double maxlon = mLastLocation.getLongitude() + 0.006;
-            Double minlon = mLastLocation.getLongitude() - 0.006;
+            Double r = 0.0005/2;
+            Double maxlat = mLastLocation.getLatitude() + r;
+            Double minlat = mLastLocation.getLatitude() - r;
+            Double maxlon = mLastLocation.getLongitude() + r;
+            Double minlon = mLastLocation.getLongitude() - r;
             Double resultlat = 0.0;
             Double resultlon = 0.0;
             Random random = new Random();
@@ -171,6 +191,7 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
                 longitude.add(resultlon);
             }
 
+
 //            latitude.add(mLastLocation.getLatitude());
 //            longitude.add(mLastLocation.getLongitude());
 
@@ -180,18 +201,82 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
             for (int l = 0; l < ss; l++) {
                 final LatLng po = new LatLng(latitude.get(l), longitude.get(l));
                 markerOptions.position(po);
-                if (latitude.get(l) < mLastLocation.getLatitude()+0.0003 && longitude.get(l) < mLastLocation.getLongitude()+0.0003) {
+                int coin = random.nextInt(2);
+                markerOptions.title(coin+"");
+                if (coin == 0) {
+
+//                    markerOptions.title(latitude.get(l));
                     markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.coin));
                 } else {
                     markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.coin2));
                 }
+
+//                if (latitude.get(l) < mLastLocation.getLatitude()+0.0003 && longitude.get(l) < mLastLocation.getLongitude()+0.0003) {
+////                    markerOptions.title(latitude.get(l));
+//                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.coin));
+//                } else {
+//                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.coin2));
+//                }
+
                 currLocationMarker = mGoogleMap.addMarker(markerOptions);
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(po, 15));
+                LatLng c = new LatLng(currla, currlo);
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(c, 19));
             }
         }
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.remove();
+                String re = "";
+                if (marker.getTitle().equals("0")) {
+                    try {
+                        re = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/get/" + IndexActivity.userid + "/1/1");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (marker.getTitle().equals("1")){
+                    try {
+                        re = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/get/" + IndexActivity.userid + "/2/1");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+//                Toast.makeText(CoinActivity.this, re, Toast.LENGTH_SHORT).show();
+                // result
+                if (re.equals("success\n")) {
+                    final Toast toast2 = Toast.makeText(CoinActivity.this, "got it ^^", Toast.LENGTH_SHORT);
+                    toast2.show();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            toast2.cancel();
+                        }
+                    }, 200);
+                } else {
+                    final Toast toast2 = Toast.makeText(CoinActivity.this, "you can't get it ><", Toast.LENGTH_SHORT);
+                    toast2.show();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            toast2.cancel();
+                        }
+                    }, 500);
+                }
+                return true;
+            }
+        });
+//        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+//            @Override
+//            public void onInfoWindowClick(Marker marker) {
+////                Toast.makeText(CoinActivity.this, marker.toString(), Toast.LENGTH_SHORT).show();
+//                marker.remove();
+//            }
+//        });
 
 
-        mLocationRequest = new LocationRequest();
+                mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(5000); //5 seconds
         mLocationRequest.setFastestInterval(3000); //3 seconds
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
@@ -237,7 +322,8 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
             currLocationMarker = mGoogleMap.addMarker(markerOptions);
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(po, 15));
+
+//            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(po, 17));
 
 
 //    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));

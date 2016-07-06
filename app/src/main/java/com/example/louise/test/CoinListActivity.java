@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,11 @@ public class CoinListActivity extends AppCompatActivity {
     private Button searchcoin;
     public int[] prgmImages={R.drawable.coin,R.drawable.coin2};
     public String[] prgmNameList={"100","1000"};
-
+    private String userrunelistjson = "";
+//    private int[] rune;
+//    private int[] stone;
+    private List<Integer> runeid;
+    private List<Integer> stone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,37 +54,65 @@ public class CoinListActivity extends AppCompatActivity {
         });
 
         coinlist=(ListView) findViewById(R.id.coinlist);
-        final MyAdapter adapter;
-        adapter = new MyAdapter(this, prgmNameList, prgmImages);
-        coinlist.setAdapter(adapter);
+
+
+        try {
+            userrunelistjson = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/list/" + IndexActivity.userid);
+            JSONArray userrunelist = new JSONArray(userrunelistjson);
+
+            for (int i = 0; i < userrunelist.length(); i++) {
+                runeid.add(i);
+                Toast.makeText(CoinListActivity.this, userrunelist.length(), Toast.LENGTH_SHORT).show();
+//                runeid.add(userrunelist.getJSONObject(i).getInt("runeid"));
+//                stone.add(userrunelist.getJSONObject(i).getInt("stone"));
+
+            }
+
+
+
+
+
+
+
+
+            final MyAdapter adapter;
+            adapter = new MyAdapter(this, runeid, stone, prgmImages);
+            coinlist.setAdapter(adapter);
 
 //        coinlist = (ListView) findViewById(R.id.coinlist);
 //        final MyAdapter adapter;
 //        adapter = new MyAdapter(this, IndexActivity.userid);
 //        coinlist.setAdapter(adapter);
+        } catch (Exception e) {
 
+        }
     }
 
     public class MyAdapter extends BaseAdapter{
         String [] prgmNameList;
         int [] prgmImages;
+        private List<Integer> runeid;
+        private List<Integer> stone;
+
         private LayoutInflater myInflater;
-        public MyAdapter(Context c, String[] prgmNameList, int[] prgmImages) {
+        public MyAdapter(Context c, List<Integer> runeid, List<Integer> stone, int[] prgmImages) {
             // TODO Auto-generated constructor stub
-            this.prgmNameList=prgmNameList;
+//            this.prgmNameList=prgmNameList;
+            this.runeid = runeid;
+            this.stone = stone;
             this.prgmImages=prgmImages;
             myInflater = LayoutInflater.from(c);
         }
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
-            return prgmNameList.length;
+            return runeid.size();
         }
 
         @Override
         public Object getItem(int position) {
             // TODO Auto-generated method stub
-            return position;
+            return runeid.get(position);
         }
 
         @Override
@@ -98,8 +131,18 @@ public class CoinListActivity extends AppCompatActivity {
             rowView = myInflater.inflate(R.layout.coinlist, null);
             tv=(TextView) rowView.findViewById(R.id.coinnum);
             img=(ImageView) rowView.findViewById(R.id.coinimg);
-            tv.setText(prgmNameList[position] + " 個");
-            img.setImageResource(prgmImages[position]);
+
+            if (runeid.get(position) == 1) {
+                img.setImageResource(prgmImages[0]);
+                tv.setText(stone.get(position) + " 個");
+            } else if (runeid.get(position) == 2) {
+                img.setImageResource(prgmImages[1]);
+                tv.setText(stone.get(position) + " 個");
+            }
+
+
+
+
             rowView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

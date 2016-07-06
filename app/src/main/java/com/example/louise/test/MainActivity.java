@@ -2,6 +2,7 @@ package com.example.louise.test;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -36,9 +38,11 @@ public class MainActivity extends AppCompatActivity
     private Button getcoin;
     private Button nccucontact;
     private Button setting;
+    private ImageButton setting_coin;
     private Button award;
     private TextView textView;
-
+    private int test = 0;
+    private String condition = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,13 +77,22 @@ public class MainActivity extends AppCompatActivity
 //            textView.setTextColor(Color.BLACK);
 
 
-            ImageButton ib = (ImageButton) findViewById(R.id.setting_icon);
-            ib.setOnClickListener(new View.OnClickListener() {
+            setting_coin = (ImageButton) findViewById(R.id.setting_icon);
+            setting_coin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.setClass(MainActivity.this, SettingActivity.class);
-                    startActivity(intent);
+
+                    if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
+                        condition = "setting_coin";
+                        test = runStreamWrapper();
+
+                    } else {
+                        test = 1;
+                        runStream();
+                        Intent intent = new Intent();
+                        intent.setClass(MainActivity.this, SettingActivity.class);
+                        startActivity(intent);
+                    }
                 }
             });
             play = (Button) findViewById(R.id.playgame);
@@ -87,10 +100,12 @@ public class MainActivity extends AppCompatActivity
             play.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int test = 0;
+
                     if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
                         // Marshmallow+
+                        condition = "play";
                         test = runStreamWrapper();
+
 //                            Toast toast = Toast.makeText(MainActivity.this, "API 23", Toast.LENGTH_SHORT);
 //                            toast.show();
 
@@ -150,9 +165,18 @@ public class MainActivity extends AppCompatActivity
             getcoin.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.setClass(MainActivity.this, CoinListActivity.class);
-                    startActivity(intent);
+
+                    if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
+                        condition = "getcoin";
+                        test = runStreamWrapper();
+
+                    } else {
+                        test = 1;
+                        runStream();
+                        Intent intent = new Intent();
+                        intent.setClass(MainActivity.this, CoinListActivity.class);
+                        startActivity(intent);
+                    }
                 }
             });
 
@@ -190,6 +214,34 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    // Storage Permissions
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    /**
+     * Checks if the app has permission to write to device storage
+     *
+     * If the app does not has permission then the user will be prompted to grant permissions
+     *
+     * @param activity
+     */
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
     private static final String TAG = MainActivity.class.getSimpleName();
 
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 0;
@@ -205,15 +257,37 @@ public class MainActivity extends AppCompatActivity
 //        toast2.show();
 
         if (!addPermission(permissionsList, Manifest.permission.ACCESS_FINE_LOCATION)) permissionsNeeded.add("GPS");
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE)) permissionsNeeded.add("WRITE");
+        if (!addPermission(permissionsList, Manifest.permission.READ_EXTERNAL_STORAGE)) permissionsNeeded.add("READ");
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(permissionsList.toArray(new String[permissionsList.size()]), REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
 //            Toast toast = Toast.makeText(MainActivity.this, "show package manager!" + PackageManager.PERMISSION_GRANTED, Toast.LENGTH_SHORT);
 //            toast.show();
+
         } else {
-            Intent intent = new Intent();
-            intent.setClass(MainActivity.this, MapsActivity.class);
-            startActivity(intent);
+            switch (condition) {
+                case "setting_coin": {
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                } break;
+                case "getcoin": {
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, CoinListActivity.class);
+                    startActivity(intent);
+                } break;
+                default: {
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, MapsActivity.class);
+                    startActivity(intent);
+                } break;
+            }
         }
+//        else {
+//            Intent intent = new Intent();
+//            intent.setClass(MainActivity.this, MapsActivity.class);
+//            startActivity(intent);
+//        }
 //        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 //            requestPermissions(permissionsList.toArray(new String[permissionsList.size()]), REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
 //            int ee = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -290,17 +364,33 @@ public class MainActivity extends AppCompatActivity
             case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS:
             {
                 Map<String, Integer> perms = new HashMap<String, Integer>();
-//                perms.put(Manifest.permission.RECORD_AUDIO, PackageManager.PERMISSION_GRANTED);
-//                perms.put(Manifest.permission.CAMERA,PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
                 for(int i = 0; i < permissions.length; i ++)
                     perms.put(permissions[i], grantResults[i]);
 
-                if(perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                if(perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                        && perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                     runStream();
-                    Intent intent = new Intent();
-                    intent.setClass(MainActivity.this, MapsActivity.class);
-                    startActivity(intent);
+                    switch (condition) {
+                        case "setting_coin": {
+                            Intent intent = new Intent();
+                            intent.setClass(MainActivity.this, SettingActivity.class);
+                            startActivity(intent);
+                        } break;
+                        case "getcoin": {
+                            Intent intent = new Intent();
+                            intent.setClass(MainActivity.this, CoinListActivity.class);
+                            startActivity(intent);
+                        } break;
+                        default: {
+                            Intent intent = new Intent();
+                            intent.setClass(MainActivity.this, MapsActivity.class);
+                            startActivity(intent);
+                        } break;
+                    }
                 } else {
                     Toast.makeText(this, "Some required permissions have been denied", Toast.LENGTH_LONG).show();
                 }
@@ -310,4 +400,5 @@ public class MainActivity extends AppCompatActivity
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+
 }

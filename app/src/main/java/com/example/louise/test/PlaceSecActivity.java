@@ -23,6 +23,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
@@ -51,7 +52,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.ArrayList;
@@ -77,6 +81,11 @@ public class PlaceSecActivity extends AppCompatActivity {
     private ImageView weapon;
     private List<Integer> weaponlist = new ArrayList<>();
     private int randomInt;
+    private String che_vi, che_me;
+    private String switchOn = "ON";
+    private String switchOff = "OFF";
+
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -334,14 +343,28 @@ public class PlaceSecActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
                 myTextView6.setTextColor(Color.RED);
                 // check setting switch button
+                try {
 
-                if (intent_vi.equals("ON")) {
+                    FileReader fr = new FileReader(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "output.txt"));
+                    BufferedReader br = new BufferedReader(fr);
+
+                    String temp = br.readLine(); //readLine()讀取一整行
+                    if (temp != null) {
+                        String[] datas = temp.split(",");
+                        che_vi = datas[1];
+                        che_me = datas[0];
+                    } else {
+                        che_vi = che_me = switchOff;
+                    }
+                } catch (Exception e) {}
+
+                if (intent_vi.equals(che_vi)) {
                     Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                     vibrator.hasVibrator();
                     vibrator.vibrate(100);
                 }
 
-                if (intent_me.equals("ON")) {
+                if (intent_me.equals(che_me)) {
                     soundpunch = MediaPlayer.create(PlaceSecActivity.this, R.raw.punch);
                     soundpunch.start();
                     soundpunch.seekTo(100);
@@ -421,13 +444,13 @@ public class PlaceSecActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if (intent_vi.equals("ON")) {
+                if (intent_vi.equals(che_vi)) {
                     Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                     vibrator.hasVibrator();
                     vibrator.vibrate(100);
                 }
 
-                if (intent_me.equals("ON")) {
+                if (intent_me.equals(che_me)) {
                     if (re.equals("success")) {
                         soundjump = MediaPlayer.create(PlaceSecActivity.this, R.raw.jump);
                         soundjump.start();
