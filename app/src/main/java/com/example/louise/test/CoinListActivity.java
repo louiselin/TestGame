@@ -27,19 +27,16 @@ public class CoinListActivity extends AppCompatActivity {
 
     private ListView coinlist;
     private Button searchcoin;
-    public int[] prgmImages={R.drawable.coin,R.drawable.coin2};
-    public String[] prgmNameList={"100","1000"};
     private String userrunelistjson = "";
-//    private int[] rune;
-//    private int[] stone;
-    private List<Integer> runeid;
-    private List<Integer> stone;
+
+    private List<Integer> i = new ArrayList<>();
+    private List<Integer> r = new ArrayList<>();
+    private List<Integer> s = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_list);
-
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
 
         searchcoin = (Button) findViewById(R.id.searchcoin);
@@ -60,59 +57,48 @@ public class CoinListActivity extends AppCompatActivity {
             userrunelistjson = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/list/" + IndexActivity.userid);
             JSONArray userrunelist = new JSONArray(userrunelistjson);
 
-            for (int i = 0; i < userrunelist.length(); i++) {
-                runeid.add(i);
-                Toast.makeText(CoinListActivity.this, userrunelist.length(), Toast.LENGTH_SHORT).show();
-//                runeid.add(userrunelist.getJSONObject(i).getInt("runeid"));
-//                stone.add(userrunelist.getJSONObject(i).getInt("stone"));
-
-            }
-
-
-
-
-
-
+            i.add(R.drawable.coin);
+            i.add(R.drawable.coin2);
+            r.add(userrunelist.getJSONObject(0).getInt("runeid"));
+            r.add(userrunelist.getJSONObject(1).getInt("runeid"));
+            s.add(userrunelist.getJSONObject(0).getInt("stone"));
+            s.add(userrunelist.getJSONObject(1).getInt("stone"));
 
 
             final MyAdapter adapter;
-            adapter = new MyAdapter(this, runeid, stone, prgmImages);
+            adapter = new MyAdapter(this, r, s, i);
             coinlist.setAdapter(adapter);
 
-//        coinlist = (ListView) findViewById(R.id.coinlist);
-//        final MyAdapter adapter;
-//        adapter = new MyAdapter(this, IndexActivity.userid);
-//        coinlist.setAdapter(adapter);
         } catch (Exception e) {
-
+            Toast.makeText(CoinListActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
     public class MyAdapter extends BaseAdapter{
-        String [] prgmNameList;
-        int [] prgmImages;
-        private List<Integer> runeid;
-        private List<Integer> stone;
+        private List<Integer> i = new ArrayList<>();
+        private List<Integer> r = new ArrayList<>();
+        private List<Integer> s = new ArrayList<>();
 
         private LayoutInflater myInflater;
-        public MyAdapter(Context c, List<Integer> runeid, List<Integer> stone, int[] prgmImages) {
+        public MyAdapter(Context c, List<Integer> r, List<Integer> s,  List<Integer> i) {
             // TODO Auto-generated constructor stub
-//            this.prgmNameList=prgmNameList;
-            this.runeid = runeid;
-            this.stone = stone;
-            this.prgmImages=prgmImages;
+            this.i = i;
+            this.r = r;
+            this.s = s;
             myInflater = LayoutInflater.from(c);
         }
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
-            return runeid.size();
+//            return runeid.length;
+            return s.size();
         }
 
         @Override
         public Object getItem(int position) {
             // TODO Auto-generated method stub
-            return runeid.get(position);
+//            return runeid[position];
+            return s.get(position);
         }
 
         @Override
@@ -132,90 +118,81 @@ public class CoinListActivity extends AppCompatActivity {
             tv=(TextView) rowView.findViewById(R.id.coinnum);
             img=(ImageView) rowView.findViewById(R.id.coinimg);
 
-            if (runeid.get(position) == 1) {
-                img.setImageResource(prgmImages[0]);
-                tv.setText(stone.get(position) + " 個");
-            } else if (runeid.get(position) == 2) {
-                img.setImageResource(prgmImages[1]);
-                tv.setText(stone.get(position) + " 個");
-            }
-
-
-
-
-            rowView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-//                    Toast.makeText(CoinListActivity.this, "You Clicked " + prgmNameList[position], Toast.LENGTH_LONG).show();
-
-                    LayoutInflater inflater = LayoutInflater.from(CoinListActivity.this);
-                    final View view = inflater.inflate(R.layout.ditchcoin, null);
-                    final EditText ditchcoinnum = (EditText) (view.findViewById(R.id.ditchcoinnum));
-                    ditchcoinnum.setText(prgmNameList[position]);
-                    //語法一：new AlertDialog.Builder(主程式類別).XXX.XXX.XXX;
-                    new AlertDialog.Builder(CoinListActivity.this)
-                            .setView(view)
-                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    String name = ditchcoinnum.getText().toString(); // update name
-                                    String re = "";
-
-
-//                                            // create connection to post update data to web api
-//                                            try {
-//
-//                                                updatejson = Httpconnect.httpget(url);
-//                                                JSONArray userlist = new JSONArray(updatejson);
-//
-//                                                String id = userlist.getJSONObject(0).getString("id");
-//                                                int level = userlist.getJSONObject(0).getInt("level");
-//                                                int exp = userlist.getJSONObject(0).getInt("exp");
-//                                                int votes = userlist.getJSONObject(0).getInt("votes");
-//                                                String stuid= userlist.getJSONObject(0).getString("studentid");
-//
-//                                                if(id == IndexActivity.userid) {
-//                                                    re = Httpconnect.httpost2("http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid,
-//                                                            "name=" + name + "&studentid=" + stuid + "&email=" + email + "&level=" + level + "&exp=" + exp + "&votes=" + votes);
-//                                                } else {
-//                                                    re = "failed";
-//                                                }
-//                                            } catch (Exception e) {
-            //                                    re = "輸入有誤 QQQQ";
-            //                                    Toast toast2 = Toast.makeText(CoinListActivity.this, re, Toast.LENGTH_SHORT);
-            //                                    toast2.show();
-//                                            }
-                                    try {
-                                        int last = Integer.valueOf(prgmNameList[position]).intValue() - Integer.valueOf(name).intValue();
-                                        if (last < 0) {
-                                            re = "沒有那麼多的金幣喔 > <";
-                                        } else {
-                                            re = "剩下 " + Integer.toString(last) + " 個";
-                                        }
-                                        Toast toast2 = Toast.makeText(CoinListActivity.this, re, Toast.LENGTH_SHORT);
-                                        toast2.show();
-                                    } catch (Exception e) {
-                                        re = "輸入有誤 QQQQ";
-                                        Toast toast2 = Toast.makeText(CoinListActivity.this, re, Toast.LENGTH_SHORT);
-                                        toast2.show();
-                                    }
-
-                                }
-                            })
-                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    return;
-                                }
-                            })
-                            .show();
-                }
-            });
-
+            img.setImageResource(i.get(position));
+            tv.setText(s.get(position) + " 個");
+            rowView.setOnClickListener(new OnClick(position));
             return rowView;
         }
 
+        class OnClick implements View.OnClickListener{
+            final int mPosition;
+            public OnClick(int position){
+                mPosition = position;
+            }
+            private String res ="";
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+//                Toast.makeText(CoinListActivity.this, "You Clicked " + r.get(mPosition) + "HAVE: " + s.get(mPosition), Toast.LENGTH_LONG).show();
+
+                LayoutInflater inflater = LayoutInflater.from(CoinListActivity.this);
+                final View view = inflater.inflate(R.layout.ditchcoin, null);
+
+                TextView selfuserid = (TextView) (view.findViewById(R.id.coinlist_userid));
+                selfuserid.setText("選擇贈送金幣id "+ r.get(mPosition)+"\n您的使用者 id 爲: " + IndexActivity.userid);
+
+                final EditText ditchcoinnum = (EditText) (view.findViewById(R.id.ditchcoinnum));
+//                ditchcoinnum.setText(s.get(mPosition));
+
+                final EditText senduserid = (EditText) (view.findViewById(R.id.senduserid));
+//                senduserid.setText("1");
+
+                //語法一：new AlertDialog.Builder(主程式類別).XXX.XXX.XXX;
+                new AlertDialog.Builder(CoinListActivity.this)
+                        .setView(view)
+                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+
+                                String userid = IndexActivity.userid;
+                                int runeid = r.get(mPosition);
+                                String runenum = ditchcoinnum.getText().toString();
+                                String sendid = senduserid.getText().toString();
+
+
+                                int last = Integer.valueOf(s.get(mPosition)).intValue() - Integer.valueOf(runenum).intValue();
+                                if (last < 0) {
+                                        Toast.makeText(CoinListActivity.this, "沒有那麼多的金幣喔 > <", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    try {
+                                        res = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/send/" + userid
+                                                + "/" + sendid + "/" + runeid + "/" + runenum);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+//                                    Toast.makeText(CoinListActivity.this, res, Toast.LENGTH_SHORT).show();
+                                        if (!res.equals("error")) {
+                                            Toast.makeText(CoinListActivity.this, "剩下 " + Integer.toString(last) + " 個\n重整畫面更新><", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(CoinListActivity.this, "輸入有誤 QQQQ", Toast.LENGTH_SHORT).show();
+                                        }
+                                }
+//                                Intent intent = new Intent();
+//                                intent.setClass(CoinListActivity.this, MainActivity.class);
+//                                startActivity(intent);
+
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        })
+                        .show();
+            }
+        }
     }
 }
