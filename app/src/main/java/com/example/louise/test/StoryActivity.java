@@ -3,6 +3,7 @@ package com.example.louise.test;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -17,12 +18,17 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+
 public class StoryActivity extends AppCompatActivity {
 
     private String story = "";
     public static String party = "";
     private ImageView party_s;
     private ImageView party_a;
+    private String res;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +54,17 @@ public class StoryActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int i) {
                         // TODO Auto-generated method stub
                         party = "Antayen";
+                        try {
+                            String user = IndexActivity.userid;
+                            res = user+ "," +party;
+                            Toast.makeText(StoryActivity.this, res, Toast.LENGTH_SHORT).show();
+                            FileWriter fw = new FileWriter(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "profile.txt"));
+                            final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
+                            bw.write(res);
+                            bw.close();
+                        } catch (Exception e) {
+                            Toast.makeText(StoryActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        }
                         Intent intent = new Intent();
                         intent.setClass(StoryActivity.this, MainActivity.class);
                         startActivity(intent);
@@ -71,6 +88,17 @@ public class StoryActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int i) {
                         // TODO Auto-generated method stub
                         party = "Sinae";
+                        try {
+                            String user = IndexActivity.userid;
+                            res = user+ "," +party;
+                            Toast.makeText(StoryActivity.this, res, Toast.LENGTH_SHORT).show();
+                            FileWriter fw = new FileWriter(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "profile.txt"));
+                            final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
+                            bw.write(res);
+                            bw.close();
+                        } catch (Exception e) {
+                            Toast.makeText(StoryActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        }
                         Intent intent = new Intent();
                         intent.setClass(StoryActivity.this, MainActivity.class);
                         startActivity(intent);
@@ -84,6 +112,8 @@ public class StoryActivity extends AppCompatActivity {
                 ad.show();
             }
         });
+
+
 //            Button storybtn = (Button) findViewById(R.id.party);
 //            storybtn.setTextColor(0xffffffff);
 //            storybtn.setOnClickListener(new View.OnClickListener() {

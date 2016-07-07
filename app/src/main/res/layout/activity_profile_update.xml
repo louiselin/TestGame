@@ -18,7 +18,16 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
-    <TextView
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="team"
+            android:id="@+id/teamname"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="玩家匿稱"
@@ -68,6 +77,7 @@
         android:layout_below="@+id/keeperlevel"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"/>
+
     </LinearLayout>
     <Button
         android:layout_width="wrap_content"

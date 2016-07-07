@@ -161,23 +161,26 @@ public class CoinListActivity extends AppCompatActivity {
                                 String runenum = ditchcoinnum.getText().toString();
                                 String sendid = senduserid.getText().toString();
 
-
-                                int last = Integer.valueOf(s.get(mPosition)).intValue() - Integer.valueOf(runenum).intValue();
-                                if (last < 0) {
+                                try {
+                                    int last = Integer.valueOf(s.get(mPosition)).intValue() - Integer.valueOf(runenum).intValue();
+                                    if (last < 0) {
                                         Toast.makeText(CoinListActivity.this, "沒有那麼多的金幣喔 > <", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    try {
-                                        res = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/send/" + userid
-                                                + "/" + sendid + "/" + runeid + "/" + runenum);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                                    } else {
+                                        try {
+                                            res = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/send/" + userid
+                                                    + "/" + sendid + "/" + runeid + "/" + runenum);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
 //                                    Toast.makeText(CoinListActivity.this, res, Toast.LENGTH_SHORT).show();
                                         if (!res.equals("error")) {
                                             Toast.makeText(CoinListActivity.this, "剩下 " + Integer.toString(last) + " 個\n重整畫面更新><", Toast.LENGTH_SHORT).show();
                                         } else {
                                             Toast.makeText(CoinListActivity.this, "輸入有誤 QQQQ", Toast.LENGTH_SHORT).show();
                                         }
+                                    }
+                                } catch (Exception e) {
+                                    Toast.makeText(CoinListActivity.this, "請填入數值！", Toast.LENGTH_SHORT).show();
                                 }
 //                                Intent intent = new Intent();
 //                                intent.setClass(CoinListActivity.this, MainActivity.class);

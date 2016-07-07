@@ -311,17 +311,17 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
 
-        int ss = latitude.size();
-        for (int l = 0; l < ss; l++) {
-            final LatLng po = new LatLng(latitude.get(l), longitude.get(l));
-            markerOptions.position(po);
-            if (latitude.get(l) < mLastLocation.getLatitude() + 0.0003 && longitude.get(l) < mLastLocation.getLongitude() + 0.0003) {
-                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.coin));
-            } else {
-                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.coin2));
-            }
-
-            currLocationMarker = mGoogleMap.addMarker(markerOptions);
+//        int ss = latitude.size();
+//        for (int l = 0; l < ss; l++) {
+//            final LatLng po = new LatLng(latitude.get(l), longitude.get(l));
+//            markerOptions.position(po);
+//            if (latitude.get(l) < mLastLocation.getLatitude() + 0.0003 && longitude.get(l) < mLastLocation.getLongitude() + 0.0003) {
+//                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.coin));
+//            } else {
+//                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.coin2));
+//            }
+//
+//            currLocationMarker = mGoogleMap.addMarker(markerOptions);
 
 //            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(po, 17));
 
@@ -337,7 +337,7 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
 //
 //            mGoogleMap.animateCamera(CameraUpdateFactory
 //                    .newCameraPosition(cameraPosition));
-        }
+//        }
         //If you only need one location, unregister the listener
         //LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
 

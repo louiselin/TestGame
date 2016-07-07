@@ -71,6 +71,15 @@ public class MainActivity extends AppCompatActivity
             }
 
 
+        if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
+            test = runStreamWrapper();
+
+        } else {
+            test = 1;
+
+
+        }
+
 //            textView = (TextView) findViewById(R.id.keeper);
 //            textView.setText("攻佔吧！" + keepername + " 爲 " + StoryActivity.party + " 戰鬥吧！");
 //            textView.setTextSize(15);
@@ -81,18 +90,9 @@ public class MainActivity extends AppCompatActivity
             setting_coin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
-                        condition = "setting_coin";
-                        test = runStreamWrapper();
-
-                    } else {
-                        test = 1;
-                        runStream();
-                        Intent intent = new Intent();
-                        intent.setClass(MainActivity.this, SettingActivity.class);
-                        startActivity(intent);
-                    }
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, SettingActivity.class);
+                    startActivity(intent);
                 }
             });
             play = (Button) findViewById(R.id.playgame);
@@ -100,31 +100,9 @@ public class MainActivity extends AppCompatActivity
             play.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
-                        // Marshmallow+
-                        condition = "play";
-                        test = runStreamWrapper();
-
-//                            Toast toast = Toast.makeText(MainActivity.this, "API 23", Toast.LENGTH_SHORT);
-//                            toast.show();
-
-                    } else {
-                        // Pre-Marshmallow
-                        int version = Build.VERSION.SDK_INT;
-                        test = 1;
-//                            Toast toast = Toast.makeText(MainActivity.this, "API " + version, Toast.LENGTH_SHORT);
-//                            toast.show();
-                        runStream();
-                        Intent intent = new Intent();
-                        intent.setClass(MainActivity.this, MapsActivity.class);
-                        startActivity(intent);
-                    }
-//                        if(test==10) {
-//                            Intent intent = new Intent();
-//                            intent.setClass(MainActivity.this, MapsActivity.class);
-//                            startActivity(intent);
-//                        }
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, MapsActivity.class);
+                    startActivity(intent);
                 }
             });
 
@@ -165,18 +143,9 @@ public class MainActivity extends AppCompatActivity
             getcoin.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
-                        condition = "getcoin";
-                        test = runStreamWrapper();
-
-                    } else {
-                        test = 1;
-                        runStream();
-                        Intent intent = new Intent();
-                        intent.setClass(MainActivity.this, CoinListActivity.class);
-                        startActivity(intent);
-                    }
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, CoinListActivity.class);
+                    startActivity(intent);
                 }
             });
 
@@ -265,23 +234,23 @@ public class MainActivity extends AppCompatActivity
 //            toast.show();
 
         } else {
-            switch (condition) {
-                case "setting_coin": {
-                    Intent intent = new Intent();
-                    intent.setClass(MainActivity.this, SettingActivity.class);
-                    startActivity(intent);
-                } break;
-                case "getcoin": {
-                    Intent intent = new Intent();
-                    intent.setClass(MainActivity.this, CoinListActivity.class);
-                    startActivity(intent);
-                } break;
-                default: {
-                    Intent intent = new Intent();
-                    intent.setClass(MainActivity.this, MapsActivity.class);
-                    startActivity(intent);
-                } break;
-            }
+//            switch (condition) {
+//                case "setting_coin": {
+//                    Intent intent = new Intent();
+//                    intent.setClass(MainActivity.this, SettingActivity.class);
+//                    startActivity(intent);
+//                } break;
+//                case "getcoin": {
+//                    Intent intent = new Intent();
+//                    intent.setClass(MainActivity.this, CoinListActivity.class);
+//                    startActivity(intent);
+//                } break;
+//                default: {
+//                    Intent intent = new Intent();
+//                    intent.setClass(MainActivity.this, MapsActivity.class);
+//                    startActivity(intent);
+//                } break;
+//            }
         }
 //        else {
 //            Intent intent = new Intent();
@@ -374,23 +343,23 @@ public class MainActivity extends AppCompatActivity
                         && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                         && perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                     runStream();
-                    switch (condition) {
-                        case "setting_coin": {
-                            Intent intent = new Intent();
-                            intent.setClass(MainActivity.this, SettingActivity.class);
-                            startActivity(intent);
-                        } break;
-                        case "getcoin": {
-                            Intent intent = new Intent();
-                            intent.setClass(MainActivity.this, CoinListActivity.class);
-                            startActivity(intent);
-                        } break;
-                        default: {
-                            Intent intent = new Intent();
-                            intent.setClass(MainActivity.this, MapsActivity.class);
-                            startActivity(intent);
-                        } break;
-                    }
+//                    switch (condition) {
+//                        case "setting_coin": {
+//                            Intent intent = new Intent();
+//                            intent.setClass(MainActivity.this, SettingActivity.class);
+//                            startActivity(intent);
+//                        } break;
+//                        case "getcoin": {
+//                            Intent intent = new Intent();
+//                            intent.setClass(MainActivity.this, CoinListActivity.class);
+//                            startActivity(intent);
+//                        } break;
+//                        default: {
+//                            Intent intent = new Intent();
+//                            intent.setClass(MainActivity.this, MapsActivity.class);
+//                            startActivity(intent);
+//                        } break;
+//                    }
                 } else {
                     Toast.makeText(this, "Some required permissions have been denied", Toast.LENGTH_LONG).show();
                 }
