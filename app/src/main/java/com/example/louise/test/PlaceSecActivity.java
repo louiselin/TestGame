@@ -84,6 +84,8 @@ public class PlaceSecActivity extends AppCompatActivity {
     private String che_vi, che_me;
     private String switchOn = "ON";
     private String switchOff = "OFF";
+    private String txt_party = "";
+    private String txt_user = "";
 
 
     /**
@@ -109,6 +111,26 @@ public class PlaceSecActivity extends AppCompatActivity {
 
 
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
+
+        try {
+
+            FileReader fr = new FileReader(new File("sdcard/profile.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+//            Toast.makeText(SettingActivity.this, temp, Toast.LENGTH_LONG).show();
+
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                txt_party = datas[1];
+                txt_user = datas[0];
+
+            } else {
+                txt_party = StoryActivity.party;
+                txt_user = IndexActivity.userid;
+            }
+        } catch (Exception e) {}
+
 //        switch (StoryActivity.party) {
 //            case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
 //            default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
@@ -200,7 +222,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                 tv.setText("屬於:" + camp);
                 break;
             default:
-                tv.setText("屬於:" + StoryActivity.party + camp);
+                tv.setText("屬於:" + txt_party + camp);
                 break;
         }
         tv.setTextSize(15);
@@ -217,7 +239,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                 myTextView1.setText("敵方的生命值:" + hp);
                 break;
             default:
-                myTextView1.setText(StoryActivity.party + "方生命值:" + hp);
+                myTextView1.setText(txt_party + "方生命值:" + hp);
                 break;
         }
         myTextView1.setTextSize(15);
@@ -243,7 +265,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                 myProgressBar.setProgressDrawable(res.getDrawable(R.drawable.black_progressbar));
                 break;
             default: {
-                if (StoryActivity.party == "Sinae") {
+                if (txt_party == "Sinae") {
                     myProgressBar.setProgressDrawable(res.getDrawable(R.drawable.green_progressbar));
                     break;
                 } else {
@@ -258,7 +280,7 @@ public class PlaceSecActivity extends AppCompatActivity {
         thirdImage.setImageDrawable(loadImageFromURL(image));
         image = null;   // important!!
 
-        String url = "http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid;
+        String url = "http://140.119.163.40:8080/Spring08/app/user/" + txt_user;
         String userjson = "";
 
         try {
@@ -379,7 +401,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                 String votes = "";
                 try {
                     stelejson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/stele/" + placeid);
-                    userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid);
+                    userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + txt_user);
                     JSONArray stelelist = new JSONArray(stelejson);
                     JSONArray userlist = new JSONArray(userjson);
                     username = userlist.getJSONObject(0).getString("name");
@@ -400,7 +422,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                         String att = "";
                         String api = "";
                         try {
-                            api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + IndexActivity.userid;
+                            api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + txt_user;
                             att = Httpconnect.httpget(api);
 
                         } catch (ProtocolException e) {
@@ -439,7 +461,7 @@ public class PlaceSecActivity extends AppCompatActivity {
 
                 String re = "";
                 try {
-                    re = Httpconnect.httpost2("http://140.119.163.40:8080/Spring08/app/checkinList/" + IndexActivity.userid, "id=0&placeid=" + placeid + "&longitude=121.2&latitude=223.5");
+                    re = Httpconnect.httpost2("http://140.119.163.40:8080/Spring08/app/checkinList/" + txt_user, "id=0&placeid=" + placeid + "&longitude=121.2&latitude=223.5");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -524,7 +546,7 @@ public class PlaceSecActivity extends AppCompatActivity {
         String stelejson = "";
         try {
             placejson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/place/" + placeid);
-            userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid);
+            userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + txt_user);
             stelejson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/stele/" + placeid);
         } catch (ProtocolException e) {
             e.printStackTrace();
@@ -568,7 +590,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                 tv.setText("屬於:" + camp);
                 break;
             default:
-                tv.setText("屬於:" + StoryActivity.party + camp);
+                tv.setText("屬於:" + txt_party + camp);
                 break;
         }
         tv.setTextSize(15);
@@ -600,7 +622,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                 myProgressBar.setProgressDrawable(res.getDrawable(R.drawable.black_progressbar));
                 break;
             default: {
-                if (StoryActivity.party == "Sinae") {
+                if (txt_party == "Sinae") {
                     myProgressBar.setProgressDrawable(res.getDrawable(R.drawable.green_progressbar));
 //                    occupied();
                     break;

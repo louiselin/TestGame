@@ -28,7 +28,7 @@ public class StoryActivity extends AppCompatActivity {
     public static String party = "";
     private ImageView party_s;
     private ImageView party_a;
-    private String res;
+//    private String res;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,13 +55,13 @@ public class StoryActivity extends AppCompatActivity {
                         // TODO Auto-generated method stub
                         party = "Antayen";
                         try {
-                            String user = IndexActivity.userid;
-                            res = user+ "," +party;
-                            Toast.makeText(StoryActivity.this, res, Toast.LENGTH_SHORT).show();
-                            FileWriter fw = new FileWriter(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "profile.txt"));
+                            String res = IndexActivity.userid+ "," +party;
+//                            Toast.makeText(StoryActivity.this, res, Toast.LENGTH_SHORT).show();
+                            FileWriter fw = new FileWriter(new File("sdcard/profile.txt"));
                             final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
                             bw.write(res);
                             bw.close();
+//                            Toast.makeText(StoryActivity.this, "success", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             Toast.makeText(StoryActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                         }
@@ -89,13 +89,14 @@ public class StoryActivity extends AppCompatActivity {
                         // TODO Auto-generated method stub
                         party = "Sinae";
                         try {
-                            String user = IndexActivity.userid;
-                            res = user+ "," +party;
-                            Toast.makeText(StoryActivity.this, res, Toast.LENGTH_SHORT).show();
-                            FileWriter fw = new FileWriter(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "profile.txt"));
+                             String res = IndexActivity.userid+ "," +party;
+//                            Toast.makeText(StoryActivity.this, res, Toast.LENGTH_SHORT).show();
+                            FileWriter fw = new FileWriter(new File("sdcard/profile.txt"));
                             final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
                             bw.write(res);
                             bw.close();
+//                            Toast.makeText(StoryActivity.this, "success", Toast.LENGTH_SHORT).show();
+
                         } catch (Exception e) {
                             Toast.makeText(StoryActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                         }

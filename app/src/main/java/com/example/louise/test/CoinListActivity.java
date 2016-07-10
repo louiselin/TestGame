@@ -20,6 +20,9 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +36,32 @@ public class CoinListActivity extends AppCompatActivity {
     private List<Integer> r = new ArrayList<>();
     private List<Integer> s = new ArrayList<>();
 
+    private String txt_party = "";
+    private String txt_user = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_list);
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
+        try {
+
+            FileReader fr = new FileReader(new File("sdcard/profile.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+//            Toast.makeText(SettingActivity.this, temp, Toast.LENGTH_LONG).show();
+
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                txt_party = datas[1];
+                txt_user = datas[0];
+
+            } else {
+                txt_party = StoryActivity.party;
+                txt_user = IndexActivity.userid;
+            }
+        } catch (Exception e) {}
 
         searchcoin = (Button) findViewById(R.id.searchcoin);
         searchcoin.setTextColor(0xffffffff);
@@ -54,7 +78,7 @@ public class CoinListActivity extends AppCompatActivity {
 
 
         try {
-            userrunelistjson = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/list/" + IndexActivity.userid);
+            userrunelistjson = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/list/" + txt_user);
             JSONArray userrunelist = new JSONArray(userrunelistjson);
 
             i.add(R.drawable.coin);
@@ -140,7 +164,7 @@ public class CoinListActivity extends AppCompatActivity {
                 final View view = inflater.inflate(R.layout.ditchcoin, null);
 
                 TextView selfuserid = (TextView) (view.findViewById(R.id.coinlist_userid));
-                selfuserid.setText("選擇贈送金幣id "+ r.get(mPosition)+"\n您的使用者 id 爲: " + IndexActivity.userid);
+                selfuserid.setText("選擇贈送金幣id "+ r.get(mPosition)+"\n您的使用者 id 爲: " + txt_user);
 
                 final EditText ditchcoinnum = (EditText) (view.findViewById(R.id.ditchcoinnum));
 //                ditchcoinnum.setText(s.get(mPosition));
@@ -156,7 +180,7 @@ public class CoinListActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
 
 
-                                String userid = IndexActivity.userid;
+//                                String userid = IndexActivity.userid;
                                 int runeid = r.get(mPosition);
                                 String runenum = ditchcoinnum.getText().toString();
                                 String sendid = senduserid.getText().toString();
@@ -167,7 +191,7 @@ public class CoinListActivity extends AppCompatActivity {
                                         Toast.makeText(CoinListActivity.this, "沒有那麼多的金幣喔 > <", Toast.LENGTH_SHORT).show();
                                     } else {
                                         try {
-                                            res = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/send/" + userid
+                                            res = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/send/" + txt_user
                                                     + "/" + sendid + "/" + runeid + "/" + runenum);
                                         } catch (Exception e) {
                                             e.printStackTrace();

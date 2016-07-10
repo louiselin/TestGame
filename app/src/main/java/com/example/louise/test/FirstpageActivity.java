@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,12 +38,6 @@ public class FirstpageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firstpage);
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
-
-        final Intent intent = new Intent();
-        intent.setClass(FirstpageActivity.this, IndexActivity.class);
-        final Button loginbtn = (Button) findViewById(R.id.first);
-        loginbtn.setTextColor(0xffffffff);
-
         if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
             test = runStreamWrapper();
 
@@ -48,6 +46,26 @@ public class FirstpageActivity extends AppCompatActivity {
 
 
         }
+        final Intent intent = new Intent();
+
+        try {
+            File file = new File("sdcard/profile.txt");
+            File file2 = new File("sdcard/output.txt");
+            if (!file.exists() || !file2.exists()) {
+                //Do action
+                intent.setClass(FirstpageActivity.this, IndexActivity.class);
+            } else {
+                intent.setClass(FirstpageActivity.this, MainActivity.class);
+            }
+        } catch (Exception e) {
+               Toast.makeText(FirstpageActivity.this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+//        intent.setClass(FirstpageActivity.this, IndexActivity.class);
+        final Button loginbtn = (Button) findViewById(R.id.first);
+        loginbtn.setTextColor(0xffffffff);
+
+
 
         Timer timer=new Timer();
         TimerTask task=new TimerTask()
@@ -55,12 +73,12 @@ public class FirstpageActivity extends AppCompatActivity {
             @Override
             public void run(){
                 startActivity(intent);
-                loginbtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(intent);
-                    }
-                });
+//                loginbtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        startActivity(intent);
+//                    }
+//                });
             }
 
         };

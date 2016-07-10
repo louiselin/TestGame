@@ -8,6 +8,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +40,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.net.ProtocolException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +58,8 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
     GoogleApiClient mGoogleApiClient;
     SupportMapFragment mFragment;
     GoogleMap mGoogleMap;
+    private String txt_party = "";
+    private String txt_user = "";
 
     Marker currLocationMarker;
     List<Double> latitude = new ArrayList<>();
@@ -64,6 +70,24 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin);
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
+        try {
+
+            FileReader fr = new FileReader(new File("sdcard/profile.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+//            Toast.makeText(SettingActivity.this, temp, Toast.LENGTH_LONG).show();
+
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                txt_party = datas[1];
+                txt_user = datas[0];
+
+            } else {
+                txt_party = StoryActivity.party;
+                txt_user = IndexActivity.userid;
+            }
+        } catch (Exception e) {}
 
 //        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.coinmap);
         searchcoin = (Button) findViewById(R.id.searchcoin);
@@ -230,13 +254,13 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
                 String re = "";
                 if (marker.getTitle().equals("0")) {
                     try {
-                        re = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/get/" + IndexActivity.userid + "/1/1");
+                        re = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/get/" + txt_user + "/1/1");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else if (marker.getTitle().equals("1")){
                     try {
-                        re = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/get/" + IndexActivity.userid + "/2/1");
+                        re = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/get/" + txt_user + "/2/1");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

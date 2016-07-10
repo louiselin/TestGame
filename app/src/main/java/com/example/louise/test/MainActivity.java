@@ -23,6 +23,9 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.net.ProtocolException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,19 +47,39 @@ public class MainActivity extends AppCompatActivity
     private int test = 0;
     private String condition = "";
 
+    private String txt_party = "";
+    private String txt_user = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
 
+        try {
 
+            FileReader fr = new FileReader(new File("sdcard/profile.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+//            Toast.makeText(SettingActivity.this, temp, Toast.LENGTH_LONG).show();
+
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                txt_party = datas[1];
+                txt_user = datas[0];
+
+            } else {
+                txt_party = StoryActivity.party;
+                txt_user = IndexActivity.userid;
+            }
+        } catch (Exception e) {}
 
 //            if(IndexActivity.userid != "35") {
             String keepername = "";
             String userjson = "";
             try {
-                userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid);
+                userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + txt_user);
 
             } catch (ProtocolException e) {
                 e.printStackTrace();
@@ -71,14 +94,14 @@ public class MainActivity extends AppCompatActivity
             }
 
 
-        if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
-            test = runStreamWrapper();
-
-        } else {
-            test = 1;
-
-
-        }
+//        if (Build.VERSION.SDK_INT >= 23) { // platform version android 6
+//            test = runStreamWrapper();
+//
+//        } else {
+//            test = 1;
+//
+//
+//        }
 
 //            textView = (TextView) findViewById(R.id.keeper);
 //            textView.setText("攻佔吧！" + keepername + " 爲 " + StoryActivity.party + " 戰鬥吧！");

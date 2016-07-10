@@ -16,17 +16,22 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.net.ProtocolException;
 
 
 public class ProfileUpdateActivity extends AppCompatActivity {
-    String url = "http://140.119.163.40:8080/Spring08/app/user/"+IndexActivity.userid;
+    private String url = "http://140.119.163.40:8080/Spring08/app/user/"+IndexActivity.userid;
     private String stuid="";
     private String name="";
     private String email="";
     private int level=0;
     private int exp=0;
     private int votes = 0;
+    private String txt_party = "";
+    private String txt_user = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +43,29 @@ public class ProfileUpdateActivity extends AppCompatActivity {
 //        }
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
 
+        try {
+
+            FileReader fr = new FileReader(new File("sdcard/profile.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+//            Toast.makeText(SettingActivity.this, temp, Toast.LENGTH_LONG).show();
+
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                txt_party = datas[1];
+                txt_user = datas[0];
+
+            } else {
+                txt_party = StoryActivity.party;
+                txt_user = IndexActivity.userid;
+            }
+        } catch (Exception e) {}
+
         String userjson="";
 
 
+        url = "http://140.119.163.40:8080/Spring08/app/user/"+txt_user;
         try {
             userjson = Httpconnect.httpget(url);
 
@@ -72,7 +97,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
 //        editText2.setText(email);
 
         final TextView myTextView5 = (TextView)findViewById(R.id.keepername);
-        myTextView5.setText("玩家匿稱：" + name);
+        myTextView5.setText("玩家匿稱：" + name + "("+ txt_party+")");
 
         final TextView myTextView6 = (TextView)findViewById(R.id.upemail);
         myTextView6.setText("玩家信箱：" + email);
@@ -168,8 +193,8 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                                         int votes = userlist.getJSONObject(0).getInt("votes");
                                         String stuid= userlist.getJSONObject(0).getString("studentid");
 
-                                        if(id == IndexActivity.userid) {
-                                            re = Httpconnect.httpost2("http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid,
+                                        if(id == txt_user) {
+                                            re = Httpconnect.httpost2("http://140.119.163.40:8080/Spring08/app/user/" + txt_user,
                                                     "name=" + name + "&studentid=" + stuid + "&email=" + email + "&level=" + level + "&exp=" + exp + "&votes=" + votes);
                                         } else {
                                             re = "failed";
