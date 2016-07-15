@@ -61,6 +61,7 @@ public class StoryActivity extends AppCompatActivity {
                             final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
                             bw.write(res);
                             bw.close();
+
 //                            Toast.makeText(StoryActivity.this, "success", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             Toast.makeText(StoryActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
@@ -144,35 +145,35 @@ public class StoryActivity extends AppCompatActivity {
 //                }
 //            });
     }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {//捕捉返回鍵
-        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            ConfirmExit();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    public void ConfirmExit(){
-        AlertDialog.Builder ad=new AlertDialog.Builder(StoryActivity.this);
-        ad.setTitle("退出確認");
-        ad.setMessage("您確定要退出了嗎？");
-        ad.setPositiveButton("是", new DialogInterface.OnClickListener() {//退出按鈕
-            public void onClick(DialogInterface dialog, int i) {
-                // TODO Auto-generated method stub
-                finish();//關閉activity
-            }
-        });
-        ad.setNegativeButton("否",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int i) {
-                return;
-            }
-        });
-        ad.show();
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //System.exit(0);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {//捕捉返回鍵
+//        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+//            ConfirmExit();
+//            return true;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
+//
+//    public void ConfirmExit(){
+//        AlertDialog.Builder ad=new AlertDialog.Builder(StoryActivity.this);
+//        ad.setTitle("退出確認");
+//        ad.setMessage("您確定要退出了嗎？");
+//        ad.setPositiveButton("是", new DialogInterface.OnClickListener() {//退出按鈕
+//            public void onClick(DialogInterface dialog, int i) {
+//                // TODO Auto-generated method stub
+//                finish();//關閉activity
+//            }
+//        });
+//        ad.setNegativeButton("否",new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int i) {
+//                return;
+//            }
+//        });
+//        ad.show();
+//    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        //System.exit(0);
+//    }
 }

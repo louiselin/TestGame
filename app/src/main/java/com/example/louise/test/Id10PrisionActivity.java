@@ -38,6 +38,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.net.ProtocolException;
 
 public class Id10PrisionActivity extends AppCompatActivity {
@@ -51,6 +54,9 @@ public class Id10PrisionActivity extends AppCompatActivity {
     private ProgressBar myProgressBar;
     private MediaPlayer soundjump;
     private MediaPlayer soundpunch;
+    private String txt_party = "";
+    private String txt_user = "";
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -63,6 +69,26 @@ public class Id10PrisionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_id10_prision);
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
+
+        try {
+
+            FileReader fr = new FileReader(new File("sdcard/profile.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+//            Toast.makeText(SettingActivity.this, temp, Toast.LENGTH_LONG).show();
+
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                txt_party = datas[1];
+                txt_user = datas[0];
+
+            } else {
+                txt_party = StoryActivity.party;
+                txt_user = IndexActivity.userid;
+            }
+        } catch (Exception e) {}
+
         Button waterprison = (Button) findViewById(R.id.waterprison);
         waterprison.setTextSize(20);
         waterprison.setTextColor(Color.WHITE);
@@ -206,7 +232,7 @@ public class Id10PrisionActivity extends AppCompatActivity {
         thirdImage.setImageDrawable(loadImageFromURL(image));
         image = null;   // important!!
 
-        String url = "http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid;
+        String url = "http://140.119.163.40:8080/Spring08/app/user/" + txt_user;
         String userjson = "";
 
         try {
@@ -316,7 +342,7 @@ public class Id10PrisionActivity extends AppCompatActivity {
 
                 String re = "";
                 try {
-                    re = Httpconnect.httpost2("http://140.119.163.40:8080/Spring08/app/checkinList/" + IndexActivity.userid, "id=0&placeid=" + placeid + "&longitude=121.2&latitude=223.5");
+                    re = Httpconnect.httpost2("http://140.119.163.40:8080/Spring08/app/checkinList/" + txt_user, "id=0&placeid=" + placeid + "&longitude=121.2&latitude=223.5");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -390,7 +416,7 @@ public class Id10PrisionActivity extends AppCompatActivity {
         String stelejson = "";
         try {
             placejson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/place/" + placeid);
-            userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + IndexActivity.userid);
+            userjson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/user/" + txt_user);
             stelejson = Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/stele/" + placeid);
         } catch (ProtocolException e) {
             e.printStackTrace();

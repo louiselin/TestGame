@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.louise.test.PuzzleActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="恭喜您是超原力使者!!!"
+        android:id="@+id/title_superpower"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="是否釋放超原力"
+        android:id="@+id/releasesp"
+        android:background="@drawable/button_custom_profile"
+        android:textColor="#E5E4E2"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="結果"
+        android:id="@+id/superpower"
+        android:layout_above="@+id/releasesp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp" />
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="320dp"
+        android:id="@+id/iv_sp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/title_superpower"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

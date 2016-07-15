@@ -193,7 +193,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                                         int votes = userlist.getJSONObject(0).getInt("votes");
                                         String stuid= userlist.getJSONObject(0).getString("studentid");
 
-                                        if(id == txt_user) {
+                                        if(id.equals(txt_user)) {
                                             re = Httpconnect.httpost2("http://140.119.163.40:8080/Spring08/app/user/" + txt_user,
                                                     "name=" + name + "&studentid=" + stuid + "&email=" + email + "&level=" + level + "&exp=" + exp + "&votes=" + votes);
                                         } else {
@@ -201,12 +201,12 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                                         }
                                     } catch (Exception e) {
                                     }
-                                    Toast toast2 = Toast.makeText(ProfileUpdateActivity.this, re, Toast.LENGTH_SHORT);
+                                    Toast toast2 = Toast.makeText(ProfileUpdateActivity.this, re+" 畫面更新 ><", Toast.LENGTH_SHORT);
                                     toast2.show();
 
-                                    Intent intent = new Intent();
-                                    intent.setClass(ProfileUpdateActivity.this, MainActivity.class);
-                                    startActivity(intent);
+//                                    Intent intent = new Intent();
+//                                    intent.setClass(ProfileUpdateActivity.this, MainActivity.class);
+//                                    startActivity(intent);
 
                             }
                         })

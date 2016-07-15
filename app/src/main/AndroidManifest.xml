@@ -20,10 +20,9 @@
     <uses-permission android:name="android.permission.RESTART_PACKAGES" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
-    <!--在 AndroidManifest.xml 加入存取外部儲存空間的權限-->
+    <!-- 在 AndroidManifest.xml 加入存取外部儲存空間的權限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
 
     <application
         android:allowBackup="true"
@@ -216,7 +215,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
-
+        </activity>
+        <activity
+            android:name=".PuzzleActivity"
+            android:label="Puzzle Collection"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
         </activity>
     </application>
 

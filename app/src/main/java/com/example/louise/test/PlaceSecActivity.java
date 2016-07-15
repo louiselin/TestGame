@@ -53,9 +53,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.ArrayList;
@@ -70,6 +72,8 @@ public class PlaceSecActivity extends AppCompatActivity {
     private List<String> listcheck = new ArrayList<String>();
     private Integer placeid;
     private String placename;
+    private Integer placeidd;
+    private String placenamee;
     private RatingBar ratingBar;
     private float hp_init = 20;
     private String hp = "";
@@ -103,11 +107,20 @@ public class PlaceSecActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_sec);
-        Bundle bundle = this.getIntent().getExtras();
-        placeid = bundle.getInt("placeid");
-        placename = bundle.getString("placename");
+//        Bundle bundle = this.getIntent().getExtras();
+//        placeidd = bundle.getInt("placeid");
+//        placenamee = bundle.getString("placename");
 
 
+//        try {
+//            FileWriter fw = new FileWriter(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "placelog.txt"));
+//            final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
+//            bw.write(placeidd + "," + placenamee);
+//            bw.close();
+////            Toast.makeText(SettingActivity.this, "save success", Toast.LENGTH_SHORT).show();
+//        } catch (Exception e) {
+//            Toast.makeText(PlaceSecActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+//        }
 
 
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
@@ -131,6 +144,24 @@ public class PlaceSecActivity extends AppCompatActivity {
             }
         } catch (Exception e) {}
 
+        try {
+
+            FileReader fr = new FileReader(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "placelog.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+//            Toast.makeText(SettingActivity.this, temp, Toast.LENGTH_LONG).show();
+
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                placename = datas[1];
+                placeid = Integer.valueOf(datas[0]);
+            }
+        } catch (Exception e) {
+//            placename = placenamee;
+//            placeid = placeidd;
+        }
+
 //        switch (StoryActivity.party) {
 //            case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
 //            default: getWindow().setBackgroundDrawableResource(R.drawable.red); break;
@@ -140,6 +171,15 @@ public class PlaceSecActivity extends AppCompatActivity {
         if(placeid == 10) {
             Intent intent = new Intent();
             intent.setClass(PlaceSecActivity.this, Id10PrisionActivity.class);
+            finish();
+            startActivity(intent);
+        }
+        Random random = new Random();
+        randomInt = random.nextInt(2);
+
+        if(placeid == 1 && randomInt == 0) {
+            Intent intent = new Intent();
+            intent.setClass(PlaceSecActivity.this, PuzzleActivity.class);
             finish();
             startActivity(intent);
         }
@@ -309,8 +349,7 @@ public class PlaceSecActivity extends AppCompatActivity {
         weaponlist.add(R.drawable.weapon2);
         weaponlist.add(R.drawable.weapon3);
 
-        Random random = new Random();
-        randomInt = random.nextInt(weaponlist.size());
+
         weapon.setImageResource(weaponlist.get(randomInt));
         weapon.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -338,7 +377,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                         break;
                     }
                     case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:{
+                    case MotionEvent.ACTION_CANCEL: {
                         weapon.setImageResource(0);
                         weapon.setImageResource(weaponlist.get(randomInt));
                         weapon.setRotation(0);

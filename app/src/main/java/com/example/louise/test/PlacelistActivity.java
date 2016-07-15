@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +28,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -71,11 +75,21 @@ public class PlacelistActivity extends AppCompatActivity {
                 intent.setClass(PlacelistActivity.this, PlaceSecActivity.class);
 
                 //傳送點選到的index
-                Bundle bundle = new Bundle();
-                bundle.putInt("placeid", MapsActivity.plistid.get(position));
-                bundle.putString("placename", MapsActivity.plistname.get(position));
-                //將Bundle物件assign給intent
-                intent.putExtras(bundle);
+//                Bundle bundle = new Bundle();
+//                bundle.putInt("placeid", MapsActivity.plistid.get(position));
+//                bundle.putString("placename", MapsActivity.plistname.get(position));
+//                //將Bundle物件assign給intent
+//                intent.putExtras(bundle);
+                try {
+                    FileWriter fw = new FileWriter(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "placelog.txt"));
+                    final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
+                    bw.write(MapsActivity.plistid.get(position) + "," + MapsActivity.plistname.get(position));
+                    bw.close();
+//            Toast.makeText(SettingActivity.this, "save success", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(PlacelistActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                }
+
 
                 startActivity(intent);
 

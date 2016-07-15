@@ -14,6 +14,7 @@ import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -50,8 +51,8 @@ public class FirstpageActivity extends AppCompatActivity {
 
         try {
             File file = new File("sdcard/profile.txt");
-            File file2 = new File("sdcard/output.txt");
-            if (!file.exists() || !file2.exists()) {
+//            File file2 = new File("sdcard/output.txt");
+            if (!file.exists()) {
                 //Do action
                 intent.setClass(FirstpageActivity.this, IndexActivity.class);
             } else {
@@ -65,24 +66,24 @@ public class FirstpageActivity extends AppCompatActivity {
         final Button loginbtn = (Button) findViewById(R.id.first);
         loginbtn.setTextColor(0xffffffff);
 
-
-
-        Timer timer=new Timer();
-        TimerTask task=new TimerTask()
-        {
+        loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run(){
+            public void onClick(View v) {
                 startActivity(intent);
-//                loginbtn.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        startActivity(intent);
-//                    }
-//                });
             }
+        });
 
-        };
-        timer.schedule(task, 2000);
+//        Timer timer=new Timer();
+//        TimerTask task=new TimerTask()
+//        {
+//            @Override
+//            public void run(){
+//                startActivity(intent);
+////
+//            }
+//
+//        };
+//        timer.schedule(task, 2000);
 
 
 
@@ -286,4 +287,35 @@ public class FirstpageActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {//捕捉返回鍵
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            ConfirmExit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void ConfirmExit(){
+        AlertDialog.Builder ad=new AlertDialog.Builder(FirstpageActivity.this);
+        ad.setTitle("退出確認");
+        ad.setMessage("您確定要退出了嗎？");
+        ad.setPositiveButton("是", new DialogInterface.OnClickListener() {//退出按鈕
+            public void onClick(DialogInterface dialog, int i) {
+                // TODO Auto-generated method stub
+                finish();//關閉activity
+            }
+        });
+        ad.setNegativeButton("否",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int i) {
+                return;
+            }
+        });
+        ad.show();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //System.exit(0);
+    }
 }
