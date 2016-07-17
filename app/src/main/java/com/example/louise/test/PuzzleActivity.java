@@ -1,5 +1,8 @@
 package com.example.louise.test;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -43,30 +46,73 @@ public class PuzzleActivity extends AppCompatActivity {
                 txt_user = IndexActivity.userid;
             }
         } catch (Exception e) {}
-        iv_sp = (ImageView) findViewById(R.id.iv_sp);
-        iv_sp.setImageResource(R.drawable.power);
+
         superpower = (TextView) findViewById(R.id.superpower);
-        superpower.setText(txt_party+" : "+0+", Other: "+0);
-        sp = (Button) findViewById(R.id.releasesp);
+//        superpower.setText(txt_party + " : " + 0 + ", Other: " + 0);
 
-        sp.setOnClickListener(new View.OnClickListener() {
+        iv_sp = (ImageView) findViewById(R.id.iv_sp);
+        if (txt_party.equals("Sinae")) {
+            iv_sp.setImageResource(R.drawable.rpower);
+        } else {
+            iv_sp.setImageResource(R.drawable.bpower);
+        }
+        iv_sp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                ++res;
-                int o_res = 0;
+                AlertDialog.Builder ad = new AlertDialog.Builder(PuzzleActivity.this);
+                ad.setTitle("是否釋放超原力？");
+//                ad.setMessage("");
+                ad.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int i) {
+                        // TODO Auto-generated method stub
 
-                superpower.setText(txt_party+" : "+res+", Other: "+o_res);
-                int a = res + o_res;
+                        ++res;
+                        int o_res = 0;
 
-                if (a == 6) {
-                    if (txt_party.equals("Sinae")) {
-                        iv_sp.setImageResource(R.drawable.rpower);
-                    } else {
-                        iv_sp.setImageResource(R.drawable.bpower);
+                        superpower.setText(txt_party + " : " + res + ", Other: " + o_res);
+//                        int a = res + o_res;
+//
+//                        if (a == 6) {
+//                            if (txt_party.equals("Sinae")) {
+//                                iv_sp.setImageResource(R.drawable.rpower);
+//                            } else {
+//                                iv_sp.setImageResource(R.drawable.bpower);
+//                            }
+//                        }
+//                        if (a > 5) res = 0;
+
+                        iv_sp.setEnabled(false);
+                        iv_sp.setImageResource(R.drawable.power);
                     }
-                }
-                if (a >5) res = 0;
+                });
+                ad.setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int i) {
+                        return;
+                    }
+                });
+                ad.show();
             }
         });
+
+//        sp = (Button) findViewById(R.id.releasesp);
+
+//        sp.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                ++res;
+//                int o_res = 0;
+//
+//                superpower.setText(txt_party+" : "+res+", Other: "+o_res);
+//                int a = res + o_res;
+//
+//                if (a == 6) {
+//                    if (txt_party.equals("Sinae")) {
+//                        iv_sp.setImageResource(R.drawable.rpower);
+//                    } else {
+//                        iv_sp.setImageResource(R.drawable.bpower);
+//                    }
+//                }
+//                if (a >5) res = 0;
+//            }
+//        });
 
 
     }

@@ -25,6 +25,9 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.net.ProtocolException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +44,31 @@ public class PlaceActivity extends AppCompatActivity {
     String keeperlevel = "";
     String keepervotes = "";
     String keeperexp = "";
+    private String txt_party = "";
+    private String txt_user = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
+        try {
+
+            FileReader fr = new FileReader(new File("sdcard/profile.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+//            Toast.makeText(SettingActivity.this, temp, Toast.LENGTH_LONG).show();
+
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                txt_party = datas[1];
+                txt_user = datas[0];
+
+            } else {
+                txt_party = StoryActivity.party;
+                txt_user = IndexActivity.userid;
+            }
+        } catch (Exception e) {}
 
         Bundle bundle =this.getIntent().getExtras();
         placeid = bundle.getInt("placeid");
@@ -135,7 +158,7 @@ public class PlaceActivity extends AppCompatActivity {
         findViews();
         thirdImage.setImageDrawable(loadImageFromURL(image));
 
-        String url = "http://140.119.163.40:8080/Spring08/app/user/"+IndexActivity.userid;
+        String url = "http://140.119.163.40:8080/Spring08/app/user/"+txt_user;
         String userjson="";
 
 
@@ -188,7 +211,7 @@ public class PlaceActivity extends AppCompatActivity {
                 try {
 
                     // vote=Httpconnect.httpost("http://140.119.163.40:8080/Spring08/app/votes/"+placeid+"/0/"+MapsActivity.userid);
-                    vote = Httpconnect.httpost("http://140.119.163.40:8080/Spring08/app/votes/" + placeid + "/0/" + IndexActivity.userid);
+                    vote = Httpconnect.httpost("http://140.119.163.40:8080/Spring08/app/votes/" + placeid + "/0/" + txt_user);
                     // vote=Httpconnect.httpget("http://140.119.163.40:8080/Spring08/app/votes/" + placeid + "/0/" + IndexActivity.userid);
                 } catch (ProtocolException e) {
                     e.printStackTrace();
@@ -209,7 +232,7 @@ public class PlaceActivity extends AppCompatActivity {
                 String vote="";
                 try {
 //                    // vote=Httpconnect.httpost("http://140.119.163.40:8080/Spring08/app/votes/"+placeid+"/0/"+MapsActivity.userid);
-                    vote=Httpconnect.httpost("http://140.119.163.40:8080/Spring08/app/votes/" + placeid + "/1/" + IndexActivity.userid);
+                    vote=Httpconnect.httpost("http://140.119.163.40:8080/Spring08/app/votes/" + placeid + "/1/" + txt_user);
                 } catch (ProtocolException e) {
                     e.printStackTrace();
                 }
@@ -227,7 +250,7 @@ public class PlaceActivity extends AppCompatActivity {
                 myTextView8.setTextColor(Color.RED);
                 String re="";
                 try {
-                    re=Httpconnect.httpost2("http://140.119.163.40:8080/Spring08/app/checkinList/"+ IndexActivity.userid,"id=0&placeid="+placeid+"&longitude=121.2&latitude=223.5");
+                    re=Httpconnect.httpost2("http://140.119.163.40:8080/Spring08/app/checkinList/"+ txt_user,"id=0&placeid="+placeid+"&longitude=121.2&latitude=223.5");
 
                 } catch (Exception e) {
                     e.printStackTrace();

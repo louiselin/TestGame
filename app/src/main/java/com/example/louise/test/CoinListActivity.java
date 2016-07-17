@@ -161,15 +161,15 @@ public class CoinListActivity extends AppCompatActivity {
 //                Toast.makeText(CoinListActivity.this, "You Clicked " + r.get(mPosition) + "HAVE: " + s.get(mPosition), Toast.LENGTH_LONG).show();
 
                 LayoutInflater inflater = LayoutInflater.from(CoinListActivity.this);
-                final View view = inflater.inflate(R.layout.ditchcoin, null);
+                final View view = inflater.inflate(R.layout.ditchcoin2, null);
 
-                TextView selfuserid = (TextView) (view.findViewById(R.id.coinlist_userid));
+                TextView selfuserid = (TextView) (view.findViewById(R.id.coinlist_userid2));
                 selfuserid.setText("選擇贈送金幣id "+ r.get(mPosition)+"\n您的使用者 id 爲: " + txt_user);
 
-                final EditText ditchcoinnum = (EditText) (view.findViewById(R.id.ditchcoinnum));
+                final EditText ditchcoinnum = (EditText) (view.findViewById(R.id.ditchcoinnum2));
 //                ditchcoinnum.setText(s.get(mPosition));
 
-                final EditText senduserid = (EditText) (view.findViewById(R.id.senduserid));
+//                final EditText senduserid = (EditText) (view.findViewById(R.id.senduserid));
 //                senduserid.setText("1");
 
                 //語法一：new AlertDialog.Builder(主程式類別).XXX.XXX.XXX;
@@ -183,7 +183,7 @@ public class CoinListActivity extends AppCompatActivity {
 //                                String userid = IndexActivity.userid;
                                 int runeid = r.get(mPosition);
                                 String runenum = ditchcoinnum.getText().toString();
-                                String sendid = senduserid.getText().toString();
+//                                String sendid = senduserid.getText().toString();
 
                                 try {
                                     int last = Integer.valueOf(s.get(mPosition)).intValue() - Integer.valueOf(runenum).intValue();
@@ -191,12 +191,13 @@ public class CoinListActivity extends AppCompatActivity {
                                         Toast.makeText(CoinListActivity.this, "沒有那麼多的金幣喔 > <", Toast.LENGTH_SHORT).show();
                                     } else {
                                         try {
-                                            res = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/send/" + txt_user
-                                                    + "/" + sendid + "/" + runeid + "/" + runenum);
+//                                            res = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/send/" + txt_user
+//                                                    + "/" + sendid + "/" + runeid + "/" + runenum);
+
+                                            Toast.makeText(CoinListActivity.this, runenum+","+CoinActivity.cla+","+CoinActivity.clo, Toast.LENGTH_SHORT).show();
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
-//                                    Toast.makeText(CoinListActivity.this, res, Toast.LENGTH_SHORT).show();
                                         if (!res.equals("error")) {
                                             Toast.makeText(CoinListActivity.this, "剩下 " + Integer.toString(last) + " 個\n重整畫面更新><", Toast.LENGTH_SHORT).show();
                                         } else {
@@ -222,4 +223,5 @@ public class CoinListActivity extends AppCompatActivity {
             }
         }
     }
+
 }

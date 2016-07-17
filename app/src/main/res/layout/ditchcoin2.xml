@@ -12,7 +12,7 @@
         android:text="您的使用者 id 爲: "
         android:layout_marginLeft="40dp"
         android:layout_marginTop="20dp"
-        android:id="@+id/coinlist_userid" />
+        android:id="@+id/coinlist_userid2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,30 +20,15 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="10dp"
         android:text="您要丟棄金幣數目: "
-        android:id="@+id/info" />
+        android:id="@+id/info2" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:numeric="integer"
-        android:id="@+id/ditchcoinnum">
+        android:id="@+id/ditchcoinnum2">
         <requestFocus />
-    </EditText>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="贈送對象(填對方id): "
-        android:layout_marginLeft="40dp"
-        android:id="@+id/textuserid" />
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:numeric="integer"
-        android:id="@+id/senduserid">
     </EditText>
 
 </LinearLayout>

@@ -175,7 +175,7 @@ public class PlaceSecActivity extends AppCompatActivity {
             startActivity(intent);
         }
         Random random = new Random();
-        randomInt = random.nextInt(2);
+        randomInt = random.nextInt(3);
 
         if(placeid == 1 && randomInt == 0) {
             Intent intent = new Intent();

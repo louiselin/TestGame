@@ -17,25 +17,13 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="是否釋放超原力"
-        android:id="@+id/releasesp"
-        android:background="@drawable/button_custom_profile"
-        android:textColor="#E5E4E2"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="結果"
         android:id="@+id/superpower"
-        android:layout_above="@+id/releasesp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:layout_width="300dp"

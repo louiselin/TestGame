@@ -65,7 +65,6 @@ public class FirstpageActivity extends AppCompatActivity {
 //        intent.setClass(FirstpageActivity.this, IndexActivity.class);
         final Button loginbtn = (Button) findViewById(R.id.first);
         loginbtn.setTextColor(0xffffffff);
-
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -54,6 +54,7 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
     private Button searchcoin;
     Double la, lo;
     Double currla=24.985658, currlo=121.5747848;
+    public static Double cla, clo;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     SupportMapFragment mFragment;
@@ -177,7 +178,9 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
         currla = mLastLocation.getLatitude();
+        cla = currla;
         currlo = mLastLocation.getLongitude();
+        clo = currlo;
         LatLng whole = new LatLng(currla, currlo);
         GroundOverlayOptions n = new GroundOverlayOptions()
                 .image(BitmapDescriptorFactory.fromResource(R.drawable.cbg))
@@ -251,6 +254,7 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker) {
                 marker.remove();
+                Toast.makeText(CoinActivity.this, "runeid= "+marker.getTitle()+"\nposition= "+currla+","+currlo,Toast.LENGTH_SHORT).show();
                 String re = "";
                 if (marker.getTitle().equals("0")) {
                     try {
