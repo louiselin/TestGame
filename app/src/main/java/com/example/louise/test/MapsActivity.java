@@ -75,7 +75,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private CheckBox donotshowagain;
     public static final String PREFS_NAME = "map";
     LocationRequest mLocationRequest;
-    private Double currla, currlo;
+    public static Double currla, currlo;
     private Double latitude, longitude;
     private float distance, d;
     private LatLng po;
@@ -284,7 +284,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
                         }
 
-                        if (d > 100) {
+                        if (d > 1000) {
 //                            Toast.makeText(MapsActivity.this, currla + "," + currlo + "," + d, Toast.LENGTH_LONG).show();
                             Toast.makeText(MapsActivity.this, "距離太遠了喔>< 動起來!!", Toast.LENGTH_SHORT).show();
                             Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);

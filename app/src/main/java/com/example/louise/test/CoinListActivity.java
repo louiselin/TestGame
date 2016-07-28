@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,8 @@ public class CoinListActivity extends AppCompatActivity {
 
     private String txt_party = "";
     private String txt_user = "";
+    private Double mapcurrla = MapsActivity.currla;
+    private Double mapcurrlo = MapsActivity.currlo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,18 +194,22 @@ public class CoinListActivity extends AppCompatActivity {
                                         Toast.makeText(CoinListActivity.this, "沒有那麼多的金幣喔 > <", Toast.LENGTH_SHORT).show();
                                     } else {
                                         try {
-//                                            res = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/send/" + txt_user
-//                                                    + "/" + sendid + "/" + runeid + "/" + runenum);
-
-                                            Toast.makeText(CoinListActivity.this, runenum+","+CoinActivity.cla+","+CoinActivity.clo, Toast.LENGTH_SHORT).show();
+                                            if (mapcurrlo == null || mapcurrla == null) {
+                                                Toast.makeText(CoinListActivity.this, "請先到開始遊戲做巡邏或淨化動作 ><", Toast.LENGTH_SHORT).show();
+                                            } else {
+//                                            http://140.119.163.40:8080/GeniusLoci/runeTransaction/app/throw/44/2/1/121.573579/24.987155/
+                                                res = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/runeTransaction/app/throw/" + txt_user
+                                                        + "/" + runeid + "/" + runenum + "/" + mapcurrlo + "/" + mapcurrla + "/");
+                                                if (!res.equals("error")) {
+                                                    Toast.makeText(CoinListActivity.this, "剩下 " + Integer.toString(last) + " 個, 重整畫面更新 ><", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(CoinListActivity.this, "輸入有誤 QQQQ", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
-                                        if (!res.equals("error")) {
-                                            Toast.makeText(CoinListActivity.this, "剩下 " + Integer.toString(last) + " 個\n重整畫面更新><", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(CoinListActivity.this, "輸入有誤 QQQQ", Toast.LENGTH_SHORT).show();
-                                        }
+
                                     }
                                 } catch (Exception e) {
                                     Toast.makeText(CoinListActivity.this, "請填入數值！", Toast.LENGTH_SHORT).show();

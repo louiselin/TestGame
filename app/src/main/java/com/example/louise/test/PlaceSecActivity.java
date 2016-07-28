@@ -305,7 +305,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                 myProgressBar.setProgressDrawable(res.getDrawable(R.drawable.black_progressbar));
                 break;
             default: {
-                if (txt_party == "Sinae") {
+                if (txt_party.equals("Sinae")) {
                     myProgressBar.setProgressDrawable(res.getDrawable(R.drawable.green_progressbar));
                     break;
                 } else {
@@ -661,7 +661,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                 myProgressBar.setProgressDrawable(res.getDrawable(R.drawable.black_progressbar));
                 break;
             default: {
-                if (txt_party == "Sinae") {
+                if (txt_party.equals("Sinae")) {
                     myProgressBar.setProgressDrawable(res.getDrawable(R.drawable.green_progressbar));
 //                    occupied();
                     break;
