@@ -90,6 +90,13 @@ public class PlaceSecActivity extends AppCompatActivity {
     private String switchOff = "OFF";
     private String txt_party = "";
     private String txt_user = "";
+    private JSONArray wlist = null;
+    private int weaponid = 0;
+    private int w = 0;
+    private int num = 0;
+    private String weaponname = "";
+    List<String> wname = new ArrayList<>();
+    List<Integer> wid = new ArrayList<>();
 
 
     /**
@@ -157,10 +164,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                 placename = datas[1];
                 placeid = Integer.valueOf(datas[0]);
             }
-        } catch (Exception e) {
-//            placename = placenamee;
-//            placeid = placeidd;
-        }
+        } catch (Exception e) {}
 
 //        switch (StoryActivity.party) {
 //            case "Sinae": getWindow().setBackgroundDrawableResource(R.drawable.blue); break;
@@ -174,10 +178,30 @@ public class PlaceSecActivity extends AppCompatActivity {
             finish();
             startActivity(intent);
         }
-        Random random = new Random();
-        randomInt = random.nextInt(3);
 
-        if(placeid == 1 && randomInt == 0) {
+
+        try {
+
+            FileReader fr = new FileReader(new File("sdcard/weapon.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+//            Toast.makeText(SettingActivity.this, temp, Toast.LENGTH_LONG).show();
+
+            if (temp != null) {
+                weaponid = Integer.parseInt(temp);
+
+            } else {
+                weaponid = 1;
+            }
+        } catch (Exception e) {}
+
+//        Random random = new Random();
+//        randomInt = random.nextInt(wlist.length());
+
+
+        // super power loading
+        if(placeid == 52 && weaponid == 0) {
             Intent intent = new Intent();
             intent.setClass(PlaceSecActivity.this, PuzzleActivity.class);
             finish();
@@ -350,43 +374,55 @@ public class PlaceSecActivity extends AppCompatActivity {
         weaponlist.add(R.drawable.weapon3);
 
 
-        weapon.setImageResource(weaponlist.get(randomInt));
-        weapon.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        switch (randomInt) {
-                            case 1:
-                                weapon.setImageResource(0);
-                                weapon.setImageResource(R.drawable.weapon2);
-                                weapon.setRotation(30);
-
-                                break;
-                            case 2:
-                                weapon.setImageResource(0);
-                                weapon.setImageResource(R.drawable.weapon3);
-                                weapon.setRotation(30);
-                                break;
-                            default:
-                                weapon.setImageResource(0);
-                                weapon.setImageResource(R.drawable.weapon1);
-                                weapon.setRotation(30);
-                                break;
-                        }
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL: {
-                        weapon.setImageResource(0);
-                        weapon.setImageResource(weaponlist.get(randomInt));
-                        weapon.setRotation(0);
-                        break;
-                    }
-                }
-                return true;
+        weapon.setImageResource(weaponlist.get(weaponid));
+        switch (weaponid) {
+            case 1: {
+                weapon.setImageResource(R.drawable.weapon2);
+                break;
+            } case 2: {
+                weapon.setImageResource(R.drawable.weapon3);
+                break;
+            } default: {
+                weapon.setImageResource(R.drawable.weapon1);
+                break;
             }
-        });
+        }
+//        weapon.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN: {
+//                        switch (randomInt) {
+//                            case 1: {
+//                                weapon.setImageResource(0);
+//                                weapon.setImageResource(R.drawable.weapon2);
+//                                weapon.setRotation(30);
+//                                break;
+//                            } case 2: {
+//                                weapon.setImageResource(0);
+//                                weapon.setImageResource(R.drawable.weapon3);
+//                                weapon.setRotation(30);
+//                                break;
+//                            } default: {
+//                                weapon.setImageResource(0);
+//                                weapon.setImageResource(R.drawable.weapon1);
+//                                weapon.setRotation(30);
+//                                break;
+//                            }
+//                        }
+//                        break;
+//                    }
+//                    case MotionEvent.ACTION_UP:
+//                    case MotionEvent.ACTION_CANCEL: {
+//                        weapon.setImageResource(0);
+//                        weapon.setImageResource(weaponlist.get(randomInt));
+//                        weapon.setRotation(0);
+//                        break;
+//                    }
+//                }
+//                return true;
+//            }
+//        });
 
 
 
@@ -457,17 +493,97 @@ public class PlaceSecActivity extends AppCompatActivity {
                                 toast.cancel();
                             }
                         }, 800);
-                    } else {
+                    } else if (!username.equals("Ruyen")){
                         String att = "";
                         String api = "";
+                        String fuel = "";
                         try {
-                            api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + txt_user;
-                            att = Httpconnect.httpget(api);
+                            switch (weaponid) {
+                                case 2: {
+                                    fuel = "/2/10/";
+                                    api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + txt_user + fuel;
+                                    att = Httpconnect.httpget(api);
+                                    final Toast toast = Toast.makeText(PlaceSecActivity.this, "減少敵方生命值", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            toast.cancel();
+                                        }
+                                    }, 300);
+
+                                    break;
+                                }
+                                case 1: {
+                                    fuel = "/1/1/";
+                                    api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + txt_user + fuel;
+                                    att = Httpconnect.httpget(api);
+                                    final Toast toast = Toast.makeText(PlaceSecActivity.this, "減少敵方生命值", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            toast.cancel();
+                                        }
+                                    }, 300);
+                                    break;
+                                }
+                                default: {
+
+//                                    if (w == 0) {
+                                        api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + txt_user + "/1/100/";
+                                        att = Httpconnect.httpget(api);
+
+//                                        Toast.makeText(PlaceSecActivity.this, att, Toast.LENGTH_LONG).show();
+                                        if (att.replace("\n", "").replace(" ", "").equals("succes")) {
+                                            try {
+                                                weapon.setImageResource(0);
+                                                weapon.setImageResource(R.drawable.weapon2);
+                                                FileWriter fw = new FileWriter(new File("sdcard/weapon.txt"));
+                                                final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
+                                                bw.write("1");
+                                                bw.close();
+                                                final Toast toast = Toast.makeText(PlaceSecActivity.this, "減少敵方生命值", Toast.LENGTH_SHORT);
+                                                toast.show();
+                                                Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        toast.cancel();
+                                                    }
+                                                }, 1000);
+                                                finish();
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            weapon.setImageResource(0);
+                                            weapon.setImageResource(R.drawable.weapon2);
+                                            Toast.makeText(PlaceSecActivity.this, "超原力已釋放, 要等下次武器生成! @@", Toast.LENGTH_SHORT).show();
+                                        }
+
+
+//                                        w++;
+//                                    } else {
+//                                        fuel = "/1/1/";
+//                                        api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + txt_user + fuel;
+//                                        att = Httpconnect.httpget(api);
+//                                    }
+//                                    myTextView6.setEnabled(false);
+                                    break;
+                                }
+                            }
 
                         } catch (ProtocolException e) {
                             e.printStackTrace();
                         }
-                        final Toast toast = Toast.makeText(PlaceSecActivity.this, "敵方生命值 -1", Toast.LENGTH_SHORT);
+
+
+//                        if (!att.equals("")) myTextView6.setTextColor(Color.WHITE);
+                    } else {
+                        final Toast toast = Toast.makeText(PlaceSecActivity.this, "不可以打同類!!", Toast.LENGTH_SHORT);
                         toast.show();
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
@@ -475,8 +591,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                             public void run() {
                                 toast.cancel();
                             }
-                        }, 300);
-                        if (!att.equals("")) myTextView6.setTextColor(Color.WHITE);
+                        }, 800);
                     }
 
                 } catch (Exception e) {
@@ -672,6 +787,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                 }
             }
         }
+
 //        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 //        ratingBar.setRating((Float.parseFloat(hp)) / 5);
 //        switch (name) {
@@ -692,8 +808,13 @@ public class PlaceSecActivity extends AppCompatActivity {
         public void run() {
             // TODO Auto-generated method stub
             //要做的事情
+
             refresh();
+            num++;
             handler.postDelayed(this, 2000);
+            if (num == 2) {
+                finish();
+            }
         }
     };
 

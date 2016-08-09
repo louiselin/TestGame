@@ -21,6 +21,7 @@ import android.widget.Toast;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.net.ProtocolException;
 
 public class StoryActivity extends AppCompatActivity {
 
@@ -54,18 +55,32 @@ public class StoryActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int i) {
                         // TODO Auto-generated method stub
                         party = "Antayen";
+                        String re = "";
+                        String url = "http://140.119.163.40:8080/Spring08/app/usercamp/"+IndexActivity.userid+"/3/";
                         try {
-                            String res = IndexActivity.userid+ "," +party;
-//                            Toast.makeText(StoryActivity.this, res, Toast.LENGTH_SHORT).show();
-                            FileWriter fw = new FileWriter(new File("sdcard/profile.txt"));
-                            final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
-                            bw.write(res);
-                            bw.close();
 
-//                            Toast.makeText(StoryActivity.this, "success", Toast.LENGTH_SHORT).show();
+                            re = Httpconnect.httpget(url);
+                            Toast.makeText(StoryActivity.this, re.replace("\n", ""), Toast.LENGTH_SHORT).show();
+
                         } catch (Exception e) {
                             Toast.makeText(StoryActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                         }
+
+
+                        if (re.replace("\n", "").replace(" ", "").equals("success")) {
+                            try {
+                                String res = IndexActivity.userid + "," + party + ",3";
+                                FileWriter fw = new FileWriter(new File("sdcard/profile.txt"));
+                                final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
+                                bw.write(res);
+                                bw.close();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Toast.makeText(StoryActivity.this, "Not Save!", Toast.LENGTH_SHORT).show();
+                        }
+
                         Intent intent = new Intent();
                         intent.setClass(StoryActivity.this, MainActivity.class);
                         startActivity(intent);
@@ -89,18 +104,31 @@ public class StoryActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int i) {
                         // TODO Auto-generated method stub
                         party = "Sinae";
+                        String re = "";
+                        String url = "http://140.119.163.40:8080/Spring08/app/usercamp/"+IndexActivity.userid+"/2/";
+
                         try {
-                             String res = IndexActivity.userid+ "," +party;
-//                            Toast.makeText(StoryActivity.this, res, Toast.LENGTH_SHORT).show();
-                            FileWriter fw = new FileWriter(new File("sdcard/profile.txt"));
-                            final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
-                            bw.write(res);
-                            bw.close();
-//                            Toast.makeText(StoryActivity.this, "success", Toast.LENGTH_SHORT).show();
+                            re = Httpconnect.httpget(url);
+                            Toast.makeText(StoryActivity.this, re.replace("\n", "").replace(" ", ""), Toast.LENGTH_LONG).show();
 
                         } catch (Exception e) {
                             Toast.makeText(StoryActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                         }
+
+                        if (re.replace("\n", "").replace(" ", "").equals("success")) {
+                            try {
+                                String res = IndexActivity.userid + "," + party + ",2";
+                                FileWriter fw = new FileWriter(new File("sdcard/profile.txt"));
+                                final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
+                                bw.write(res);
+                                bw.close();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Toast.makeText(StoryActivity.this, "Not Save!", Toast.LENGTH_SHORT).show();
+                        }
+
                         Intent intent = new Intent();
                         intent.setClass(StoryActivity.this, MainActivity.class);
                         startActivity(intent);

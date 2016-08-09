@@ -19,19 +19,30 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.net.ProtocolException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class FirstpageActivity extends AppCompatActivity {
 
-
+    private JSONArray wlist = null;
+    private int randomInt;
+    private String name = "";
+    private String nameid = "";
+    private String partyid = "";
     private int test = 0;
 
     @Override
@@ -56,10 +67,44 @@ public class FirstpageActivity extends AppCompatActivity {
                 //Do action
                 intent.setClass(FirstpageActivity.this, IndexActivity.class);
             } else {
+                try {
+
+                    FileReader fr = new FileReader(new File("sdcard/profile.txt"));
+                    BufferedReader br = new BufferedReader(fr);
+
+                    String temp = br.readLine(); //readLine()讀取一整行
+//            Toast.makeText(SettingActivity.this, temp, Toast.LENGTH_LONG).show();
+
+                    if (temp != null) {
+                        String[] datas = temp.split(",");
+                        nameid = datas[0];
+                        partyid = datas[2];
+                    } else {
+
+                    }
+                } catch (Exception e) {}
                 intent.setClass(FirstpageActivity.this, MainActivity.class);
             }
         } catch (Exception e) {
                Toast.makeText(FirstpageActivity.this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        // name
+        String userjson = "";
+        String url = "http://140.119.163.40:8080/Spring08/app/user/"+nameid;
+        try {
+            userjson = Httpconnect.httpget(url);
+
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            JSONArray userlist = new JSONArray(userjson);
+            name= userlist.getJSONObject(0).getString("name");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
 //        intent.setClass(FirstpageActivity.this, IndexActivity.class);
@@ -69,6 +114,52 @@ public class FirstpageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(intent);
+
+                // weapon random to choose
+                String wjson = "";
+                String pray = "";
+                try {
+                    wjson = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/weapon/app/list/");
+
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                }
+
+
+                try {
+                    wlist = new JSONArray(wjson);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Random random = new Random();
+                randomInt = random.nextInt(wlist.length());
+//                Toast.makeText(FirstpageActivity.this, wlist.length()+"," +randomInt, Toast.LENGTH_SHORT).show();
+                try {
+
+                    FileWriter fw = new FileWriter(new File("sdcard/weapon.txt"));
+                    final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
+
+//                    Toast.makeText(FirstpageActivity.this, name, Toast.LENGTH_LONG).show();
+                    if (randomInt == 0) {
+                        pray = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/sforce/app/pray/" + name + "/" + nameid + "/" + partyid + "/");
+//                        Toast.makeText(FirstpageActivity.this, pray, Toast.LENGTH_LONG).show();
+
+                        if (pray.replace("\n", "").replace(" ", "").equals("false")) {
+                            // http://140.119.163.40:8080/GeniusLoci/sforce/app/list/
+                            bw.write("1");
+
+                        } else {
+                            bw.write("0");
+                        }
+                    } else {
+                        bw.write(randomInt + "");
+                    }
+                    bw.close();
+                } catch (Exception e) {
+                    Toast.makeText(FirstpageActivity.this, e.toString(), Toast.LENGTH_LONG).show();
+                }
             }
         });
 

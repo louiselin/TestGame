@@ -191,6 +191,8 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
 
+            LatLng c = new LatLng(currla, currlo);
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(c, 19));
 //            Toast.makeText(CoinActivity.this, bobid.toString(), Toast.LENGTH_SHORT).show();
 
 //
@@ -230,8 +232,6 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
 
                 currLocationMarker = mGoogleMap.addMarker(markerOptions);
 
-                LatLng c = new LatLng(currla, currlo);
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(c, 19));
 
 
                 mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
