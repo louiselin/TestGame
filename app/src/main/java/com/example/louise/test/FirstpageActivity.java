@@ -147,7 +147,6 @@ public class FirstpageActivity extends AppCompatActivity {
 //                        Toast.makeText(FirstpageActivity.this, pray, Toast.LENGTH_LONG).show();
 
                         if (pray.replace("\n", "").replace(" ", "").equals("false")) {
-                            // http://140.119.163.40:8080/GeniusLoci/sforce/app/list/
                             bw.write("1");
 
                         } else {

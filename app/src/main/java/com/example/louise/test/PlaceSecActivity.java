@@ -3,6 +3,7 @@ package com.example.louise.test;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -89,6 +90,7 @@ public class PlaceSecActivity extends AppCompatActivity {
     private String switchOn = "ON";
     private String switchOff = "OFF";
     private String txt_party = "";
+    private int partyid = 0;
     private String txt_user = "";
     private JSONArray wlist = null;
     private int weaponid = 0;
@@ -97,6 +99,9 @@ public class PlaceSecActivity extends AppCompatActivity {
     private String weaponname = "";
     List<String> wname = new ArrayList<>();
     List<Integer> wid = new ArrayList<>();
+    private int powerup = 0;
+    private TextView desc_weapon;
+
 
 
     /**
@@ -150,6 +155,11 @@ public class PlaceSecActivity extends AppCompatActivity {
                 txt_user = IndexActivity.userid;
             }
         } catch (Exception e) {}
+        if (txt_party.equals("Antayen")) {
+            partyid = 3;
+        } else if (txt_party.equals("Sinae")) {
+            partyid = 2;
+        }
 
         try {
 
@@ -200,8 +210,11 @@ public class PlaceSecActivity extends AppCompatActivity {
 //        randomInt = random.nextInt(wlist.length());
 
 
+        desc_weapon = (TextView) findViewById(R.id.desc_weapon);
+        desc_weapon.setText("這是武器"+weaponid);
+
         // super power loading
-        if(placeid == 52 && weaponid == 0) {
+        if(placeid == 52) {
             Intent intent = new Intent();
             intent.setClass(PlaceSecActivity.this, PuzzleActivity.class);
             finish();
@@ -497,10 +510,21 @@ public class PlaceSecActivity extends AppCompatActivity {
                         String att = "";
                         String api = "";
                         String fuel = "";
+                        String re_powerup = "";
+
+
+//                        Toast.makeText(PlaceSecActivity.this, partyid+"", Toast.LENGTH_SHORT).show();
+                        re_powerup = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/sforce/app/powerup/"+partyid+"/");
+                        String re_p = re_powerup.replace("\n", "").replace(" ", "");
+//                        Toast.makeText(PlaceSecActivity.this, re_p, Toast.LENGTH_SHORT).show();
                         try {
                             switch (weaponid) {
                                 case 2: {
-                                    fuel = "/2/10/";
+
+//                                    Toast.makeText(PlaceSecActivity.this, re_powerup+"", Toast.LENGTH_SHORT).show();
+                                    powerup = 10+Integer.parseInt(re_p);
+//                                    fuel = "/2/10/";
+                                    fuel = "/2/"+String.valueOf(powerup)+"/";
                                     api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + txt_user + fuel;
                                     att = Httpconnect.httpget(api);
                                     final Toast toast = Toast.makeText(PlaceSecActivity.this, "減少敵方生命值", Toast.LENGTH_SHORT);
@@ -516,7 +540,10 @@ public class PlaceSecActivity extends AppCompatActivity {
                                     break;
                                 }
                                 case 1: {
-                                    fuel = "/1/1/";
+//                                    fuel = "/1/1/";
+                                    powerup = 1+Integer.parseInt(re_p);
+//                                    Toast.makeText(PlaceSecActivity.this, re_powerup+"", Toast.LENGTH_SHORT).show();
+                                    fuel = "/1/"+String.valueOf(powerup)+"/";
                                     api = "http://140.119.163.40:8080/Spring08/app/stele/attack/" + placeid + "/" + txt_user + fuel;
                                     att = Httpconnect.httpget(api);
                                     final Toast toast = Toast.makeText(PlaceSecActivity.this, "減少敵方生命值", Toast.LENGTH_SHORT);

@@ -115,7 +115,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=">本日隨機武器&lt;"
-        android:id="@+id/textView3"
+        android:id="@+id/desc_weapon"
         android:layout_below="@+id/placeimg"
         android:layout_toRightOf="@+id/patrolvalue"
         android:layout_toEndOf="@+id/patrolvalue" />
