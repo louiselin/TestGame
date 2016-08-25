@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="恭喜您是超原力使者!!!"
+        android:textSize="20px"
         android:id="@+id/title_superpower"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
@@ -21,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="結果"
+        android:textSize="20px"
         android:id="@+id/superpower"
         android:layout_below="@+id/iv_sp_2"
         android:layout_alignParentLeft="true"

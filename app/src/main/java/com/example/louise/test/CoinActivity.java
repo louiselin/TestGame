@@ -66,6 +66,7 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
     List<Integer> bobid = new ArrayList<>();
     List<Integer> runeid_l = new ArrayList<>();
     int list_l = 0;
+    private LatLng whole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +145,7 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
                 mGoogleApiClient);
         currla = mLastLocation.getLatitude();
         currlo = mLastLocation.getLongitude();
-        LatLng whole = new LatLng(currla, currlo);
+        whole = new LatLng(currla, currlo);
         GroundOverlayOptions n = new GroundOverlayOptions()
                 .image(BitmapDescriptorFactory.fromResource(R.drawable.cbg))
                 .position(whole, 12000f, 10800f);
@@ -191,8 +192,8 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
 
-            LatLng c = new LatLng(currla, currlo);
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(c, 19));
+//            LatLng c = new LatLng(currla, currlo);
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(whole, 19));
 //            Toast.makeText(CoinActivity.this, bobid.toString(), Toast.LENGTH_SHORT).show();
 
 //
