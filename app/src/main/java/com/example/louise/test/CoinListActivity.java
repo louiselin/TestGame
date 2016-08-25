@@ -49,7 +49,7 @@ public class CoinListActivity extends AppCompatActivity {
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
         try {
 
-            FileReader fr = new FileReader(new File("sdcard/profile.txt"));
+            FileReader fr = new FileReader(new File("sdcard/darkempire/profile.txt"));
             BufferedReader br = new BufferedReader(fr);
 
             String temp = br.readLine(); //readLine()讀取一整行

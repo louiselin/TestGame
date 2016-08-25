@@ -71,28 +71,34 @@ public class PlacelistActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
 
-                Intent intent = new Intent();
-                intent.setClass(PlacelistActivity.this, PlaceSecActivity.class);
 
-                //傳送點選到的index
+                if (MapsActivity.plistid.get(position) == 52) {
+                    Intent intent = new Intent();
+                    intent.setClass(PlacelistActivity.this, PuzzleActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent();
+                    intent.setClass(PlacelistActivity.this, PlaceSecActivity.class);
+
+                    //傳送點選到的index
 //                Bundle bundle = new Bundle();
 //                bundle.putInt("placeid", MapsActivity.plistid.get(position));
 //                bundle.putString("placename", MapsActivity.plistname.get(position));
 //                //將Bundle物件assign給intent
 //                intent.putExtras(bundle);
-                try {
-                    FileWriter fw = new FileWriter(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "placelog.txt"));
-                    final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
-                    bw.write(MapsActivity.plistid.get(position) + "," + MapsActivity.plistname.get(position));
-                    bw.close();
+                    try {
+                        FileWriter fw = new FileWriter(new File("sdcard/darkempire/placelog.txt"));
+                        final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
+                        bw.write(MapsActivity.plistid.get(position) + "," + MapsActivity.plistname.get(position));
+                        bw.close();
 //            Toast.makeText(SettingActivity.this, "save success", Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    Toast.makeText(PlacelistActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(PlacelistActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+
+
+                    startActivity(intent);
                 }
-
-
-                startActivity(intent);
-
 
 //                Toast.makeText(getApplicationContext(),
 //                        "點選的是" + MapsActivity.plistname.get(position) ,

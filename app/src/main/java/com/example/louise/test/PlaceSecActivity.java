@@ -101,6 +101,8 @@ public class PlaceSecActivity extends AppCompatActivity {
     List<Integer> wid = new ArrayList<>();
     private int powerup = 0;
     private TextView desc_weapon;
+    private String re_powerup = "";
+    private String re_p = "";
 
 
 
@@ -139,7 +141,7 @@ public class PlaceSecActivity extends AppCompatActivity {
 
         try {
 
-            FileReader fr = new FileReader(new File("sdcard/profile.txt"));
+            FileReader fr = new FileReader(new File("sdcard/darkempire/profile.txt"));
             BufferedReader br = new BufferedReader(fr);
 
             String temp = br.readLine(); //readLine()讀取一整行
@@ -163,7 +165,7 @@ public class PlaceSecActivity extends AppCompatActivity {
 
         try {
 
-            FileReader fr = new FileReader(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "placelog.txt"));
+            FileReader fr = new FileReader(new File("sdcard/darkempire/placelog.txt"));
             BufferedReader br = new BufferedReader(fr);
 
             String temp = br.readLine(); //readLine()讀取一整行
@@ -192,7 +194,7 @@ public class PlaceSecActivity extends AppCompatActivity {
 
         try {
 
-            FileReader fr = new FileReader(new File("sdcard/weapon.txt"));
+            FileReader fr = new FileReader(new File("sdcard/darkempire/weapon.txt"));
             BufferedReader br = new BufferedReader(fr);
 
             String temp = br.readLine(); //readLine()讀取一整行
@@ -210,16 +212,36 @@ public class PlaceSecActivity extends AppCompatActivity {
 //        randomInt = random.nextInt(wlist.length());
 
 
-        desc_weapon = (TextView) findViewById(R.id.desc_weapon);
-        desc_weapon.setText("這是武器"+weaponid);
-
-        // super power loading
-        if(placeid == 52) {
-            Intent intent = new Intent();
-            intent.setClass(PlaceSecActivity.this, PuzzleActivity.class);
-            finish();
-            startActivity(intent);
+        try {
+            re_powerup = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/sforce/app/powerup/" + partyid + "/");
+            re_p = re_powerup.replace("\n", "").replace(" ", "");
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         }
+
+        int d_fuel = 0;
+        int d_power = 0;
+        if (weaponid == 10) {
+            d_fuel = 1;
+            d_power = 100;
+        } else if (weaponid == 2) {
+            d_fuel = 2;
+            d_power = 10;
+        } else {
+            d_fuel = 1;
+            d_power = 1;
+        }
+
+        desc_weapon = (TextView) findViewById(R.id.desc_weapon);
+        desc_weapon.setText("武器"+weaponid+", 馬納消耗"+d_fuel+"\n攻擊 "+d_power+"(+"+re_p+")");
+
+//        // super power loading
+//        if(placeid == 52) {
+//            Intent intent = new Intent();
+//            intent.setClass(PlaceSecActivity.this, PuzzleActivity.class);
+//            finish();
+//            startActivity(intent);
+//        }
 
 
 
@@ -455,7 +477,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                 // check setting switch button
                 try {
 
-                    FileReader fr = new FileReader(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "output.txt"));
+                    FileReader fr = new FileReader(new File("sdcard/darkempire/output.txt"));
                     BufferedReader br = new BufferedReader(fr);
 
                     String temp = br.readLine(); //readLine()讀取一整行
@@ -510,13 +532,10 @@ public class PlaceSecActivity extends AppCompatActivity {
                         String att = "";
                         String api = "";
                         String fuel = "";
-                        String re_powerup = "";
 
 
-//                        Toast.makeText(PlaceSecActivity.this, partyid+"", Toast.LENGTH_SHORT).show();
-                        re_powerup = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/sforce/app/powerup/"+partyid+"/");
-                        String re_p = re_powerup.replace("\n", "").replace(" ", "");
-//                        Toast.makeText(PlaceSecActivity.this, re_p, Toast.LENGTH_SHORT).show();
+
+
                         try {
                             switch (weaponid) {
                                 case 2: {
@@ -555,6 +574,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                                             toast.cancel();
                                         }
                                     }, 300);
+
                                     break;
                                 }
                                 default: {
@@ -568,7 +588,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                                             try {
                                                 weapon.setImageResource(0);
                                                 weapon.setImageResource(R.drawable.weapon2);
-                                                FileWriter fw = new FileWriter(new File("sdcard/weapon.txt"));
+                                                FileWriter fw = new FileWriter(new File("sdcard/darkempire/weapon.txt"));
                                                 final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
                                                 bw.write("1");
                                                 bw.close();
@@ -599,6 +619,7 @@ public class PlaceSecActivity extends AppCompatActivity {
 //                                        att = Httpconnect.httpget(api);
 //                                    }
 //                                    myTextView6.setEnabled(false);
+
                                     break;
                                 }
                             }
@@ -624,7 +645,47 @@ public class PlaceSecActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+                String ree = "";
+                int rr = 0;
+                int runeid = 0;
+                int stone = 0;
+                try {
+                    Random random = new Random();
+                    rr = random.nextInt(2);
+                    if (rr == 0) {
+                        runeid = 1;
+                        stone = 5;
+                    } else {
+                        runeid = 2;
+                        stone = 3;
+                    }
+                    ree = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/get/" + txt_user + "/"+runeid+"/"+stone+"/");
+                } catch (Exception e) {
+                    Toast.makeText(PlaceSecActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                }
+                // result
+                if (ree.equals("success\n")) {
+                    final Toast toast2 = Toast.makeText(PlaceSecActivity.this, "got "+runeid+" ^^", Toast.LENGTH_SHORT);
+                    toast2.show();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            toast2.cancel();
+                        }
+                    }, 200);
+                } else {
+                    final Toast toast2 = Toast.makeText(PlaceSecActivity.this, "you can't get "+runeid+" ><", Toast.LENGTH_SHORT);
+                    toast2.show();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            toast2.cancel();
+                        }
+                    }, 500);
+                }
+                refresh();
             }
         });
 
@@ -679,7 +740,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                         }
                     }, 500);
                 } else {
-                    final Toast t = Toast.makeText(PlaceSecActivity.this, "馬納值 +5", Toast.LENGTH_SHORT);
+                    final Toast t = Toast.makeText(PlaceSecActivity.this, "馬納值增加", Toast.LENGTH_SHORT);
                     t.show();
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -689,11 +750,16 @@ public class PlaceSecActivity extends AppCompatActivity {
                         }
                     }, 300);
                 }
-                if (re != "") myTextView8.setTextColor(Color.WHITE);
+                if (re != "") {
+                    myTextView8.setTextColor(Color.WHITE);
+                }
+
+                refresh();
+
             }
         });
 
-        handler.postDelayed(runnable, 2000);
+//        handler.postDelayed(runnable, 2000);
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -836,54 +902,54 @@ public class PlaceSecActivity extends AppCompatActivity {
             // TODO Auto-generated method stub
             //要做的事情
 
-            refresh();
-            num++;
-            handler.postDelayed(this, 2000);
-            if (num == 2) {
-                finish();
-            }
+//            refresh();
+//            num++;
+//            handler.postDelayed(this, 2000);
+//            if (num == 2) {
+//                finish();
+//            }
         }
     };
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "PlaceSec Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.example.louise.test/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "PlaceSec Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.example.louise.test/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//
+//        // ATTENTION: This was auto-generated to implement the App Indexing API.
+//        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        client.connect();
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "PlaceSec Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app deep link URI is correct.
+//                Uri.parse("android-app://com.example.louise.test/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.start(client, viewAction);
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//
+//        // ATTENTION: This was auto-generated to implement the App Indexing API.
+//        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "PlaceSec Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app deep link URI is correct.
+//                Uri.parse("android-app://com.example.louise.test/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.end(client, viewAction);
+//        client.disconnect();
+//    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
@@ -919,5 +985,49 @@ public class PlaceSecActivity extends AppCompatActivity {
 //        });
 //        dialog.show();
 //
+//    }
+
+
+//    public void coin_generate() {
+//        String re = "";
+//        int rr = 0;
+//        int runeid = 0;
+//        int stone = 0;
+//        try {
+//            Random random = new Random();
+//            rr = random.nextInt(2);
+//            if (rr == 0) {
+//                runeid = 1;
+//                stone = 5;
+//            } else {
+//                runeid = 2;
+//                stone = 3;
+//            }
+//            re = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/get/" + txt_user + "/"+runeid+"/"+stone+"/");
+//        } catch (Exception e) {
+//            Toast.makeText(PlaceSecActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+//        }
+//        // result
+//        if (re.equals("success\n")) {
+//            final Toast toast2 = Toast.makeText(PlaceSecActivity.this, "got "+runeid+" ^^", Toast.LENGTH_SHORT);
+//            toast2.show();
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    toast2.cancel();
+//                }
+//            }, 200);
+//        } else {
+//            final Toast toast2 = Toast.makeText(PlaceSecActivity.this, "you can't get "+runeid+" ><", Toast.LENGTH_SHORT);
+//            toast2.show();
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    toast2.cancel();
+//                }
+//            }, 500);
+//        }
 //    }
 }

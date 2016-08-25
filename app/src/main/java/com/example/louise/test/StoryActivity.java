@@ -70,7 +70,7 @@ public class StoryActivity extends AppCompatActivity {
                         if (re.replace("\n", "").replace(" ", "").equals("success")) {
                             try {
                                 String res = IndexActivity.userid + "," + party + ",3";
-                                FileWriter fw = new FileWriter(new File("sdcard/profile.txt"));
+                                FileWriter fw = new FileWriter(new File("sdcard/darkempire/profile.txt"));
                                 final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
                                 bw.write(res);
                                 bw.close();
@@ -118,7 +118,7 @@ public class StoryActivity extends AppCompatActivity {
                         if (re.replace("\n", "").replace(" ", "").equals("success")) {
                             try {
                                 String res = IndexActivity.userid + "," + party + ",2";
-                                FileWriter fw = new FileWriter(new File("sdcard/profile.txt"));
+                                FileWriter fw = new FileWriter(new File("sdcard/darkempire/profile.txt"));
                                 final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
                                 bw.write(res);
                                 bw.close();

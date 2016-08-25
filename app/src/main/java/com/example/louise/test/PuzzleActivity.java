@@ -37,6 +37,7 @@ public class PuzzleActivity extends AppCompatActivity {
     private int releaseforce = 0;
     private int weaponid = 0;
     private String re = "";
+    private TextView title_superpower;
 
     private List<String> un = new ArrayList<>();
     private List<Integer> uid = new ArrayList<>();
@@ -53,7 +54,7 @@ public class PuzzleActivity extends AppCompatActivity {
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
         try {
 
-            FileReader fr = new FileReader(new File("sdcard/profile.txt"));
+            FileReader fr = new FileReader(new File("sdcard/darkempire/profile.txt"));
             BufferedReader br = new BufferedReader(fr);
 
             String temp = br.readLine(); //readLine()讀取一整行
@@ -72,7 +73,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
         try {
 
-            FileReader fr = new FileReader(new File("sdcard/weapon.txt"));
+            FileReader fr = new FileReader(new File("sdcard/darkempire/weapon.txt"));
             BufferedReader br = new BufferedReader(fr);
 
             String temp = br.readLine();
@@ -85,7 +86,7 @@ public class PuzzleActivity extends AppCompatActivity {
         } catch (Exception e) {}
 
 
-
+        title_superpower = (TextView) findViewById(R.id.title_superpower);
         superpower = (TextView) findViewById(R.id.superpower);
         String sforceurl = "http://140.119.163.40:8080/GeniusLoci/sforce/app/list/";
         String sforcejson = "";
@@ -152,6 +153,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
 
         if (weaponid == 0) {
+            title_superpower.setText("恭喜您是超原力使者!");
             relreasesp.setOnClickListener(new View.OnClickListener() {
                 String re = "";
 
@@ -167,7 +169,7 @@ public class PuzzleActivity extends AppCompatActivity {
                                 if (!re.replace("\n", "").replace(" ", "").equals("false")) {
                                     try {
 
-                                        FileWriter fw = new FileWriter(new File("sdcard/weapon.txt"));
+                                        FileWriter fw = new FileWriter(new File("sdcard/darkempire/weapon.txt"));
                                         final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
                                         bw.write("1");
                                         bw.close();
@@ -204,6 +206,7 @@ public class PuzzleActivity extends AppCompatActivity {
                 }
             });
         } else {
+            title_superpower.setText("您不是超原力使者喔 @@");
             relreasesp.setClickable(false);
 
         }

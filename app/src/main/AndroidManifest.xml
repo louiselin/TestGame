@@ -27,7 +27,7 @@
     <application
         android:allowBackup="true"
         android:gravity="center_horizontal"
-        android:icon="@drawable/game"
+        android:icon="@drawable/dgame"
         android:label="@string/title_activity_main"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">

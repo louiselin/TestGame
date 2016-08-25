@@ -61,7 +61,7 @@ public class FirstpageActivity extends AppCompatActivity {
         final Intent intent = new Intent();
 
         try {
-            File file = new File("sdcard/profile.txt");
+            File file = new File("sdcard/darkempire/profile.txt");
 //            File file2 = new File("sdcard/output.txt");
             if (!file.exists()) {
                 //Do action
@@ -69,7 +69,7 @@ public class FirstpageActivity extends AppCompatActivity {
             } else {
                 try {
 
-                    FileReader fr = new FileReader(new File("sdcard/profile.txt"));
+                    FileReader fr = new FileReader(new File("sdcard/darkempire/profile.txt"));
                     BufferedReader br = new BufferedReader(fr);
 
                     String temp = br.readLine(); //readLine()讀取一整行
@@ -137,25 +137,33 @@ public class FirstpageActivity extends AppCompatActivity {
                 randomInt = random.nextInt(wlist.length());
 //                Toast.makeText(FirstpageActivity.this, wlist.length()+"," +randomInt, Toast.LENGTH_SHORT).show();
                 try {
-
-                    FileWriter fw = new FileWriter(new File("sdcard/weapon.txt"));
-                    final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
+                    File dir = new File("sdcard/darkempire/");
+                    if (!dir.exists()) {
+                        dir.mkdir();
+                        FileWriter fw = new FileWriter("sdcard/darkempire/weapon.txt");
+                        final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWriter與FileWrite物件做連結
+                        bw.write("1");
+                        bw.close();
+                    } else {
+                        FileWriter fw = new FileWriter("sdcard/darkempire/weapon.txt");
+                        final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
 
 //                    Toast.makeText(FirstpageActivity.this, name, Toast.LENGTH_LONG).show();
-                    if (randomInt == 0) {
-                        pray = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/sforce/app/pray/" + name + "/" + nameid + "/" + partyid + "/");
+                        if (randomInt == 0) {
+                            pray = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/sforce/app/pray/" + name + "/" + nameid + "/" + partyid + "/");
 //                        Toast.makeText(FirstpageActivity.this, pray, Toast.LENGTH_LONG).show();
 
-                        if (pray.replace("\n", "").replace(" ", "").equals("false")) {
-                            bw.write("1");
+                            if (pray.replace("\n", "").replace(" ", "").equals("false")) {
+                                bw.write("1");
 
+                            } else {
+                                bw.write("0");
+                            }
                         } else {
-                            bw.write("0");
+                            bw.write(randomInt + "");
                         }
-                    } else {
-                        bw.write(randomInt + "");
+                        bw.close();
                     }
-                    bw.close();
                 } catch (Exception e) {
                     Toast.makeText(FirstpageActivity.this, e.toString(), Toast.LENGTH_LONG).show();
                 }

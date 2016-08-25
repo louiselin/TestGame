@@ -42,7 +42,7 @@ public class SettingActivity extends AppCompatActivity {
 
         try {
 
-            FileReader fr = new FileReader(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "output.txt"));
+            FileReader fr = new FileReader(new File("sdcard/darkempire/output.txt"));
             BufferedReader br = new BufferedReader(fr);
 
             String temp = br.readLine(); //readLine()讀取一整行
@@ -112,7 +112,7 @@ public class SettingActivity extends AppCompatActivity {
                             res = switchOff + "," + switchOff;
                         }
 //                        Toast.makeText(SettingActivity.this, "res = "+res, Toast.LENGTH_SHORT).show();
-                        FileWriter fw = new FileWriter(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "output.txt"));
+                        FileWriter fw = new FileWriter(new File("sdcard/darkempire/output.txt"));
                         final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
                         bw.write(res);
                         bw.close();
