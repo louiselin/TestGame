@@ -197,7 +197,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     try {
                         JSONArray stelelist = new JSONArray(stelejson);
                         camp = stelelist.getJSONObject(0).getString("camp");
-                        if (camp.equals("玩家")) {
+                        int pid = stelelist.getJSONObject(0).getInt("placeid");
+                        if (pid == 52) {
+                            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.hp_red);
+                            options.icon(icon);
+                        } else if (camp.equals("玩家")) {
                             switch (StoryActivity.party) {
                                 case "Sinae": {
                                     BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.blueflag);
@@ -210,7 +214,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     break;
                                 }
                             }
-                        } else {
+                        } else if (camp.equals("黑暗勢力")) {
                             BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.blackflag);
                             options.icon(icon);
                         }

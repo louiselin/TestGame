@@ -4,6 +4,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,7 +31,7 @@ import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoinListActivity extends AppCompatActivity {
+public class CoinListActivity extends AppCompatActivity implements LocationListener {
 
     private ListView coinlist;
     private Button searchcoin;
@@ -41,6 +45,11 @@ public class CoinListActivity extends AppCompatActivity {
     private String txt_user = "";
     private Double mapcurrla = MapsActivity.currla;
     private Double mapcurrlo = MapsActivity.currlo;
+
+    Location location;
+    LocationManager mgr;
+    String best;
+//    Double latitude=24.987155 , longitude=121.573579;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,9 +204,27 @@ public class CoinListActivity extends AppCompatActivity {
                                     } else {
                                         try {
                                             if (mapcurrlo == null || mapcurrla == null) {
-                                                Toast.makeText(CoinListActivity.this, "請先到開始遊戲做巡邏或淨化動作 ><", Toast.LENGTH_SHORT).show();
+                                                mgr = (LocationManager) getSystemService(LOCATION_SERVICE);
+                                                Criteria criteria = new Criteria();
+                                                best = mgr.getBestProvider(criteria, true);
+                                                location = mgr.getLastKnownLocation(best);
+
+                                                if(location != null){
+                                                    mapcurrla = location.getLatitude();
+                                                    mapcurrlo = location.getLongitude();
+
+                                                    res = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/runeTransaction/app/throw/" + txt_user
+                                                            + "/" + runeid + "/" + runenum + "/" + mapcurrlo + "/" + mapcurrla + "/");
+                                                    if (!res.equals("error")) {
+                                                        Toast.makeText(CoinListActivity.this, "剩下 " + Integer.toString(last) + " 個, 重整畫面更新 ><", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        Toast.makeText(CoinListActivity.this, "輸入有誤 QQQQ", Toast.LENGTH_SHORT).show();
+                                                    }
+
+                                                } else {
+                                                    Toast.makeText(CoinListActivity.this, "請先到開始遊戲做巡邏或淨化動作 ><", Toast.LENGTH_SHORT).show();
+                                                }
                                             } else {
-//                                            http://140.119.163.40:8080/GeniusLoci/runeTransaction/app/throw/44/2/1/121.573579/24.987155/
                                                 res = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/runeTransaction/app/throw/" + txt_user
                                                         + "/" + runeid + "/" + runenum + "/" + mapcurrlo + "/" + mapcurrla + "/");
                                                 if (!res.equals("error")) {
@@ -207,7 +234,7 @@ public class CoinListActivity extends AppCompatActivity {
                                                 }
                                             }
                                         } catch (Exception e) {
-                                            e.printStackTrace();
+                                            Toast.makeText(CoinListActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                                         }
 
                                     }
@@ -231,4 +258,21 @@ public class CoinListActivity extends AppCompatActivity {
         }
     }
 
+    //implements LocationListener所自動產生的函式
+    @Override
+    public void onLocationChanged(Location location) {
+        // TODO Auto-generated method stub
+    }
+    @Override
+    public void onProviderDisabled(String provider) {
+        // TODO Auto-generated method stub
+    }
+    @Override
+    public void onProviderEnabled(String provider) {
+        // TODO Auto-generated method stub
+    }
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        // TODO Auto-generated method stub
+    }
 }
