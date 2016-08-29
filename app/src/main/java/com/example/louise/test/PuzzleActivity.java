@@ -1,9 +1,13 @@
 package com.example.louise.test;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -38,18 +42,21 @@ public class PuzzleActivity extends AppCompatActivity {
     private int weaponid = 0;
     private String re = "";
     private TextView title_superpower;
-
+    private Context mContext;
     private List<String> un = new ArrayList<>();
     private List<Integer> uid = new ArrayList<>();
     private List<String> listparty = new ArrayList<>();
     private List<String> releasesp = new ArrayList<>();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
+
+
+        mContext = getApplicationContext();
+
 
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
         try {
@@ -147,6 +154,7 @@ public class PuzzleActivity extends AppCompatActivity {
             re += "陣營: " + listparty.get(i) + ", 玩家名稱: " + uid.get(i) + " " + un.get(i) + releasesp.get(i) + "\n";
 
         }
+        superpower.setTextSize(15);
         superpower.setText(re);
 
         relreasesp = (Button) findViewById(R.id.iv_sp_2);
@@ -154,6 +162,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
         if (weaponid == 0) {
             title_superpower.setText("恭喜您是超原力使者!");
+            title_superpower.setTextSize(25);
             relreasesp.setOnClickListener(new View.OnClickListener() {
                 String re = "";
 
@@ -206,7 +215,18 @@ public class PuzzleActivity extends AppCompatActivity {
                 }
             });
         } else {
+            relreasesp.setTextColor(Color.parseColor("#D8D8D8"));
+            Drawable drawableRed = ContextCompat.getDrawable(mContext, R.drawable.ic_flash_on_24dp1);
+            drawableRed.setBounds(
+                    0, // left
+                    0, // top
+                    drawableRed.getIntrinsicWidth(), // right
+                    drawableRed.getIntrinsicHeight() // bottom
+            );
+            relreasesp.setCompoundDrawables(drawableRed ,null, null, null);
+
             title_superpower.setText("您不是超原力使者喔 @@");
+            title_superpower.setTextSize(25);
             relreasesp.setClickable(false);
 
         }
