@@ -173,17 +173,16 @@ public class MainActivity extends AppCompatActivity
             });
 
             nccucontact = (Button) findViewById(R.id.nccucontact);
-            nccucontact.setTextColor(0xffB6B6B4);
-            nccucontact.setEnabled(false);
-
-//            nccucontact.setOnClickListener(new Button.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent();
-//                    intent.setClass(MainActivity.this, NCCUContactActivity.class);
-//                    startActivity(intent);
-//                }
-//            });
+            nccucontact.setTextColor(0xffffffff);
+//            nccucontact.setEnabled(false);
+            nccucontact.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, NCCUContactActivity.class);
+                    startActivity(intent);
+                }
+            });
 
 //        change to put story in this button now !!!!!
             setting = (Button) findViewById(R.id.setting);
