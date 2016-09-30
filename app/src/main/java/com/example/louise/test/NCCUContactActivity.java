@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.java_websocket.WebSocketImpl;
 import org.java_websocket.client.WebSocketClient;
@@ -23,6 +24,8 @@ import org.java_websocket.drafts.Draft_17;
 import org.java_websocket.drafts.Draft_75;
 import org.java_websocket.drafts.Draft_76;
 import org.java_websocket.handshake.ServerHandshake;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.net.URI;
 
@@ -37,9 +40,12 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
     private Button btnClose;
     private EditText etDetails;
 
+    private TextView chatid;
     private EditText etName;
     private EditText etMessage;
     private Button btnSend;
+
+    private String mess = "", name = "aaaa";
 
     private WebSocketClient client;// 连接客户端
     private DraftInfo selectDraft;// 连接协议
@@ -56,6 +62,7 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
         btnClose = (Button) findViewById(R.id.btnClose);
         etDetails = (EditText) findViewById(R.id.etDetails);
 
+        chatid = (TextView) findViewById(R.id.chatid);
         etName = (EditText) findViewById(R.id.etName);
         etMessage = (EditText) findViewById(R.id.etMessage);
         btnSend = (Button) findViewById(R.id.btnSend);
@@ -86,7 +93,16 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
             }
         });
 
-        ServerInfo[] serverInfos = {new ServerInfo("连接Java Web后台", "ws://echo.websocket.org"), new ServerInfo("连接Java Application后台", "ws://192.168.1" + "" +
+        String uid = "";
+        try {
+            uid = Httpconnect.httpget("http://140.119.163.40:9000/WebsocketTest/msg/chat");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        chatid.setText(uid);
+
+        ServerInfo[] serverInfos = {new ServerInfo("连接Java Web后台", "ws://140.119.163.40:9000/WebsocketTest/ws?uid="+uid), new ServerInfo("连接Java Application后台", "ws://192.168.1" + "" +
                 ".104:8887")};// 所有连接后台
         etAddress.setText(serverInfos[0].serverAddress);// 默认选择第一个连接协议
 
@@ -157,13 +173,32 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
                             });
                         }
 
+
+
                         @Override
                         public void onMessage(final String message) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
 
-                                    etDetails.append(etName.getText().toString().trim() +" said：【" + message + "】\n");
+
+
+//                                    {"from":1,"fromName":"暱稱","to":111,"text":"想要輸出的文字"}
+
+//                                    etDetails.append(etName.getText().toString().trim() +" said：【" + message + "】\n");
+
+//                                    etDetails.append(mess);
+//                                    etDetails.append("{'from':1, 'fromName':"+name+"','to':111, 'text':'"+mess+"'}\n");
+                                    String messjson = message;
+                                    try {
+
+                                        String mess = new JSONObject(messjson).getString("text");
+                                        String na = new JSONObject(messjson).getString("fromName");
+                                        etDetails.append(na + ": [" +mess+"]\n");
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
 
                                     Log.e("wlf", "獲得服務器訊息【" + message + "】");
                                 }
@@ -223,7 +258,12 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
             case R.id.btnSend:
                 try {
                     if (client != null) {
-                        client.send(etMessage.getText().toString().trim());
+                        mess = etMessage.getText().toString();
+                        client.send("{\"from\":1,"
+                                + " \"fromName\": \" "+name+"\""
+                                + ",\"to\":111,"
+                                + " \"text\": \""+mess+"\"}");
+
                         svChat.post(new Runnable() {
                             @Override
                             public void run() {
@@ -279,4 +319,5 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
             return serverName;
         }
     }
+
 }

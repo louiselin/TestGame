@@ -10,6 +10,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.louise.test.NCCUContactActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="chat id"
+        android:id="@+id/chatid" />
+
     <ScrollView
         android:id="@+id/svChat"
         android:layout_width="match_parent"
@@ -39,8 +45,7 @@
                     android:id="@+id/etAddress"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:text="ws://echo.websocket.org/"/>
+                    android:layout_weight="4"/>
 
                 <Spinner
                     android:id="@+id/spAddress"
@@ -81,16 +86,17 @@
 
         <EditText
             android:id="@+id/etName"
-            android:layout_width="wrap_content"
+            android:layout_width="1dp"
             android:layout_height="70dp"
             android:hint="取個名字"
-            android:text="Jack"/>
+            android:text="Jack"
+            android:visibility="invisible"/>
 
         <EditText
             android:id="@+id/etMessage"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1.68"/>
 
         <Button
             android:id="@+id/btnSend"
