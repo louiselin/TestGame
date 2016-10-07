@@ -15,30 +15,41 @@
         android:layout_height="wrap_content"
         android:text="chat id"
         android:id="@+id/chatid" />
-
-    <ScrollView
-        android:id="@+id/svChat"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <Spinner
+            android:id="@+id/spDraft"
+            android:layout_width="32dp"
+            android:layout_height="1dp"
+            android:visibility="invisible" />
+        <Button
+        android:id="@+id/btnConnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="連線"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/btnClose"
+        android:layout_toStartOf="@+id/btnClose"
+        android:layout_weight="0.40" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/spDraft"
-                android:layout_width="match_parent"
-                android:layout_height="10sp"
-                android:visibility="invisible" />
 
+
+        <Button
+                    android:id="@+id/btnClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="離線"
+            android:layout_weight="0.36" />
+    </LinearLayout>
             <!-- ws://192.168.1.104:80/JSR356-WebSocket/websocket/ -->
             <!-- ws://192.168.1.104:8887 -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
                 android:visibility="invisible">
 
                 <EditText
@@ -54,18 +65,11 @@
                     android:layout_weight="2"/>
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnConnect"
+            <ScrollView
+                android:id="@+id/svChat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="連線"/>
-
-            <Button
-                android:id="@+id/btnClose"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="離線"/>
-
+                android:layout_height="0dp"
+                android:layout_weight="1">
             <EditText
                 android:id="@+id/etDetails"
                 android:layout_width="match_parent"
@@ -76,8 +80,9 @@
                 android:focusableInTouchMode="false"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"/>
-        </LinearLayout>
-    </ScrollView>
+            </ScrollView>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"

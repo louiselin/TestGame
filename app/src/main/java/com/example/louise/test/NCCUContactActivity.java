@@ -2,9 +2,11 @@ package com.example.louise.test;
 
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.java_websocket.WebSocketImpl;
 import org.java_websocket.client.WebSocketClient;
@@ -44,8 +47,9 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
     private EditText etName;
     private EditText etMessage;
     private Button btnSend;
+    private String uid = "";
 
-    private String mess = "", name = "aaaa";
+    private String mess = "", name = "你";
 
     private WebSocketClient client;// 连接客户端
     private DraftInfo selectDraft;// 连接协议
@@ -93,14 +97,14 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
             }
         });
 
-        String uid = "";
+
         try {
             uid = Httpconnect.httpget("http://140.119.163.40:9000/WebsocketTest/msg/chat");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        chatid.setText(uid);
+        chatid.setText("id: " + uid);
 
         ServerInfo[] serverInfos = {new ServerInfo("连接Java Web后台", "ws://140.119.163.40:9000/WebsocketTest/ws?uid="+uid), new ServerInfo("连接Java Application后台", "ws://192.168.1" + "" +
                 ".104:8887")};// 所有连接后台
@@ -158,6 +162,7 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    etDetails.setGravity(Gravity.LEFT);
                                     etDetails.append("【已經連線...】\n");
 
                                     Log.e("wlf", "已經連結服務器【" + getURI() + "】");
@@ -194,7 +199,21 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
 
                                         String mess = new JSONObject(messjson).getString("text");
                                         String na = new JSONObject(messjson).getString("fromName");
-                                        etDetails.append(na + ": [" +mess+"]\n");
+                                        String other = new JSONObject(messjson).getString("from");
+//                                        etDetails.append(na + ": [" +mess+"]\n");
+
+//                                        Toast.makeText(NCCUContactActivity.this, na, Toast.LENGTH_LONG).show();
+                                        if (na.replace(" ", "").equals(uid)) {
+//                                            etDetails.setTextColor(Color.BLUE); // self message
+//                                            etDetails.setGravity(Gravity.RIGHT);
+                                            etDetails.append("我" + ": [" +mess+"]\n");
+                                        } else {
+//                                            etDetails.setGravity(Gravity.LEFT);
+//                                            etDetails.setTextColor(Color.GRAY); // other people message
+                                            etDetails.append(other + ": [" +mess+"]\n");
+
+                                        }
+
 
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -255,13 +274,13 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
                     client.close();
                 }
                 break;
-            case R.id.btnSend:
+            case R.id.btnSend: // user send message
                 try {
                     if (client != null) {
                         mess = etMessage.getText().toString();
-                        client.send("{\"from\":1,"
-                                + " \"fromName\": \" "+name+"\""
-                                + ",\"to\":111,"
+                        client.send("{\"from\":\""+uid+"\","
+                                + " \"fromName\": \" "+uid+"\""
+                                + ",\"to\":\""+uid+"\","
                                 + " \"text\": \""+mess+"\"}");
 
                         svChat.post(new Runnable() {
