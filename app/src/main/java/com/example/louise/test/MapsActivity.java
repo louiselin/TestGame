@@ -11,6 +11,7 @@ import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,6 +46,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.net.ProtocolException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -80,9 +85,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private float distance, d;
     private LatLng po;
 
+    private MediaPlayer placebtn;
+    private String che_vi, che_me;
+    private String switchOn = "ON";
+    private String switchOff = "OFF";
+
+    public static final String intent_me="ON";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        try {
+
+            FileReader fr = new FileReader(new File("sdcard/darkempire/output.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                che_vi = datas[1];
+                che_me = datas[0];
+            } else {
+                che_vi = che_me = switchOff;
+            }
+        } catch (Exception e) {}
 
         setContentView(R.layout.activity_maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -248,7 +275,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         double placelo = 0;
 
 
+                        if (intent_me.equals(che_me)) {
+                            placebtn = MediaPlayer.create(MapsActivity.this, R.raw.placebtn);
+                            placebtn.start();
 
+                        }
                         //find maker's id
                         for (int i = 0; i < placelist.length(); i++) {
                             try {

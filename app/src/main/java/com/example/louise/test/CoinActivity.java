@@ -8,6 +8,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -68,11 +69,35 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
     int list_l = 0;
     private LatLng whole;
 
+    private MediaPlayer coinbtn;
+    private MediaPlayer gotchacoin;
+    private String che_vi, che_me;
+    private String switchOn = "ON";
+    private String switchOff = "OFF";
+
+    public static final String intent_me="ON";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin);
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
+
+        try {
+
+            FileReader fr = new FileReader(new File("sdcard/darkempire/output.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                che_vi = datas[1];
+                che_me = datas[0];
+            } else {
+                che_vi = che_me = switchOff;
+            }
+        } catch (Exception e) {}
+
         try {
 
             FileReader fr = new FileReader(new File("sdcard/darkempire/profile.txt"));
@@ -102,6 +127,11 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
         searchcoin.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (intent_me.equals(che_me)) {
+                    coinbtn = MediaPlayer.create(CoinActivity.this, R.raw.searchcoin);
+                    coinbtn.start();
+                    coinbtn.seekTo(200);
+                }
                 Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                         mGoogleApiClient);
                 if (mLastLocation != null) {
@@ -238,6 +268,12 @@ public class CoinActivity extends FragmentActivity implements OnMapReadyCallback
                 mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
+
+                        if (intent_me.equals(che_me)) {
+                            gotchacoin = MediaPlayer.create(CoinActivity.this, R.raw.gotchacoin);
+                            gotchacoin.start();
+                            gotchacoin.seekTo(200);
+                        }
                         marker.remove();
                         String re = "";
                         try {

@@ -8,6 +8,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -51,11 +52,35 @@ public class CoinListActivity extends AppCompatActivity implements LocationListe
     String best;
 //    Double latitude=24.987155 , longitude=121.573579;
 
+    private MediaPlayer coinbtn;
+    private MediaPlayer ditchbtn;
+    private String che_vi, che_me;
+    private String switchOn = "ON";
+    private String switchOff = "OFF";
+
+    public static final String intent_me="ON";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_list);
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
+
+        try {
+
+            FileReader fr = new FileReader(new File("sdcard/darkempire/output.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                che_vi = datas[1];
+                che_me = datas[0];
+            } else {
+                che_vi = che_me = switchOff;
+            }
+        } catch (Exception e) {}
+
         try {
 
             FileReader fr = new FileReader(new File("sdcard/darkempire/profile.txt"));
@@ -80,6 +105,11 @@ public class CoinListActivity extends AppCompatActivity implements LocationListe
         searchcoin.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (intent_me.equals(che_me)) {
+                    coinbtn = MediaPlayer.create(CoinListActivity.this, R.raw.searchcoin);
+                    coinbtn.start();
+                    coinbtn.seekTo(200);
+                }
                 Intent intent = new Intent();
                 intent.setClass(CoinListActivity.this, CoinActivity.class);
                 startActivity(intent);
@@ -177,6 +207,11 @@ public class CoinListActivity extends AppCompatActivity implements LocationListe
 
                 TextView selfuserid = (TextView) (view.findViewById(R.id.coinlist_userid2));
                 selfuserid.setText("選擇贈送金幣id "+ r.get(mPosition)+"\n您的使用者 id 爲: " + txt_user);
+
+                if (intent_me.equals(che_me)) {
+                    ditchbtn = MediaPlayer.create(CoinListActivity.this, R.raw.ditchbtn);
+                    ditchbtn.start();
+                }
 
                 final EditText ditchcoinnum = (EditText) (view.findViewById(R.id.ditchcoinnum2));
 //                ditchcoinnum.setText(s.get(mPosition));

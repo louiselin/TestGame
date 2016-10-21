@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -49,12 +50,37 @@ public class MainActivity extends AppCompatActivity
 
     private String txt_party = "";
     private String txt_user = "";
+    private MediaPlayer mainbtn;
+    private String che_vi, che_me;
+    private String switchOn = "ON";
+    private String switchOff = "OFF";
+    private int length = 2;
+
+    public static final String intent_me="ON";
+    public static final String intent_vi="ON";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
+
+        try {
+
+            FileReader fr = new FileReader(new File("sdcard/darkempire/output.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                che_vi = datas[1];
+                che_me = datas[0];
+            } else {
+                che_vi = che_me = switchOff;
+            }
+        } catch (Exception e) {}
+
 
         try {
 
@@ -123,6 +149,11 @@ public class MainActivity extends AppCompatActivity
             play.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (intent_me.equals(che_me)) {
+                        mainbtn = MediaPlayer.create(MainActivity.this, R.raw.mainbtn);
+                        mainbtn.start();
+
+                    }
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, MapsActivity.class);
                     startActivity(intent);
@@ -134,6 +165,11 @@ public class MainActivity extends AppCompatActivity
             profile.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (intent_me.equals(che_me)) {
+                        mainbtn = MediaPlayer.create(MainActivity.this, R.raw.mainbtn);
+                        mainbtn.start();
+
+                    }
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, ProfileUpdateActivity.class);
                     startActivity(intent);
@@ -155,6 +191,11 @@ public class MainActivity extends AppCompatActivity
             manual.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (intent_me.equals(che_me)) {
+                        mainbtn = MediaPlayer.create(MainActivity.this, R.raw.mainbtn);
+                        mainbtn.start();
+
+                    }
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, ManualActivity.class);
                     startActivity(intent);
@@ -166,6 +207,11 @@ public class MainActivity extends AppCompatActivity
             getcoin.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (intent_me.equals(che_me)) {
+                        mainbtn = MediaPlayer.create(MainActivity.this, R.raw.mainbtn);
+                        mainbtn.start();
+
+                    }
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, CoinListActivity.class);
                     startActivity(intent);
@@ -178,6 +224,11 @@ public class MainActivity extends AppCompatActivity
             nccucontact.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (intent_me.equals(che_me)) {
+                        mainbtn = MediaPlayer.create(MainActivity.this, R.raw.mainbtn);
+                        mainbtn.start();
+
+                    }
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, NCCUContactActivity.class);
                     startActivity(intent);
@@ -190,6 +241,11 @@ public class MainActivity extends AppCompatActivity
             setting.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (intent_me.equals(che_me)) {
+                        mainbtn = MediaPlayer.create(MainActivity.this, R.raw.mainbtn);
+                        mainbtn.start();
+
+                    }
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, StoryOnlyActivity.class);
                     startActivity(intent);

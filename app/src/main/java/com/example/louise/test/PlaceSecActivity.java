@@ -184,12 +184,12 @@ public class PlaceSecActivity extends AppCompatActivity {
 //        }
 
         // id = 10
-        if(placeid == 10) {
-            Intent intent = new Intent();
-            intent.setClass(PlaceSecActivity.this, Id10PrisionActivity.class);
-            finish();
-            startActivity(intent);
-        }
+//        if(placeid == 10) {
+//            Intent intent = new Intent();
+//            intent.setClass(PlaceSecActivity.this, Id10PrisionActivity.class);
+//            finish();
+//            startActivity(intent);
+//        }
 
 
         try {
@@ -722,7 +722,6 @@ public class PlaceSecActivity extends AppCompatActivity {
                     } else {
                         soundjump = MediaPlayer.create(PlaceSecActivity.this, R.raw.hax);
                         soundjump.start();
-                        soundjump.seekTo(700);
                     }
                 }
 //                Toast.makeText(PlaceSecActivity.this, "me " + intent_me+ " ,vi "+intent_vi, Toast.LENGTH_SHORT).show();

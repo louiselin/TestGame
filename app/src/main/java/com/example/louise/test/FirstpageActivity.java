@@ -44,6 +44,15 @@ public class FirstpageActivity extends AppCompatActivity {
     private String nameid = "";
     private String partyid = "";
     private int test = 0;
+    private MediaPlayer repeatemusic;
+    private String che_vi, che_me;
+    private String switchOn = "ON";
+    private String switchOff = "OFF";
+    private int length = 2;
+
+    public static final String intent_me="ON";
+    public static final String intent_vi="ON";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +71,23 @@ public class FirstpageActivity extends AppCompatActivity {
 
         try {
             File file = new File("sdcard/darkempire/profile.txt");
-//            File file2 = new File("sdcard/output.txt");
+            File file2 = new File("sdcard/darkempire/output.txt");
             if (!file.exists()) {
+                if(!file2.exists()) {
+                    FileWriter fw = new FileWriter(new File("sdcard/darkempire/output.txt"));
+                    final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
+                    bw.write("ON,ON");
+                    bw.close();
+                }
                 //Do action
                 intent.setClass(FirstpageActivity.this, IndexActivity.class);
             } else {
+                if(!file2.exists()) {
+                    FileWriter fw = new FileWriter(new File("sdcard/darkempire/output.txt"));
+                    final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
+                    bw.write("ON,ON");
+                    bw.close();
+                }
                 try {
 
                     FileReader fr = new FileReader(new File("sdcard/darkempire/profile.txt"));
@@ -88,7 +109,30 @@ public class FirstpageActivity extends AppCompatActivity {
         } catch (Exception e) {
                Toast.makeText(FirstpageActivity.this, e.toString(), Toast.LENGTH_LONG).show();
         }
+        try {
 
+            FileReader fr = new FileReader(new File("sdcard/darkempire/output.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                che_vi = datas[1];
+                che_me = datas[0];
+            } else {
+                che_vi = che_me = switchOff;
+            }
+        } catch (Exception e) {}
+
+        if (intent_me.equals(che_me)) {
+            repeatemusic = MediaPlayer.create(FirstpageActivity.this, R.raw.repeatemusic);
+            repeatemusic.seekTo(length);
+            repeatemusic.start();
+            repeatemusic.setLooping(true);
+//            repeatemusic.seekTo(length);
+
+
+        }
         // name
         String userjson = "";
         String url = "http://140.119.163.40:8080/Spring08/app/user/"+nameid;
@@ -114,7 +158,8 @@ public class FirstpageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(intent);
-
+                repeatemusic.pause();
+                length=repeatemusic.getCurrentPosition();
                 // weapon random to choose
                 String wjson = "";
                 String pray = "";
@@ -400,6 +445,7 @@ public class FirstpageActivity extends AppCompatActivity {
         ad.setPositiveButton("是", new DialogInterface.OnClickListener() {//退出按鈕
             public void onClick(DialogInterface dialog, int i) {
                 // TODO Auto-generated method stub
+                repeatemusic.release();
                 finish();//關閉activity
             }
         });

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -44,11 +45,37 @@ public class ManualActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "manualgot";
     private String txt_party = "";
     private String txt_user = "";
+
+
+    private MediaPlayer mainbtn;
+    private String che_vi, che_me;
+    private String switchOn = "ON";
+    private String switchOff = "OFF";
+
+    public static final String intent_me="ON";
+
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_manual);
             getWindow().setBackgroundDrawableResource(R.drawable.bg);
+            try {
+
+                FileReader fr = new FileReader(new File("sdcard/darkempire/output.txt"));
+                BufferedReader br = new BufferedReader(fr);
+
+                String temp = br.readLine(); //readLine()讀取一整行
+                if (temp != null) {
+                    String[] datas = temp.split(",");
+                    che_vi = datas[1];
+                    che_me = datas[0];
+                } else {
+                    che_vi = che_me = switchOff;
+                }
+            } catch (Exception e) {}
+
+
             try {
 
                 FileReader fr = new FileReader(new File("sdcard/darkempire/profile.txt"));
@@ -92,6 +119,8 @@ public class ManualActivity extends AppCompatActivity {
                 int size = jsonlists.length();
                 for (int ii = 0; ii < size-1; ii++) {
                     classification_go = jsonlists.get(ii).toString();
+
+
                     switch (classification_go) {
                         case "專家":newname = "專家";break;
                         case "校園尋奇":newname = "成就";break;
@@ -135,10 +164,15 @@ public class ManualActivity extends AppCompatActivity {
                     adapter = new MyAdapter(this, listname, listdes, listreq, listk, listcla);
 
                     spec1.setContent(new TabHost.TabContentFactory() {
+
                         public View createTabContent(String tag) {
+                            if (intent_me.equals(che_me)) {
+                                mainbtn = MediaPlayer.create(ManualActivity.this, R.raw.mainbtn);
+                                mainbtn.start();
+
+                            }
                             ListView listView01 = new ListView(ManualActivity.this);
                             listView01.setAdapter(adapter);
-
                             return listView01;
                         }
                     });
