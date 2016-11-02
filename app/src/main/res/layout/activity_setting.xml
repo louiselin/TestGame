@@ -31,8 +31,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="## Switch MediaPlayer"
-                android:textSize="20dp"/>
+                android:text="## 是否開啟音效"
+                android:textSize="20dp"
+                android:checked="false" />
 
         </TableRow>
 
@@ -46,8 +47,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="## Switch Vibrator"
-                android:textSize="20dp"/>
+                android:text="## 是否開啟淨化和巡邏震動"
+                android:textSize="20dp"
+                android:checked="false" />
         </TableRow>
     </TableLayout>
 

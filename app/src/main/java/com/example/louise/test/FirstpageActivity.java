@@ -48,7 +48,7 @@ public class FirstpageActivity extends AppCompatActivity {
     private String che_vi, che_me;
     private String switchOn = "ON";
     private String switchOff = "OFF";
-    private int length = 2;
+    private boolean checkmusic = false;
 
     public static final String intent_me="ON";
     public static final String intent_vi="ON";
@@ -67,27 +67,58 @@ public class FirstpageActivity extends AppCompatActivity {
 
 
         }
+        try {
+            File file2 = new File("sdcard/darkempire/output.txt");
+            if(!file2.exists()) {
+                FileWriter fw = new FileWriter(new File("sdcard/darkempire/output.txt"));
+                final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
+                bw.write("ON,ON");
+                bw.close();
+
+                repeatemusic = new MediaPlayer();
+                repeatemusic = MediaPlayer.create(FirstpageActivity.this, R.raw.repeatemusic);
+                repeatemusic.seekTo(0);
+                repeatemusic.start();
+                repeatemusic.setLooping(true);
+            } else {
+                try {
+
+                    FileReader fr = new FileReader(new File("sdcard/darkempire/output.txt"));
+                    BufferedReader br = new BufferedReader(fr);
+
+                    String temp = br.readLine(); //readLine()讀取一整行
+                    if (temp != null) {
+                        String[] datas = temp.split(",");
+                        che_me = datas[0];
+                        che_vi = datas[1];
+                    } else {
+                        che_me = che_vi = switchOff;
+                    }
+                    if (intent_me.equals(che_me)) {
+                        checkmusic = true;
+                        repeatemusic = new MediaPlayer();
+                        repeatemusic = MediaPlayer.create(FirstpageActivity.this, R.raw.repeatemusic);
+                        repeatemusic.seekTo(0);
+                        repeatemusic.start();
+                        repeatemusic.setLooping(true);
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(FirstpageActivity.this, e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         final Intent intent = new Intent();
 
         try {
             File file = new File("sdcard/darkempire/profile.txt");
-            File file2 = new File("sdcard/darkempire/output.txt");
+
             if (!file.exists()) {
-                if(!file2.exists()) {
-                    FileWriter fw = new FileWriter(new File("sdcard/darkempire/output.txt"));
-                    final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
-                    bw.write("ON,ON");
-                    bw.close();
-                }
                 //Do action
                 intent.setClass(FirstpageActivity.this, IndexActivity.class);
             } else {
-                if(!file2.exists()) {
-                    FileWriter fw = new FileWriter(new File("sdcard/darkempire/output.txt"));
-                    final BufferedWriter bw = new BufferedWriter(fw); //將BufferedWeiter與FileWrite物件做連結
-                    bw.write("ON,ON");
-                    bw.close();
-                }
                 try {
 
                     FileReader fr = new FileReader(new File("sdcard/darkempire/profile.txt"));
@@ -100,39 +131,28 @@ public class FirstpageActivity extends AppCompatActivity {
                         String[] datas = temp.split(",");
                         nameid = datas[0];
                         partyid = datas[2];
-                    } else {
-
                     }
-                } catch (Exception e) {}
+
+                } catch (Exception e) {
+                }
                 intent.setClass(FirstpageActivity.this, MainActivity.class);
             }
+
         } catch (Exception e) {
                Toast.makeText(FirstpageActivity.this, e.toString(), Toast.LENGTH_LONG).show();
         }
-        try {
-
-            FileReader fr = new FileReader(new File("sdcard/darkempire/output.txt"));
-            BufferedReader br = new BufferedReader(fr);
-
-            String temp = br.readLine(); //readLine()讀取一整行
-            if (temp != null) {
-                String[] datas = temp.split(",");
-                che_vi = datas[1];
-                che_me = datas[0];
-            } else {
-                che_vi = che_me = switchOff;
-            }
-        } catch (Exception e) {}
-
-        if (intent_me.equals(che_me)) {
-            repeatemusic = MediaPlayer.create(FirstpageActivity.this, R.raw.repeatemusic);
-            repeatemusic.seekTo(length);
-            repeatemusic.start();
-            repeatemusic.setLooping(true);
-//            repeatemusic.seekTo(length);
 
 
-        }
+//        try {
+//            if (intent_me.equals(che_me)) {
+//                repeatemusic = MediaPlayer.create(FirstpageActivity.this, R.raw.repeatemusic);
+//                repeatemusic.start();
+//                repeatemusic.setLooping(true);
+//            }
+//        } catch (Exception e) {
+//            Toast.makeText(FirstpageActivity.this, e.toString(), Toast.LENGTH_LONG).show();
+//        }
+
         // name
         String userjson = "";
         String url = "http://140.119.163.40:8080/Spring08/app/user/"+nameid;
@@ -158,8 +178,11 @@ public class FirstpageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(intent);
-                repeatemusic.pause();
-                length=repeatemusic.getCurrentPosition();
+
+                if(checkmusic==true) {
+                    repeatemusic.stop();
+                }
+
                 // weapon random to choose
                 String wjson = "";
                 String pray = "";
@@ -445,6 +468,7 @@ public class FirstpageActivity extends AppCompatActivity {
         ad.setPositiveButton("是", new DialogInterface.OnClickListener() {//退出按鈕
             public void onClick(DialogInterface dialog, int i) {
                 // TODO Auto-generated method stub
+                if(repeatemusic != null)
                 repeatemusic.release();
                 finish();//關閉activity
             }

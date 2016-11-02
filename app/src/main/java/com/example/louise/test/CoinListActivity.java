@@ -208,10 +208,7 @@ public class CoinListActivity extends AppCompatActivity implements LocationListe
                 TextView selfuserid = (TextView) (view.findViewById(R.id.coinlist_userid2));
                 selfuserid.setText("選擇贈送金幣id "+ r.get(mPosition)+"\n您的使用者 id 爲: " + txt_user);
 
-                if (intent_me.equals(che_me)) {
-                    ditchbtn = MediaPlayer.create(CoinListActivity.this, R.raw.ditchbtn);
-                    ditchbtn.start();
-                }
+
 
                 final EditText ditchcoinnum = (EditText) (view.findViewById(R.id.ditchcoinnum2));
 //                ditchcoinnum.setText(s.get(mPosition));
@@ -225,7 +222,11 @@ public class CoinListActivity extends AppCompatActivity implements LocationListe
                         .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                if (intent_me.equals(che_me)) {
+                                    ditchbtn = MediaPlayer.create(CoinListActivity.this, R.raw.ditchbtn);
+                                    ditchbtn.start();
+                                    ditchbtn.seekTo(200);
+                                }
 
 //                                String userid = IndexActivity.userid;
                                 int runeid = r.get(mPosition);

@@ -278,7 +278,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         if (intent_me.equals(che_me)) {
                             placebtn = MediaPlayer.create(MapsActivity.this, R.raw.placebtn);
                             placebtn.start();
-
+                            placebtn.seekTo(200);
                         }
                         //find maker's id
                         for (int i = 0; i < placelist.length(); i++) {

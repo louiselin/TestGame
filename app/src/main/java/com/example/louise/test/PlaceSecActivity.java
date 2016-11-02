@@ -722,6 +722,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                     } else {
                         soundjump = MediaPlayer.create(PlaceSecActivity.this, R.raw.hax);
                         soundjump.start();
+//                        soundjump.seekTo(100);
                     }
                 }
 //                Toast.makeText(PlaceSecActivity.this, "me " + intent_me+ " ,vi "+intent_vi, Toast.LENGTH_SHORT).show();

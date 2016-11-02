@@ -166,11 +166,7 @@ public class ManualActivity extends AppCompatActivity {
                     spec1.setContent(new TabHost.TabContentFactory() {
 
                         public View createTabContent(String tag) {
-                            if (intent_me.equals(che_me)) {
-                                mainbtn = MediaPlayer.create(ManualActivity.this, R.raw.mainbtn);
-                                mainbtn.start();
 
-                            }
                             ListView listView01 = new ListView(ManualActivity.this);
                             listView01.setAdapter(adapter);
                             return listView01;
@@ -468,6 +464,10 @@ public class ManualActivity extends AppCompatActivity {
             p = position;
             convertView = myInflater.inflate(R.layout.tab2xml, null);
             convertView.setOnClickListener(new OnClick(p));
+            if (intent_me.equals(che_me)) {
+                mainbtn = MediaPlayer.create(ManualActivity.this, R.raw.mainbtn);
+                mainbtn.start();
+            }
             logo = (ImageView) convertView.findViewById(R.id.imglogo);
             name = (TextView) convertView.findViewById(R.id.name);
 //            list = (TextView) convertView.findViewById(R.id.description);

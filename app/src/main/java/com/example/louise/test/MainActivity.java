@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity
                     if (intent_me.equals(che_me)) {
                         mainbtn = MediaPlayer.create(MainActivity.this, R.raw.mainbtn);
                         mainbtn.start();
-
+                        mainbtn.seekTo(200);
                     }
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, MapsActivity.class);
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity
                     if (intent_me.equals(che_me)) {
                         mainbtn = MediaPlayer.create(MainActivity.this, R.raw.mainbtn);
                         mainbtn.start();
-
+                        mainbtn.seekTo(200);
                     }
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, ProfileUpdateActivity.class);
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity
                     if (intent_me.equals(che_me)) {
                         mainbtn = MediaPlayer.create(MainActivity.this, R.raw.mainbtn);
                         mainbtn.start();
-
+                        mainbtn.seekTo(200);
                     }
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, ManualActivity.class);
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity
                     if (intent_me.equals(che_me)) {
                         mainbtn = MediaPlayer.create(MainActivity.this, R.raw.mainbtn);
                         mainbtn.start();
-
+                        mainbtn.seekTo(200);
                     }
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, CoinListActivity.class);
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity
                     if (intent_me.equals(che_me)) {
                         mainbtn = MediaPlayer.create(MainActivity.this, R.raw.mainbtn);
                         mainbtn.start();
-
+                        mainbtn.seekTo(200);
                     }
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, NCCUContactActivity.class);
@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity
                     if (intent_me.equals(che_me)) {
                         mainbtn = MediaPlayer.create(MainActivity.this, R.raw.mainbtn);
                         mainbtn.start();
-
+                        mainbtn.seekTo(200);
                     }
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, StoryOnlyActivity.class);
