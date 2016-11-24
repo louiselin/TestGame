@@ -457,7 +457,7 @@ public class ManualActivity extends AppCompatActivity {
         private TextView name;
         private String list;
         private String reqes;
-        private String clal;
+        private String clal, nal;
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
@@ -474,17 +474,31 @@ public class ManualActivity extends AppCompatActivity {
 
             String ans = "";
             clal = cla.get(position);
+            nal = na.get(position);
             if (clal != "") {
                 if (k.get(position) != "") {
                     ans = k.get(position);
                     switch (ans) {
-                        case "0":
-                            logo.setImageResource(R.drawable.a1);
+                        case "0": {
+                            if (clal.equals("專家")) logo.setImageResource(R.drawable.exp0);
+                            else if (clal.equals("校園尋奇")) logo.setImageResource(R.drawable.a1);
+                            else logo.setImageResource(R.drawable.explore0);
+                        }
                             break;
                         default: {
-                            if (clal.equals("專家")) logo.setImageResource(R.drawable.award);
-                            else if (clal.equals("校園尋奇")) logo.setImageResource(R.drawable.award02);
-                            else logo.setImageResource(R.drawable.award03);
+                            if (clal.equals("專家")) logo.setImageResource(R.drawable.exp1);
+                            else if (clal.equals("校園尋奇")) {
+                                if (nal.equals("三達德")) logo.setImageResource(R.drawable.award);
+                                else if (nal.replace(" ", "").replace("\n", "").equals("傳說中的榮譽校長"))
+                                    logo.setImageResource(R.drawable.award02);
+                                else if (nal.replace(" ", "").replace("\n", "").equals("人名建築"))
+                                    logo.setImageResource(R.drawable.award03);
+                                else if (nal.replace(" ", "").replace("\n", "").equals("圖書館走透透"))
+                                    logo.setImageResource(R.drawable.award04);
+                                else if (nal.replace(" ", "").replace("\n", "").equals("美援建築"))
+                                    logo.setImageResource(R.drawable.award05);
+                            }
+                            else logo.setImageResource(R.drawable.explore1);
                         }
                         break;
                     }

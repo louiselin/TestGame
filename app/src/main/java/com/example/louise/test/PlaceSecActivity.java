@@ -854,7 +854,7 @@ public class PlaceSecActivity extends AppCompatActivity {
                 myTextView1.setText("敵方的生命值:" + hp);
                 break;
             default:
-                myTextView1.setText("您的生命值:" + hp);
+                myTextView1.setText("我的生命值:" + hp);
                 break;
         }
         myTextView1.setTextSize(15);

@@ -23,7 +23,7 @@
         android:id="@+id/info2" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="127dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:numeric="integer"

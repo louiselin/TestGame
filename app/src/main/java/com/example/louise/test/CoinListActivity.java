@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,6 +42,10 @@ public class CoinListActivity extends AppCompatActivity implements LocationListe
     private List<Integer> i = new ArrayList<>();
     private List<Integer> r = new ArrayList<>();
     private List<Integer> s = new ArrayList<>();
+
+    private List<Integer> ii = new ArrayList<>();
+    private List<Integer> rr = new ArrayList<>();
+    private List<Integer> ss = new ArrayList<>();
 
     private String txt_party = "";
     private String txt_user = "";
@@ -111,6 +116,7 @@ public class CoinListActivity extends AppCompatActivity implements LocationListe
                     coinbtn.seekTo(200);
                 }
                 Intent intent = new Intent();
+                finish();
                 intent.setClass(CoinListActivity.this, CoinActivity.class);
                 startActivity(intent);
             }
@@ -124,11 +130,11 @@ public class CoinListActivity extends AppCompatActivity implements LocationListe
             JSONArray userrunelist = new JSONArray(userrunelistjson);
 
             i.add(R.drawable.coin);
-            i.add(R.drawable.coin2);
+//            i.add(R.drawable.coin2);
             r.add(userrunelist.getJSONObject(0).getInt("runeid"));
-            r.add(userrunelist.getJSONObject(1).getInt("runeid"));
+//            r.add(userrunelist.getJSONObject(1).getInt("runeid"));
             s.add(userrunelist.getJSONObject(0).getInt("stone"));
-            s.add(userrunelist.getJSONObject(1).getInt("stone"));
+//            s.add(userrunelist.getJSONObject(1).getInt("stone"));
 
 
             final MyAdapter adapter;
@@ -252,7 +258,8 @@ public class CoinListActivity extends AppCompatActivity implements LocationListe
                                                     res = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/runeTransaction/app/throw/" + txt_user
                                                             + "/" + runeid + "/" + runenum + "/" + mapcurrlo + "/" + mapcurrla + "/");
                                                     if (!res.equals("error")) {
-                                                        Toast.makeText(CoinListActivity.this, "剩下 " + Integer.toString(last) + " 個, 重整畫面更新 ><", Toast.LENGTH_SHORT).show();
+//                                                        Toast.makeText(CoinListActivity.this, "剩下 " + Integer.toString(last) + " 個, 重整畫面更新 ><", Toast.LENGTH_SHORT).show();
+                                                        refresh();
                                                     } else {
                                                         Toast.makeText(CoinListActivity.this, "輸入有誤 QQQQ", Toast.LENGTH_SHORT).show();
                                                     }
@@ -264,7 +271,8 @@ public class CoinListActivity extends AppCompatActivity implements LocationListe
                                                 res = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/runeTransaction/app/throw/" + txt_user
                                                         + "/" + runeid + "/" + runenum + "/" + mapcurrlo + "/" + mapcurrla + "/");
                                                 if (!res.equals("error")) {
-                                                    Toast.makeText(CoinListActivity.this, "剩下 " + Integer.toString(last) + " 個, 重整畫面更新 ><", Toast.LENGTH_SHORT).show();
+//                                                    Toast.makeText(CoinListActivity.this, "剩下 " + Integer.toString(last) + " 個, 重整畫面更新 ><", Toast.LENGTH_SHORT).show();
+                                                    refresh();
                                                 } else {
                                                     Toast.makeText(CoinListActivity.this, "輸入有誤 QQQQ", Toast.LENGTH_SHORT).show();
                                                 }
@@ -291,8 +299,33 @@ public class CoinListActivity extends AppCompatActivity implements LocationListe
                         })
                         .show();
             }
+
         }
     }
+
+    // btn to refresh the coin number
+    private void refresh() {
+        try {
+            String refreshrune = Httpconnect.httpget("http://140.119.163.40:8080/GeniusLoci/userRuneList/app/list/" + txt_user);
+            JSONArray userrunelist = new JSONArray(refreshrune);
+
+            ii.add(R.drawable.coin);
+//            i.add(R.drawable.coin2);
+            rr.add(userrunelist.getJSONObject(0).getInt("runeid"));
+//            r.add(userrunelist.getJSONObject(1).getInt("runeid"));
+            ss.add(userrunelist.getJSONObject(0).getInt("stone"));
+//            s.add(userrunelist.getJSONObject(1).getInt("stone"));
+
+
+            final MyAdapter adapter;
+            adapter = new MyAdapter(this, rr, ss, ii);
+            coinlist.setAdapter(adapter);
+
+        } catch (Exception e) {
+            Toast.makeText(CoinListActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     //implements LocationListener所自動產生的函式
     @Override
