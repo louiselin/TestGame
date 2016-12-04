@@ -253,7 +253,7 @@ public class PlaceSecActivity extends AppCompatActivity {
         ad.setView(eulaLayout);
         ad.setTitle("遊戲規則");
 
-        ad.setMessage("您點選的是" + placename + "\n\n選擇「巡邏」增加馬納值來守護石碑; 當不幸石碑守護者是敵方的時候以「淨化」掠取，但是會減少馬納值。要注意有秒數限制哦！><\n\n開始吧！勇士！\n");
+        ad.setMessage("您點選的是" + placename + "\n\n選擇「巡邏」增加馬納值來守護神殿; 當不幸神殿守護者是敵方的時候以「淨化」掠取，但是會減少馬納值。要注意有秒數限制哦！><\n\n開始吧！勇士！\n");
         ad.setNegativeButton("開始遊戲", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 String checkBoxResult = "NOT checked";

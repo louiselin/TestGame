@@ -26,6 +26,7 @@ public class SettingActivity extends AppCompatActivity {
     private String switchOn = "ON";
     private String switchOff = "OFF";
     private Button settingclick;
+    private Button explainbtn;
     private Boolean re_vi=false;
     private Boolean re_me=false;
 //    private String filepath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "output.txt";//擷取手機的/sdcard路徑並給定檔案名稱
@@ -65,6 +66,15 @@ public class SettingActivity extends AppCompatActivity {
         } catch (Exception e) {}
 
 
+        explainbtn = (Button) findViewById(R.id.explain);
+        explainbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(SettingActivity.this, ExplainAvtivity.class);
+                startActivity(intent);
+            }
+        });
             // For first switch button
             switchButton = (Switch) findViewById(R.id.switchButton);
             switchButton.setChecked(re_me);

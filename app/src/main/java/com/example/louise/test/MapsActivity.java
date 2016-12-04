@@ -123,7 +123,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         AlertDialog.Builder ad = new AlertDialog.Builder(MapsActivity.this);
         ad.setView(eulaLayout);
         ad.setTitle("攻塔攻略");
-        ad.setMessage("點選您要攻下的石碑地名字！進入石碑所在準備攻擊嘍！\n");
+        ad.setMessage("點選您要攻下的神殿地名字！進入神殿所在準備攻擊嘍！\n");
         ad.setNegativeButton("開始探索", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 String checkBoxResult = "NOT checked";

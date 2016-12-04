@@ -96,8 +96,11 @@ public class ProfileUpdateActivity extends AppCompatActivity {
 //        final EditText editText2 = (EditText) findViewById(R.id.emailtext);
 //        editText2.setText(email);
 
+        final TextView teamname = (TextView) findViewById(R.id.teamname);
+        teamname.setText("I am "+txt_party );
+
         final TextView myTextView5 = (TextView)findViewById(R.id.keepername);
-        myTextView5.setText("玩家匿稱：" + name + "("+ txt_party+")");
+        myTextView5.setText("玩家匿稱：" + name );
 
         final TextView myTextView6 = (TextView)findViewById(R.id.upemail);
         myTextView6.setText("玩家信箱：" + email);
@@ -109,9 +112,15 @@ public class ProfileUpdateActivity extends AppCompatActivity {
         final TextView myTextView9 = (TextView)findViewById(R.id.keepervotes);
         myTextView9.setText("馬納數值：" + votes);
 
+        final TextView sum_checkin = (TextView)findViewById(R.id.sum_checkin);
+        sum_checkin.setText("累積巡邏次數：" + 0);
 
-        final TextView myTextView10 = (TextView)findViewById(R.id.exp);
-        myTextView10.setText("遊戲經驗：" + exp);
+        final TextView sum_fight = (TextView)findViewById(R.id.sum_fight);
+        sum_fight.setText("累積淨化次數：" + 0);
+
+
+//        final TextView myTextView10 = (TextView)findViewById(R.id.exp);
+//        myTextView10.setText("遊戲經驗：" + exp);
 
 
 //        final Button update = (Button) findViewById(R.id.update);

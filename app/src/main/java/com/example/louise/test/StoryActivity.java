@@ -37,9 +37,9 @@ public class StoryActivity extends AppCompatActivity {
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
 
 
-            story = "500年前，統治暗黑大陸的印琛(Jinzen)家族第七代傳人發生內戰，戰敗的蚋轅(Ruyen)決定尋找4000年前脫逃者所帶走的超原力，因而一路找尋到新世界。來到新世界的蚋轅為了在拳杉堡建立基地，殺害了無數安塔雅人與席奈人，並挑起兩族仇恨，擾亂了千年的和平。\n\n"
-                    + "蚋轅直到臨終前都沒有找到超原力，他與惡魔立約，如果能讓他找到超原力，他的靈魂願意成為惡魔的坐騎。惡魔於是結束了蚋轅的生命，將他化為一匹黑馬，並開始在拳杉堡四處潛伏，搜尋超原力。而席奈人與安塔亞人則聯合起來保護超原力，驅趕暗黑勢力。參與這場保衛戰的我們，都是席奈人與安塔雅人的後代，是兩族人共同的血脈。\n\n"
-                    + "不管你投入哪一方，只代表你決定在這場戰役中扮演甚麼任務。這場戰役，唯有靠我們通力合作，才可能守住拳杉堡、保護超原力不被奪走。\n\n";
+            story = "首次登入使用說明\n\n在拳杉堡對抗暗黑勢力的你\n將選擇加入席奈或是安塔雅族\n\n"
+                    + "你必須巡邏並淨化神殿\n以捍衛您族人的勢力\n\n暗黑勢力是兩族人共同的敵人\n當所有神殿遭暗黑勢力全面入侵時\n你必須與族人合作\n"
+                    + "到大神殿救援拳杉堡\n\n當你成為超原力使者時\n你將負起保護大神殿的任務\n\n";
             TextView textstory = (TextView) findViewById(R.id.story);
             textstory.setText(story);
             textstory.setTextSize(18);
@@ -50,7 +50,7 @@ public class StoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder ad = new AlertDialog.Builder(StoryActivity.this);
-                ad.setTitle("決定好陣營了嗎?");
+                ad.setTitle("我要當安塔雅人囉?");
                 ad.setPositiveButton("我要當安塔雅人^^", new DialogInterface.OnClickListener() {//退出按鈕
                     public void onClick(DialogInterface dialog, int i) {
                         // TODO Auto-generated method stub
@@ -99,7 +99,7 @@ public class StoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder ad = new AlertDialog.Builder(StoryActivity.this);
-                ad.setTitle("決定好陣營了嗎?");
+                ad.setTitle("我要當席奈人囉?");
                 ad.setPositiveButton("我要當席奈人^^", new DialogInterface.OnClickListener() {//退出按鈕
                     public void onClick(DialogInterface dialog, int i) {
                         // TODO Auto-generated method stub

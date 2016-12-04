@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,7 +40,8 @@ public class CoinListActivity extends AppCompatActivity implements LocationListe
     private ListView coinlist;
     private Button searchcoin;
     private String userrunelistjson = "";
-
+    private CheckBox donotshowagain;
+    public static final String PREFS_NAME = "coinlistexplain";
     private List<Integer> i = new ArrayList<>();
     private List<Integer> r = new ArrayList<>();
     private List<Integer> s = new ArrayList<>();
@@ -104,6 +107,35 @@ public class CoinListActivity extends AppCompatActivity implements LocationListe
                 txt_user = IndexActivity.userid;
             }
         } catch (Exception e) {}
+
+        LayoutInflater adbInflater = LayoutInflater.from(this);
+        View eulaLayout = adbInflater.inflate(R.layout.checkbox, null);
+        donotshowagain = (CheckBox) eulaLayout.findViewById(R.id.skip);
+
+        AlertDialog.Builder ad = new AlertDialog.Builder(CoinListActivity.this);
+        ad.setView(eulaLayout);
+        ad.setTitle("如何獲得金幣");
+        ad.setMessage("1. 佔領神殿\n連續佔一神殿5天，第五天獲得金幣100枚，第6天200枚，第7天300枚，第8天400枚，第九天500枚。第10天起，每天維持500枚獎勵。\n"
+                        +"2. 成為超原力使者\n成為超原力使者，立即獲得1000枚金幣。\n\n\n\n金幣用途\n每1000個金幣可以購買1個藍色聖水\n" +
+                            "每500個金幣可以購買1個黃色聖水\n每200個金幣可以購買1個紅色聖水!");
+        ad.setNegativeButton("確認", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int i) {
+                String checkBoxResult = "NOT checked";
+                if (donotshowagain.isChecked())
+                    checkBoxResult = "checked";
+                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("skipMessage", checkBoxResult);
+                // Commit the edits!
+                editor.commit();
+
+                return;
+            }
+        });
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        String skipMessage = settings.getString("skipMessage", "NOT checked");
+        if (!skipMessage.equals("checked"))
+            ad.show();
 
         searchcoin = (Button) findViewById(R.id.searchcoin);
         searchcoin.setTextColor(0xffffffff);
