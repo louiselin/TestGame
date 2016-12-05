@@ -30,7 +30,12 @@ import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.net.URI;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class NCCUContactActivity extends AppCompatActivity implements OnClickListener {
@@ -51,12 +56,40 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
 
     private String mess = "", name = "你";
 
+    private Integer targetType = 1;
+    private String target = "";
+
     private WebSocketClient client;// 连接客户端
     private DraftInfo selectDraft;// 连接协议
+
+    private String localid = "";
+    private String localparty = "";
+    private int group = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nccucontact);
+
+        getWindow().setBackgroundDrawableResource(R.drawable.bg);
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        String[]paths = {"全域廣播", "同族群組", "個人對話"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, paths);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                target = (String) spinner.getItemAtPosition(position);
+                Log.v("item", target);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+                target = "全域廣播";
+            }
+        });
+
 
         svChat = (ScrollView) findViewById(R.id.svChat);
         spDraft = (Spinner) findViewById(R.id.spDraft);
@@ -99,14 +132,34 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
 
 
         try {
-            uid = Httpconnect.httpget("http://140.119.163.40:9000/WebsocketTest/msg/chat");
+
+            FileReader fr = new FileReader(new File("sdcard/darkempire/profile.txt"));
+            BufferedReader br = new BufferedReader(fr);
+
+            String temp = br.readLine(); //readLine()讀取一整行
+//            Toast.makeText(SettingActivity.this, temp, Toast.LENGTH_LONG).show();
+
+            if (temp != null) {
+                String[] datas = temp.split(",");
+                localid = datas[0];
+                localparty = datas[1];
+            }
+        } catch (Exception e) {}
+
+
+        switch (localparty) {
+            case "Antayen": group = 60; break;
+            default: group = 30; break;
+        }
+        try {
+            uid = Httpconnect.httpget("http://140.119.163.40:9000/WebsocketTest/msg/newuser/"+localid+"/"+group);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         chatid.setText("id: " + uid);
 
-        ServerInfo[] serverInfos = {new ServerInfo("连接Java Web后台", "ws://140.119.163.40:9000/WebsocketTest/ws?uid="+uid), new ServerInfo("连接Java Application后台", "ws://192.168.1" + "" +
+        ServerInfo[] serverInfos = {new ServerInfo("建立新連線呀", "ws://140.119.163.40:9000/WebsocketTest/ws?uid="+uid), new ServerInfo("连接Java Application后台", "ws://192.168.1" + "" +
                 ".104:8887")};// 所有连接后台
         etAddress.setText(serverInfos[0].serverAddress);// 默认选择第一个连接协议
 
@@ -195,6 +248,7 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
 //                                    etDetails.append(mess);
 //                                    etDetails.append("{'from':1, 'fromName':"+name+"','to':111, 'text':'"+mess+"'}\n");
                                     String messjson = message;
+                                    Log.e("mess", messjson);
                                     try {
 
                                         String mess = new JSONObject(messjson).getString("text");
@@ -278,10 +332,23 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
                 try {
                     if (client != null) {
                         mess = etMessage.getText().toString();
-                        client.send("{\"from\":\""+uid+"\","
-                                + " \"fromName\": \" "+uid+"\""
-                                + ",\"to\":\""+uid+"\","
-                                + " \"text\": \""+mess+"\"}");
+                        if (target.replace(" ", "").equals("同族群組")) targetType = group;
+                        else if (target.replace(" ", "").equals("個人對話")) {
+                            String m = "";
+                            m = mess.substring(mess.indexOf("@") + 1, mess.indexOf(" "));
+                            Pattern pattern = Pattern.compile("[0-9]*");
+                            Matcher isNum = pattern.matcher(m);
+                            if (!isNum.matches()) {
+                                Toast.makeText(NCCUContactActivity.this, targetType+"These are not digital. Try again!", Toast.LENGTH_SHORT).show();
+                                targetType=1;
+                            } else targetType = Integer.valueOf(m);
+                        }
+                        Log.e("typeTarget", targetType.toString());
+//                        String mm = "{\"from\":"+uid+"," + " \"fromName\": \""+uid+"\"" + ",\"to\":"+targetType+"," + " \"text\": \""+mess+"\"}";
+
+                        String mm = "{\"from\":1,\"fromName\":\"暱稱\",\"to\":1,\"text\":\"想要輸出的文字\"} ";
+                        Toast.makeText(NCCUContactActivity.this, mm, Toast.LENGTH_LONG).show();
+                        client.send(mm);
 
                         svChat.post(new Runnable() {
                             @Override

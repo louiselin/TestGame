@@ -83,6 +83,10 @@
             </ScrollView>
 
 
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -99,14 +103,14 @@
 
         <EditText
             android:id="@+id/etMessage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1.68"/>
+            android:layout_width="200dp"
+            android:layout_height="match_parent" />
 
         <Button
             android:id="@+id/btnSend"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:text="發送"/>
+
     </LinearLayout>
 </LinearLayout>
