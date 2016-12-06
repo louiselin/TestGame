@@ -10,11 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.louise.test.NCCUContactActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="chat id"
-        android:id="@+id/chatid" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,10 +20,18 @@
             android:layout_width="32dp"
             android:layout_height="1dp"
             android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="chat id"
+            android:id="@+id/chatid" />
+
         <Button
         android:id="@+id/btnConnect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:text="連線"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/btnClose"
@@ -39,11 +42,13 @@
 
 
         <Button
-                    android:id="@+id/btnClose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="離線"
+            android:id="@+id/btnClose"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="離線"
             android:layout_weight="0.36" />
+
     </LinearLayout>
             <!-- ws://192.168.1.104:80/JSR356-WebSocket/websocket/ -->
             <!-- ws://192.168.1.104:8887 -->
@@ -69,12 +74,12 @@
                 android:id="@+id/svChat"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1.12">
             <EditText
                 android:id="@+id/etDetails"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="13dp"
+                android:textSize="18dp"
                 android:background="@null"
                 android:focusable="false"
                 android:focusableInTouchMode="false"

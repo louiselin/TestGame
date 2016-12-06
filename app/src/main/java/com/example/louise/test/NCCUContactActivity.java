@@ -4,6 +4,7 @@ package com.example.louise.test;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -56,7 +57,7 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
 
     private String mess = "", name = "你";
 
-    private Integer targetType = 1;
+    private Long targetType = 1l;
     private String target = "";
 
     private WebSocketClient client;// 连接客户端
@@ -64,7 +65,7 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
 
     private String localid = "";
     private String localparty = "";
-    private int group = 0;
+    private Long group = 1l;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,8 +149,8 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
 
 
         switch (localparty) {
-            case "Antayen": group = 60; break;
-            default: group = 30; break;
+            case "Antayen": group = 60l; break;
+            default: group = 30l; break;
         }
         try {
             uid = Httpconnect.httpget("http://140.119.163.40:9000/WebsocketTest/msg/newuser/"+localid+"/"+group);
@@ -187,9 +188,178 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
         });
 
 
-        btnConnect.setOnClickListener(this);
-        btnClose.setOnClickListener(this);
-        btnSend.setOnClickListener(this);
+//        btnConnect.setOnClickListener(this);
+//        btnConnect.setPressed(true);
+
+
+        try {
+            if (selectDraft == null) {
+                return;
+            }
+            String address = etAddress.getText().toString().trim();
+            if (address.contains("JSR356-WebSocket")) {
+                address += etName.getText().toString().trim();
+            }
+            Log.e("wlf", "連結地址：" + address);
+            client = new WebSocketClient(new URI(address), selectDraft.draft) {
+                @Override
+                public void onOpen(final ServerHandshake serverHandshakeData) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            etDetails.setGravity(Gravity.LEFT);
+                            etDetails.append("【已經連線...】\n");
+
+                            Log.e("wlf", "已經連結服務器【" + getURI() + "】");
+
+                            spDraft.setEnabled(false);
+                            etAddress.setEnabled(false);
+                            btnConnect.setEnabled(false);
+                            etName.setEnabled(false);
+
+                            btnClose.setEnabled(true);
+                            btnSend.setEnabled(true);
+                        }
+                    });
+                }
+
+
+
+                @Override
+                public void onMessage(final String message) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+
+
+//                                    {"from":1,"fromName":"暱稱","to":111,"text":"想要輸出的文字"}
+
+//                                    etDetails.append(etName.getText().toString().trim() +" said：【" + message + "】\n");
+
+//                                    etDetails.append(mess);
+//                                    etDetails.append("{'from':1, 'fromName':"+name+"','to':111, 'text':'"+mess+"'}\n");
+
+                            String messjson = message;
+                            Log.e("mess", messjson);
+                            try {
+
+                                String mes = new JSONObject(messjson).getString("text");
+                                String na = new JSONObject(messjson).getString("fromName");
+                                String other = new JSONObject(messjson).getString("from");
+                                if (target.replace(" ", "").equals("同族群組")) targetType = group;
+                                else if (target.replace(" ", "").equals("個人對話")) {
+                                    String m = "";
+                                    m = mess.substring(mess.indexOf("@") + 1, mess.indexOf(" "));
+                                    Pattern pattern = Pattern.compile("[0-9]*");
+                                    Matcher isNum = pattern.matcher(m);
+
+                                    if (!isNum.matches()) {
+                                        Toast.makeText(NCCUContactActivity.this, targetType+"These are not digital. Try again!", Toast.LENGTH_SHORT).show();
+                                        targetType=1l;
+                                        mess = "";
+                                    } else targetType = Long.parseLong(m);
+                                }
+//                                        etDetails.append(na + ": [" +mess+"]\n");
+
+//                                        Toast.makeText(NCCUContactActivity.this, na, Toast.LENGTH_LONG).show();
+                                if (na.replace(" ", "").equals(uid)) {
+//                                            etDetails.setTextColor(Color.BLUE); // self message
+//                                            etDetails.setGravity(Gravity.RIGHT);
+                                    etDetails.append("我" + ": [" +mes+"]\n");
+                                } else {
+//                                            etDetails.setGravity(Gravity.LEFT);
+//                                            etDetails.setTextColor(Color.GRAY); // other people message
+                                    etDetails.append(other + ": [" +mes+"]\n");
+
+                                }
+
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            Log.e("wlf", "獲得服務器訊息【" + message + "】");
+                        }
+                    });
+                }
+
+                @Override
+                public void onClose(final int code, final String reason, final boolean remote) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            etDetails.append("【斷開服務器連結...】\n");
+
+                            Log.e("wlf", "斷開服務器連結【" + getURI() + "，状态码： " + code + "，断开原因：" + reason + "】");
+
+                            spDraft.setEnabled(true);
+                            etAddress.setEnabled(true);
+                            btnConnect.setEnabled(true);
+                            etName.setEnabled(true);
+
+                            btnClose.setEnabled(false);
+                            btnSend.setEnabled(false);
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(final Exception e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            etDetails.append("連結發生異常\n");
+
+                            Log.e("wlf", "连接发生了异常【异常原因：" + e.toString() + "】");
+
+                            spDraft.setEnabled(true);
+                            etAddress.setEnabled(true);
+                            btnConnect.setEnabled(true);
+                            etName.setEnabled(true);
+
+                            btnClose.setEnabled(false);
+                            btnSend.setEnabled(false);
+                        }
+                    });
+                }
+            };
+            client.connect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        btnClose.setOnClickListener(this);
+//        btnSend.setOnClickListener(this);
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if (client != null) {
+                        mess = etMessage.getText().toString();
+
+                        Log.e("typeTarget", targetType.toString());
+                        String mm = "{'from':"+uid+"," + "'fromName': '"+uid+"'" + ",'to':"+targetType+"," + "'text':'"+mess+"'}";
+
+//                        String mm = "{'from':1, 'fromname':'aaa', 'to':1, 'text':'helloworld'}";
+                        Toast.makeText(NCCUContactActivity.this, mm.toString(), Toast.LENGTH_LONG).show();
+                        client.send(mm);
+
+                        svChat.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                svChat.fullScroll(View.FOCUS_DOWN);
+                                etMessage.setText("");
+                                etMessage.requestFocus();
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         WebSocketImpl.DEBUG = true;
         System.setProperty("java.net.preferIPv6Addresses", "false");
@@ -239,32 +409,37 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
                                 @Override
                                 public void run() {
 
-
-
-//                                    {"from":1,"fromName":"暱稱","to":111,"text":"想要輸出的文字"}
-
-//                                    etDetails.append(etName.getText().toString().trim() +" said：【" + message + "】\n");
-
-//                                    etDetails.append(mess);
-//                                    etDetails.append("{'from':1, 'fromName':"+name+"','to':111, 'text':'"+mess+"'}\n");
                                     String messjson = message;
                                     Log.e("mess", messjson);
                                     try {
 
-                                        String mess = new JSONObject(messjson).getString("text");
+                                        String mes = new JSONObject(messjson).getString("text");
                                         String na = new JSONObject(messjson).getString("fromName");
                                         String other = new JSONObject(messjson).getString("from");
-//                                        etDetails.append(na + ": [" +mess+"]\n");
 
+//                                        etDetails.append(na + ": [" +mess+"]\n");
+                                        if (target.replace(" ", "").equals("同族群組")) targetType = group;
+                                        else if (target.replace(" ", "").equals("個人對話")) {
+                                            String m = "";
+                                            m = mess.substring(mess.indexOf("@") + 1, mess.indexOf(" "));
+                                            Pattern pattern = Pattern.compile("[0-9]*");
+                                            Matcher isNum = pattern.matcher(m);
+
+                                            if (!isNum.matches()) {
+                                                Toast.makeText(NCCUContactActivity.this, targetType+"These are not digital. Try again!", Toast.LENGTH_SHORT).show();
+                                                targetType=1l;
+                                                mess = "";
+                                            } else targetType = Long.parseLong(m);
+                                        }
 //                                        Toast.makeText(NCCUContactActivity.this, na, Toast.LENGTH_LONG).show();
                                         if (na.replace(" ", "").equals(uid)) {
 //                                            etDetails.setTextColor(Color.BLUE); // self message
 //                                            etDetails.setGravity(Gravity.RIGHT);
-                                            etDetails.append("我" + ": [" +mess+"]\n");
+                                            etDetails.append("我" + ": [" +mes+"]\n");
                                         } else {
 //                                            etDetails.setGravity(Gravity.LEFT);
 //                                            etDetails.setTextColor(Color.GRAY); // other people message
-                                            etDetails.append(other + ": [" +mess+"]\n");
+                                            etDetails.append(other + ": [" +mes+"]\n");
 
                                         }
 
@@ -303,9 +478,9 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    etDetails.append("連結發生異常【異常原因: " + e + "】\n");
+                                    etDetails.append("連結發生異常【異常原因: " + e.toString() + "】\n");
 
-                                    Log.e("wlf", "连接发生了异常【异常原因：" + e + "】");
+                                    Log.e("wlf", "连接发生了异常【异常原因：" + e.toString() + "】");
 
                                     spDraft.setEnabled(true);
                                     etAddress.setEnabled(true);
@@ -332,22 +507,12 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
                 try {
                     if (client != null) {
                         mess = etMessage.getText().toString();
-                        if (target.replace(" ", "").equals("同族群組")) targetType = group;
-                        else if (target.replace(" ", "").equals("個人對話")) {
-                            String m = "";
-                            m = mess.substring(mess.indexOf("@") + 1, mess.indexOf(" "));
-                            Pattern pattern = Pattern.compile("[0-9]*");
-                            Matcher isNum = pattern.matcher(m);
-                            if (!isNum.matches()) {
-                                Toast.makeText(NCCUContactActivity.this, targetType+"These are not digital. Try again!", Toast.LENGTH_SHORT).show();
-                                targetType=1;
-                            } else targetType = Integer.valueOf(m);
-                        }
-                        Log.e("typeTarget", targetType.toString());
-//                        String mm = "{\"from\":"+uid+"," + " \"fromName\": \""+uid+"\"" + ",\"to\":"+targetType+"," + " \"text\": \""+mess+"\"}";
 
-                        String mm = "{\"from\":1,\"fromName\":\"暱稱\",\"to\":1,\"text\":\"想要輸出的文字\"} ";
-                        Toast.makeText(NCCUContactActivity.this, mm, Toast.LENGTH_LONG).show();
+                        Log.e("typeTarget", targetType.toString());
+                        String mm = "{'from':"+uid+"," + "'fromName': '"+uid+"'" + ",'to':"+targetType+"," + "'text':'"+mess+"'}";
+
+//                        String mm = "{'from':1, 'fromname':'aaa', 'to':1, 'text':'helloworld'}";
+//                        Toast.makeText(NCCUContactActivity.this, mm, Toast.LENGTH_LONG).show();
                         client.send(mm);
 
                         svChat.post(new Runnable() {
