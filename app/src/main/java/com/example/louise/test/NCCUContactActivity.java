@@ -153,7 +153,7 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
             default: group = 30l; break;
         }
         try {
-            uid = Httpconnect.httpget("http://140.119.163.40:9000/WebsocketTest/msg/newuser/"+localid+"/"+group);
+            uid = Httpconnect.httpget("http://140.119.163.40:9000/WebsocketTest/msg/newuser/"+localid+"/"+group).replace("\n", "");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -187,7 +187,6 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
             }
         });
 
-
 //        btnConnect.setOnClickListener(this);
 //        btnConnect.setPressed(true);
 
@@ -212,6 +211,42 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
 
                             Log.e("wlf", "已經連結服務器【" + getURI() + "】");
 
+                            // history chat list
+                            String chatList;
+                            try {
+                                String url = "http://140.119.163.40:9000/WebsocketTest/msglist/app/1480940730431/100";
+                                chatList = Httpconnect.httpget("http://140.119.163.40:9000/WebsocketTest/msglist/app/"+uid+"/100");
+
+                                Log.e("url", url);
+                                Log.e("chat", chatList);
+                                JSONArray chatArray = new JSONArray(chatList);
+                                for(int i=0; i<chatArray.length(); i++){
+                                    JSONObject chatObj  = chatArray.getJSONObject(chatArray.length()-i-1);
+                                    String c_mes = chatObj.getString("text");
+                                    String c_na = chatObj.getString("fromName").replace("\n", "").replace(" ", "");
+                                    Long c_other = chatObj.getLong("fromuid");
+                                    Long c_touid = chatObj.getLong("touid");
+
+                                    String c_type = "";
+
+                                    if (uid.equals(c_other.toString())) {
+                                        c_na = "我";
+                                    }
+                                    if (c_touid == 1l) {
+                                        c_type = "[廣播]" + c_na + ": [";
+                                    } else if (c_touid < 100) {
+                                        c_type = "[群組]" + c_na + ": [";
+                                    } else {
+                                        c_type = "[私人]" + c_na + ": [";;
+                                    }
+
+                                    etDetails.append(c_type + c_mes + "]\n");
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
                             spDraft.setEnabled(false);
                             etAddress.setEnabled(false);
                             btnConnect.setEnabled(false);
@@ -233,33 +268,17 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
 
 
 
-//                                    {"from":1,"fromName":"暱稱","to":111,"text":"想要輸出的文字"}
-
-//                                    etDetails.append(etName.getText().toString().trim() +" said：【" + message + "】\n");
-
-//                                    etDetails.append(mess);
-//                                    etDetails.append("{'from':1, 'fromName':"+name+"','to':111, 'text':'"+mess+"'}\n");
-
                             String messjson = message;
                             Log.e("mess", messjson);
                             try {
 
+
+
+                                // ON TIME
                                 String mes = new JSONObject(messjson).getString("text");
                                 String na = new JSONObject(messjson).getString("fromName");
-                                String other = new JSONObject(messjson).getString("from");
-                                if (target.replace(" ", "").equals("同族群組")) targetType = group;
-                                else if (target.replace(" ", "").equals("個人對話")) {
-                                    String m = "";
-                                    m = mess.substring(mess.indexOf("@") + 1, mess.indexOf(" "));
-                                    Pattern pattern = Pattern.compile("[0-9]*");
-                                    Matcher isNum = pattern.matcher(m);
+                                String other = new JSONObject(messjson).getString("fromuid");
 
-                                    if (!isNum.matches()) {
-                                        Toast.makeText(NCCUContactActivity.this, targetType+"These are not digital. Try again!", Toast.LENGTH_SHORT).show();
-                                        targetType=1l;
-                                        mess = "";
-                                    } else targetType = Long.parseLong(m);
-                                }
 //                                        etDetails.append(na + ": [" +mess+"]\n");
 
 //                                        Toast.makeText(NCCUContactActivity.this, na, Toast.LENGTH_LONG).show();
@@ -329,9 +348,6 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
             e.printStackTrace();
         }
 
-//        btnClose.setOnClickListener(this);
-//        btnSend.setOnClickListener(this);
-
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -339,11 +355,25 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
                     if (client != null) {
                         mess = etMessage.getText().toString();
 
+                        if (target.replace(" ", "").equals("同族群組")) targetType = group;
+                        else if (target.replace(" ", "").equals("個人對話")) {
+                            String m = "";
+                            m = mess.substring(mess.indexOf("@") + 1, mess.indexOf(" "));
+                            Pattern pattern = Pattern.compile("[0-9]*");
+                            Matcher isNum = pattern.matcher(m);
+
+                            if (!isNum.matches()) {
+                                Toast.makeText(NCCUContactActivity.this, targetType+"These are not digital. Try again!", Toast.LENGTH_SHORT).show();
+                                targetType=1l;
+                                mess = "";
+                            } else targetType = Long.parseLong(m);
+                        }
+
                         Log.e("typeTarget", targetType.toString());
-                        String mm = "{'from':"+uid+"," + "'fromName': '"+uid+"'" + ",'to':"+targetType+"," + "'text':'"+mess+"'}";
+                        String mm = "{'fromuid':"+uid+"," + "'fromName': '"+uid+"'" + ",'touid':"+targetType+"," + "'text':'"+mess+"'}";
 
 //                        String mm = "{'from':1, 'fromname':'aaa', 'to':1, 'text':'helloworld'}";
-                        Toast.makeText(NCCUContactActivity.this, mm.toString(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(NCCUContactActivity.this, mm.toString(), Toast.LENGTH_LONG).show();
                         client.send(mm);
 
                         svChat.post(new Runnable() {
@@ -409,13 +439,14 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
                                 @Override
                                 public void run() {
 
+
                                     String messjson = message;
                                     Log.e("mess", messjson);
                                     try {
 
                                         String mes = new JSONObject(messjson).getString("text");
                                         String na = new JSONObject(messjson).getString("fromName");
-                                        String other = new JSONObject(messjson).getString("from");
+                                        String other = new JSONObject(messjson).getString("fromuid");
 
 //                                        etDetails.append(na + ": [" +mess+"]\n");
                                         if (target.replace(" ", "").equals("同族群組")) targetType = group;
@@ -509,7 +540,7 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
                         mess = etMessage.getText().toString();
 
                         Log.e("typeTarget", targetType.toString());
-                        String mm = "{'from':"+uid+"," + "'fromName': '"+uid+"'" + ",'to':"+targetType+"," + "'text':'"+mess+"'}";
+                        String mm = "{'fromuid':"+uid+"," + "'fromName': '"+uid+"'" + ",'touid':"+targetType+"," + "'text':'"+mess+"'}";
 
 //                        String mm = "{'from':1, 'fromname':'aaa', 'to':1, 'text':'helloworld'}";
 //                        Toast.makeText(NCCUContactActivity.this, mm, Toast.LENGTH_LONG).show();
