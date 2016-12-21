@@ -278,18 +278,25 @@ public class NCCUContactActivity extends AppCompatActivity implements OnClickLis
                                 String mes = new JSONObject(messjson).getString("text");
                                 String na = new JSONObject(messjson).getString("fromName");
                                 String other = new JSONObject(messjson).getString("fromuid");
+                                Long touid = new JSONObject(messjson).getLong("touid");
 
-//                                        etDetails.append(na + ": [" +mess+"]\n");
+                                String mess_type = "";
+                                if (touid == 1f) {
+                                    mess_type = "[廣播]";
+                                } else if (touid < 100 ) {
+                                    mess_type = "[群組]";
+                                } else {
+                                    mess_type = "[私人]";
+                                }
 
-//                                        Toast.makeText(NCCUContactActivity.this, na, Toast.LENGTH_LONG).show();
                                 if (na.replace(" ", "").equals(uid)) {
 //                                            etDetails.setTextColor(Color.BLUE); // self message
 //                                            etDetails.setGravity(Gravity.RIGHT);
-                                    etDetails.append("我" + ": [" +mes+"]\n");
+                                    etDetails.append(mess_type + "我" + ": [" +mes+"]\n");
                                 } else {
 //                                            etDetails.setGravity(Gravity.LEFT);
 //                                            etDetails.setTextColor(Color.GRAY); // other people message
-                                    etDetails.append(other + ": [" +mes+"]\n");
+                                    etDetails.append(mess_type + other + ": [" +mes+"]\n");
 
                                 }
 
